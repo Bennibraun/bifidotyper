@@ -1,0 +1,2 @@
+[console_scripts]
+bifidotyper = bifidotyper.cli:main
