@@ -1,0 +1,192 @@
+d5d1f4440b0bf0861161076ec8a277a3	GCA_000213955.1_ASM21395v1_genomic	Gardnerella vaginalis HMP9231, complete genome
+88298189ae0291e7334ba9c9ccb6226d	GCA_000347695.1_ASM34769v1_genomic	Bifidobacterium thermophilum RBL67, complete genome
+a3dc0fb9e61260690b0cecf8f002abe9	GCA_000485475.1_genomic	Candidatus Ancillula trichonymphae ImTpAt AnctriDRAFT_2522134505.1_C, whole genome shotgun sequence
+75cffb9bf989fd403825de30ebb1343b	GCA_000706765.1_ASM70676v1_genomic	Bifidobacterium indicum LMG 11587 = DSM 20214, complete genome
+0f6c91f4b347e658bc307cd1fdc0172a	GCA_000741495.1_genomic	Bifidobacterium thermophilum strain JCM 1207 Contig01, whole genome shotgun sequence
+13dce7b0529b5a0596cbd5fda2d2a8a7	GCA_000800455.1_ASM80045v1_genomic	Bifidobacterium kashiwanohense PV20-2, complete genome
+17b93b87364cad1ccb3d50b6b3574b86	GCA_000817045.1_ASM81704v1_genomic	Bifidobacterium animalis strain A6, complete genome
+af6c8e2b1a1962293ce551f99014c749	GCA_000966445.2_ASM96644v2_genomic	Bifidobacterium angulatum strain GT102 chromosome, complete genome
+72a81e3746aef838054ed8f60f2aae2d	GCA_001042595.1_ASM104259v1_genomic	Bifidobacterium dentium JCM 1195 = DSM 20436 DNA, complete genome
+e15d2c4dff38fb22e473f93c70afb395	GCA_001042635.1_ASM104263v1_genomic	Bifidobacterium scardovii JCM 12489 = DSM 13734 DNA, complete genome
+43b8d5670a39a16912e573c82b3b089c	GCA_001042675.1_ASM104267v1_genomic	Parascardovia denticolens DSM 10105 = JCM 12538 DNA, complete genome
+432d68bc059ddd0730c586aaf9da4f96	GCA_001042695.1_ASM104269v1_genomic	Scardovia inopinata JCM 12537 DNA, complete genome
+7688e3701cc48f884d160ed90d6a5557	GCA_001263395.1_ASM126339v1_genomic	Bifidobacterium actinocoloniiforme DSM 22766, complete genome
+e654759b78cb7c2eaa6a4ced2e6fdba2	GCA_002353815.1_genomic	MAG TPA_asm: Bifidobacteriaceae bacterium UBA2724 UBA2724_contig_106, whole genome shotgun sequence
+c2f54ae0b615b2c7215297f77f8c0fd8	GCA_002715865.1_ASM271586v1_genomic	Bifidobacterium asteroides DSM 20089, complete genome
+d1e43cdd20e301e0e2f423fe8ddb746c	GCA_002761235.1_ASM276123v1_genomic	Bifidobacterium choerinum strain FMB-1, complete sequence
+4ed6da89e9b71c11c452a884aa4753ec	GCA_002838485.1_ASM283848v1_genomic	Bifidobacterium breve strain 215W447a chromosome, complete genome
+ce6125fa76e549ea60c9ea1ed30c5493	GCA_003390735.1_ASM339073v1_genomic	Bifidobacterium bifidum strain S6 chromosome, complete genome
+f6881a56ef0fa447e4ea758b6da10026	GCA_003585735.1_genomic	Bifidobacteriaceae bacterium NR047 scaffold1, whole genome shotgun sequence
+3c9667a63da8e741fedc4be6ebaf14e7	GCA_004135085.1_ASM413508v1_genomic	Bifidobacterium pullorum subsp. gallinarum strain CACC 514 chromosome CACC514, complete sequence
+f58977d882388b2784720198c39baf40	GCA_009684555.1_ASM968455v1_genomic	Bifidobacterium catenulatum subsp. kashiwanohense strain APCKJ1 chromosome, complete genome
+d095ecf706a4533880edfa6f6a129444	GCA_014898155.1_ASM1489815v1_genomic	Bifidobacterium eulemuris strain DSM 100216 chromosome, complete genome
+8ef79e6f905dcbc773d8a9ad17facfc0	GCA_014898175.1_ASM1489817v1_genomic	Bifidobacterium lemurum strain DSM 28807 chromosome, complete genome
+1dcbd1f812a121d8974690de1e1f5433	GCA_014898195.1_ASM1489819v1_genomic	Bifidobacterium subtile strain KCTC 3272 chromosome, complete genome
+4ffdbd1ec67cbb4615d58df3722f5312	GCA_017386585.1_genomic	MAG: Aeriscardovia sp. isolate RGIG6 Dairy_cattle_Abomasum-2__c1006331, whole genome shotgun sequence
+ba27681e1dc2232ca18864b3ea3f7317	GCA_017405305.1_genomic	MAG: Aeriscardovia sp. isolate RGIG2325 Goat_Duodenum.Co__c1001361, whole genome shotgun sequence
+1f7413a4464b586d6c9f3f8070f7fe88	GCA_017413255.1_genomic	MAG: Aeriscardovia sp. isolate RGIG1476 Goat_Abomasum-1__c133756, whole genome shotgun sequence
+6e3a157c9c8a274c70d4e2d32741d827	GCA_017537945.1_genomic	MAG: Aeriscardovia sp. isolate RGIG7154 Water_buffalos_Abomasum-5__c1013318, whole genome shotgun sequence
+de6331a3dc05c571748872f07c59f5ad	GCA_017538865.1_genomic	MAG: Aeriscardovia sp. isolate RGIG7109 Water_buffalos_Abomasum-2__c1010180, whole genome shotgun sequence
+eb34989e1765060cebfe3ae20ad20ec0	GCA_017538895.1_genomic	MAG: Aeriscardovia sp. isolate RGIG7107 Water_buffalos_Abomasum-2__c10411, whole genome shotgun sequence
+fd6ab1ddd34424df372004bdbad1e26b	GCA_017632855.1_genomic	MAG: Aeriscardovia sp. isolate RGIG9354 Yak_Abomasum.Co__c1053508, whole genome shotgun sequence
+f5218b8e678c6a4045f556e80a331c63	GCA_017632945.1_genomic	MAG: Aeriscardovia sp. isolate RGIG9349 Yak_Abomasum-5__c121746, whole genome shotgun sequence
+2bc167e21f377f4bb2334e9f3e4bea84	GCA_017965665.1_genomic	MAG: Aeriscardovia sp. isolate RGIG10005 Yak_Reticulum-4__c193508, whole genome shotgun sequence
+07cf07bda86b67a7184a99bf4ed63ca8	GCA_019469425.1_ASM1946942v1_genomic	Bifidobacterium asteroides strain ESL0447 chromosome, complete genome
+c5da8eb029126958237ce00c8f0317e3	GCA_022640915.1_genomic	MAG: Bifidobacterium sp. isolate UW_MP_BIF19_1 Ga0455797_000020, whole genome shotgun sequence
+f1cc5bccce8db34c95d0cedeabbb3893	GCA_022649135.1_genomic	MAG: Bifidobacterium sp. isolate UW_MP_BIF8_1 Ga0455786_00035, whole genome shotgun sequence
+1280697cc26d1e69ef92a5c34e93f072	GCA_022649925.1_genomic	MAG: Bifidobacteriaceae bacterium isolate UW_DM_BIF4_1 Ga0455767_000109, whole genome shotgun sequence
+214d6a4a3f8982a4775f4fc187fcf849	GCA_022650895.1_genomic	MAG: Bifidobacteriaceae bacterium isolate UW_DM_BIF2_1 Ga0455769_00038, whole genome shotgun sequence
+ac027e48d8bfea66466c3b06bc0fe10f	GCA_022651005.1_genomic	MAG: Bifidobacteriaceae bacterium isolate UW_DM_BIF1_1 Ga0455769_00002, whole genome shotgun sequence
+8dff70d0211751f5cc82ece94afe14cb	GCA_022739095.1_genomic	MAG: Bifidobacterium sp. isolate Map_4_007 contig_100_100, whole genome shotgun sequence
+f24b82b349f09d391e51301b1a799e0a	GCA_023277565.1_ASM2327756v1_genomic	Gardnerella vaginalis strain JNFY17 chromosome, complete genome
+f8f7a2d690d63d580196dae93c1abf62	GCA_024104275.1_genomic	MAG: Bifidobacterium sp. isolate B-bin1 NODE_10_length_75772_cov_11.238721, whole genome shotgun sequence
+b428390e6b6044f04defa2b821268033	GCA_024138855.1_ASM2413885v1_genomic	Bifidobacterium pseudolongum strain NjM1 chromosome, complete genome
+39c73c6d0b7f0115c33139ddbc17a06e	GCA_029227215.1_genomic	MAG: Bifidobacteriaceae bacterium isolate SUG1663 k141_320445, whole genome shotgun sequence
+2e49188d2f4b84b49292934d93caac9c	GCA_029392015.1_ASM2939201v1_genomic	Bifidobacterium sp. ESL0728 chromosome, complete genome
+8be09d51a287a514eec05c8a2d565238	GCA_029392075.1_ASM2939207v1_genomic	Bifidobacterium sp. ESL0704 chromosome, complete genome
+295a0ff2dd58843bdd8262f44d0d3fba	GCA_029392315.1_ASM2939231v1_genomic	Bifidobacterium sp. ESL0690 chromosome, complete genome
+78852e66398daa7bb1762b72f15fe75f	GCA_029392815.1_ASM2939281v1_genomic	Bifidobacterium sp. ESL0682 chromosome, complete genome
+f5345261ddfb8904d64be7067d0d56df	GCA_029395355.1_ASM2939535v1_genomic	Bifidobacterium sp. ESL0800 chromosome, complete genome
+b4dc7ba7281d842b1b90322e7929df9b	GCA_029395435.1_ASM2939543v1_genomic	Bifidobacterium sp. ESL0790 chromosome, complete genome
+1da402bbfda8d6c1eb20250044bf264c	GCA_029395475.1_ASM2939547v1_genomic	Bifidobacterium sp. ESL0775 chromosome, complete genome
+eb9911cddcdccba14f76a8dd3b5d6d17	GCA_029395495.1_ASM2939549v1_genomic	Bifidobacterium sp. ESL0769 chromosome, complete genome
+c8eefccd75391a14ebeb961bb65b8c35	GCA_029395535.1_ASM2939553v1_genomic	Bifidobacterium sp. ESL0732 chromosome, complete genome
+bb63861d14ca61263ef393b2d7d63502	GCA_030530905.1_genomic	MAG: Bifidobacteriaceae bacterium isolate S11A_St_1 NODE_105_length_19436_cov_5.716217, whole genome shotgun sequence
+cb1e7e4305609eeeeef89d36381e9fdf	GCA_031262545.1_genomic	MAG: Candidatus Ancillula sp. isolate Hm464_bin179 k119_1004324, whole genome shotgun sequence
+a87983696cea497d3dd78eac45dba358	GCA_031263495.1_genomic	MAG: Bifidobacteriaceae bacterium isolate Gx485_bin43 k119_1087165, whole genome shotgun sequence
+ddee30fd9fa66429acb73cfc4da9e2b3	GCA_031268675.1_genomic	MAG: Candidatus Ancillula sp. isolate Gsp477_bin129 k119_1020635, whole genome shotgun sequence
+c2dfe089594a4b9fd4a00d6e1d4ff7d4	GCA_031273495.1_genomic	MAG: Candidatus Ancillula sp. isolate Kf353_bin77 k119_1108605, whole genome shotgun sequence
+c2f724e62504703e68ffffef3014ef94	GCA_031288055.1_genomic	MAG: Bifidobacteriaceae bacterium isolate Roe453_bin66 k119_1008981, whole genome shotgun sequence
+a19316745df89f8fd660672059a29a92	GCA_031288355.1_genomic	MAG: Bifidobacteriaceae bacterium isolate Roe453_bin28 k119_1022521, whole genome shotgun sequence
+908dd00a969d9ae848da4be54299b967	GCA_033095945.1_ASM3309594v1_genomic	Bombiscardovia apis DNA, complete genome
+c5f5945427ee24cdffad31e05dde5bf9	GCA_033127725.1_ASM3312772v1_genomic	Bombiscardovia nodaiensis DNA, complete genome
+e9b714fa9c3fc1fa8e46ac3dd95c556f	GCA_041080795.1_WK041_4_12_genomic_genomic	Bifidobacterium sp. WK041_4_12 chromosome, complete genome
+11dd82260fd144c27ddab6adcd4fad8e	GCA_041080835.1_WK012_4_13_genomic_genomic	Bifidobacterium sp. WK012_4_13 chromosome, complete genome
+78a37fec77330e4eb36f069e5add9027	GCA_042855075.1_ASM4285507v1_genomic	Bifidobacterium pseudocatenulatum i02-0019-A2 DNA, complete genome
+f7be280bfe27f1c9275c83f74ff3ec84	GCA_042855145.1_ASM4285514v1_genomic	Bifidobacterium adolescentis i01-0019-E5 DNA, complete genome
+83612b20e85679ab96267864bfaec725	GCA_042994895.1_ASM4299489v1_genomic	Gardnerella swidsinskii strain 0756_546_1_1_CBA7 chromosome, complete genome
+52d1cd101c89639349f539330f0b63b0	GCA_900314875.1_genomic	uncultured actinobacterium isolate RUG039 genome assembly, contig: scaffold_17466, whole genome shotgun sequence
+d4bf3b98c495277ed181b4757c15581d	GCA_902167885.1_B.longum_ssp_infantis_6_mod2_genomic	Bifidobacterium longum subsp. infantis isolate B.longum_ssp_infantis_6 genome assembly, chromosome: USA001_1
+c90c6a1234f96bbaf0ce476a28913ea6	GCA_903789525.1_genomic	MAG: uncultured Aeriscardovia sp. isolate UMB00048 genome assembly, contig: NODE_1_length_1234062_cov_22.627201, whole genome shotgun sequence
+ed94d4db090ca2550dd9ed6ce9ddaeb9	GCA_903789535.1_genomic	MAG: uncultured Aeriscardovia sp. isolate UMB00005 genome assembly, contig: NODE_3_length_413139_cov_25.427041, whole genome shotgun sequence
+b5a652773c77f8cac013851a1b054c74	GCA_937874315.1_genomic	MAG TPA_asm: uncultured Bifidobacterium sp. isolate SRR2753157_bin.40_CONCOCT_v1.1_MAG genome assembly, contig: ERZ795006.4337, whole genome shotgun sequence
+8dca05a79088f0a49cf86902abf945b8	GCA_937876495.1_genomic	MAG TPA_asm: uncultured Bifidobacterium sp. isolate SRR2753156_bin.73_CONCOCT_v1.1_MAG genome assembly, contig: ERZ795005.656, whole genome shotgun sequence
+a55b7a2b7766a393435bb25e730c77c3	GCA_946891915.1_genomic	MAG TPA_asm: uncultured Bifidobacteriaceae bacterium isolate SRR12830912_bin.11_metaWRAP_v1.3_MAG genome assembly, contig: ERZ11449023.10, whole genome shotgun sequence
+2c4a871842f2ca32f076607401f6e958	GCA_946997215.1_genomic	MAG TPA_asm: Gardnerella vaginalis isolate SRR16916874_bin.3_metaWRAP_v1.3_MAG genome assembly, contig: ERZ11466558.40, whole genome shotgun sequence
+0ca50c919e9ed55aec66dd3fcadd1ee2	GCA_947088155.1_genomic	MAG TPA_asm: uncultured Gardnerella sp. isolate SRR11749285_bin.10_metaWRAP_v1.3_MAG genome assembly, contig: ERZ13382858.13, whole genome shotgun sequence
+570e4764243f398b338d0f46924105af	GCA_947253155.1_genomic	MAG TPA_asm: uncultured Bifidobacteriaceae bacterium isolate SRR17635716_bin.2_metaWRAP_v1.3_MAG genome assembly, contig: ERZ14212593.6, whole genome shotgun sequence
+29224833182a838fcba59f48e257e5ab	GCF_000263595.1_genomic	Gardnerella vaginalis 1500E ctg00001, whole genome shotgun sequence
+3af552ccfe1b9389ecef4c43bb7fc753	GCF_000269605.1_genomic	Scardovia wiggsiae F0424 cont1.1, whole genome shotgun sequence
+071db17ea96516bd49c34fa697ffedb9	GCF_000376885.1_genomic	Alloscardovia criceti DSM 17774 D570DRAFT_scaffold00011.11_C, whole genome shotgun sequence
+add38fc884c752c9740fe76a9de0feed	GCF_000420505.1_genomic	Alloscardovia omnicolens DSM 21503 G464DRAFT_scaffold00001.1_C, whole genome shotgun sequence
+2e86b90a5ec6edd979917e62a3caa3c0	GCF_000499285.1_genomic	Bifidobacterium sp. 7101 contig00001, whole genome shotgun sequence
+aaffbb678645f35ed3f485e814e3647d	GCF_000522505.1_genomic	Bifidobacterium moukalabense DSM 27321 DSM27321_C01, whole genome shotgun sequence
+13daf598c88595b3b49c3912e79bca44	GCF_000737845.1_genomic	Bifidobacterium bombi DSM 19703 DSM19703_C1, whole genome shotgun sequence
+cbc10aa70ac9fac998aba7dcb4dffc9c	GCF_000738005.1_genomic	Bifidobacterium crudilactis strain LMG 23609 Contig1, whole genome shotgun sequence
+40828a76e41bd11540c155a8619ee69e	GCF_000741165.1_genomic	Bifidobacterium biavatii DSM 23969 Contig01, whole genome shotgun sequence
+653490f5fcbcc1b5a6c07c845dba3024	GCF_000741175.1_genomic	Bifidobacterium callitrichos DSM 23973 Contig01, whole genome shotgun sequence
+d061bb423f063034975ec154e6fd4ee4	GCF_000741205.1_genomic	Bifidobacterium gallicum DSM 20093 = LMG 11596 Contig01, whole genome shotgun sequence
+361040fff464397905e0cf9660e4a7ab	GCF_000741255.1_genomic	Bifidobacterium magnum strain LMG 11591 Contig01, whole genome shotgun sequence
+625ebb40883b5a043b7463caaf48af04	GCF_000741285.1_genomic	Bifidobacterium mongoliense DSM 21395 Contig01, whole genome shotgun sequence
+64025e8ff18394eaf4e056a4d433c0ea	GCF_000741525.1_genomic	Bifidobacterium bohemicum DSM 22767 Contig1, whole genome shotgun sequence
+8647eb28a6e80a8c78907d9b94e4cce4	GCF_000741535.1_genomic	Bifidobacterium boum strain LMG 10736 Contig01, whole genome shotgun sequence
+eba2eda758330871b9876b619eed15ed	GCF_000741575.1_genomic	Bifidobacterium cuniculi strain LMG 10738 Contig01, whole genome shotgun sequence
+d31107c5eb912f8a173658185eaac2a7	GCF_000741645.1_genomic	Bifidobacterium minimum strain LMG 11592 Contig01, whole genome shotgun sequence
+74e1093f4eef7abfb0c50bf4544fe03c	GCF_000741695.1_genomic	Bifidobacterium reuteri DSM 23975 Contig01, whole genome shotgun sequence
+46ead505555e7c9dfdcb1bda99f4fb02	GCF_000741705.1_genomic	Bifidobacterium psychraerophilum strain LMG 21775 Contig01, whole genome shotgun sequence
+3803b4e4c00f4e1f59d81a1652448ee5	GCF_000741715.1_genomic	Bifidobacterium saguini DSM 23967 Contig01, whole genome shotgun sequence
+d5af353451d832a90e57d3df6af29c87	GCF_000741765.1_genomic	Bifidobacterium tsurumiense strain JCM 13495 Contig01, whole genome shotgun sequence
+bebce14bc0d13661420b85784fa0e9bd	GCF_000741785.1_genomic	Bifidobacterium stellenboschense strain DSM 23968 Contig01, whole genome shotgun sequence
+1a43d30050e317381a47cdd0d9de4fe9	GCF_000770925.1_genomic	Bifidobacterium ruminantium DSM 6489 contig1, whole genome shotgun sequence
+b0701bea8ab6cde6b7e675fd3fe8a83a	GCF_000771225.1_genomic	Bifidobacterium pseudolongum subsp. pseudolongum DSM 20099 contig1, whole genome shotgun sequence
+7cecafd8cdbce2337d2b63fb89767199	GCF_000771405.1_genomic	Bifidobacterium pullorum DSM 20433 contig1, whole genome shotgun sequence
+0d9b1547c1ea003c5317c9d4b9b9d3e6	GCF_000967265.1_genomic	Bifidobacterium mellis strain Bin7N Bin7_scaffold1, whole genome shotgun sequence
+ce86292dd85ff061e1417d083d434a48	GCF_001417815.1_genomic	Bifidobacterium aesculapii strain DSM 26737, whole genome shotgun sequence
+acee0b48c3a6b01027b463cfb0c918c7	GCF_001546455.1_genomic	Gardnerella vaginalis strain GED7760B Scaffold0, whole genome shotgun sequence
+c5fbdec4df1d24f6c6e4f2d8c261b930	GCF_001546485.1_genomic	Gardnerella vaginalis strain PSS_7772B Scaffold4, whole genome shotgun sequence
+20c9f5c0bc33a1f6525f1ddd9fc0dd84	GCF_001563665.1_genomic	Gardnerella vaginalis strain CMW7778B Scaffold0, whole genome shotgun sequence
+485ae115c44f10c7c425d38f8c7b6fbe	GCF_002234915.1_genomic	Bifidobacterium vansinderenii strain Tam10B Contig_1, whole genome shotgun sequence
+3ff3c5237e3b7a1c6750cabefd7358f9	GCF_002259585.1_genomic	Bombiscardovia coagulans strain DSM 22924 Contig_1, whole genome shotgun sequence
+10a244e33a837b067c21735f705e8cbd	GCF_002259595.1_genomic	Aeriscardovia aeriphila strain LMG 21773 Contig_1, whole genome shotgun sequence
+17771276841f5c1ae5f2209b4bf384e9	GCF_002259605.1_genomic	Pseudoscardovia radai strain DSM 24742 Contig_1, whole genome shotgun sequence
+8b604556f27ba6eedb65e71313d29b3c	GCF_002259645.1_genomic	Bifidobacterium tissieri strain DSM 100201 Contig_1, whole genome shotgun sequence
+db1bf0b88afdb2230689e582e1132e08	GCF_002259705.1_genomic	Alloscardovia macacae strain DSM 24762 Contig_1, whole genome shotgun sequence
+5c2ebd0e62eaac4d360b03cfa877990d	GCF_002259745.1_genomic	Bifidobacterium myosotis strain DSM 100196 Contig_1, whole genome shotgun sequence
+85e9bb2964f21ebc2bae710c05a3ce13	GCF_002259755.1_genomic	Bifidobacterium hapali strain DSM 100202 Contig_1, whole genome shotgun sequence
+5fe55d5674371c7280c556f175d31cfb	GCF_002259795.1_genomic	Bifidobacterium aquikefiri strain LMG 28769 Contig_1, whole genome shotgun sequence
+296edb910a178c955c9d7dee26a451e0	GCF_002286915.1_genomic	Bifidobacterium italicum strain Rab10A Contig_1, whole genome shotgun sequence
+8f0dc958f7c4c76a495df90b6efec071	GCF_002286935.1_genomic	Bifidobacterium criceti strain Ham19E Contig_1, whole genome shotgun sequence
+f8ff002f3b13ad39b536d3403fb502e3	GCF_002298605.1_genomic	MAG: Bifidobacterium sp. UBA744 UBA744_contig_102, whole genome shotgun sequence
+c85049a0763a20b4c64f5474a5d07315	GCF_002451435.1_genomic	MAG: Bifidobacterium sp. UBA6881 UBA6881_contig_10, whole genome shotgun sequence
+f158e0a5956fe56ef87aa5fb6a141b95	GCF_002742445.1_genomic	Bifidobacterium sp. N4G05 N4G05_Contig_10_consensus_sequence, whole genome shotgun sequence
+a803a248812603f14b398034a9e1c3f3	GCF_002797875.1_genomic	Pseudoscardovia suis strain DSM 24744 Ga0181009_101, whole genome shotgun sequence
+e181bec97d617efcbc5086cb2474bfbf	GCF_002802865.1_genomic	Bifidobacterium scaligerum strain TRE D NODE_10_length_83592_cov_55.247644, whole genome shotgun sequence
+7945ae622599e5e647338908251bf139	GCF_002802875.1_genomic	Bifidobacterium primatium strain TRE 1 NODE_1_length_1055992_cov_95.327966, whole genome shotgun sequence
+5e11c9643b2b3d2e1dbe04053aed2c21	GCF_002802905.1_genomic	Bifidobacterium simiarum strain TRI 7 NODE_10_length_77750_cov_135.718692, whole genome shotgun sequence
+79cdb6e06a189d62f67408a282f61eac	GCF_002802915.1_genomic	Bifidobacterium felsineum strain TRE H NODE_10_length_3200_cov_144.227346, whole genome shotgun sequence
+8239712a5799c7e1193e01a79c53e9a1	GCF_002860345.1_genomic	Bifidobacterium anseris strain Goo31D Contig_1, whole genome shotgun sequence
+36a1755b9a0cffbd80c17c1f22cab76e	GCF_002860355.1_genomic	Bifidobacterium margollesii strain Uis1B Contig_1, whole genome shotgun sequence
+6ff010e08acaec50eddb888edb098887	GCF_002860365.1_genomic	Bifidobacterium parmae strain Uis4E Contig_1, whole genome shotgun sequence
+433a6e2fade5bacd7e11d14df9d65165	GCF_002860405.1_genomic	Bifidobacterium imperatoris strain Tam1G Contig_1, whole genome shotgun sequence
+d758ff366eea6c638b5bad3bedb4991e	GCF_002896555.1_genomic	Gardnerella vaginalis strain KA00225 Contig_1, whole genome shotgun sequence
+a0aaaa7b5764eb6720ee3369900c5a58	GCF_003129905.1_genomic	Bifidobacterium callitrichidarum strain TRI 5 DS8229454_c1, whole genome shotgun sequence
+5f34db54f5b51c00ba7448523c8ed4a6	GCF_003129925.1_genomic	Bifidobacterium catulorum strain MRM 8.19 DS8229455_c1, whole genome shotgun sequence
+6dcf48ca25fb93ef2ed995de29af4f9e	GCF_003202695.1_genomic	Bifidobacterium asteroides strain ESL0200 Ga0133553_101, whole genome shotgun sequence
+2cc27e3c2fc4537e345b0281aa4b545a	GCF_003202755.1_genomic	Bifidobacterium asteroides strain ESL0199 Ga0133552_11, whole genome shotgun sequence
+1f47e1ccf60a7c769d0c52de5dafe4b0	GCF_003293675.1_genomic	Gardnerella leopoldii strain UGent 06.41 chromosome
+960c07372b37f226cc53b855083936d4	GCF_003315615.1_genomic	Bifidobacterium xylocopae strain XV2 ctg_1, whole genome shotgun sequence
+55f973857e5fa5d685695678a0a9d935	GCF_003315635.1_genomic	Bifidobacterium aemilianum strain XV10 ctg_1, whole genome shotgun sequence
+d41c34f0882a4c6acfee69eb4614a116	GCF_003408845.1_genomic	Gardnerella vaginalis strain NR010 scaffold1, whole genome shotgun sequence
+0b130981f7e12f35d2c0ee2a9f9f2f62	GCF_003951095.1_genomic	Bifidobacterium goeldii strain 2034B Contig_1, whole genome shotgun sequence
+e4c1141983a95c3228aea18b8933e0f7	GCF_003951975.1_genomic	Bifidobacterium dolichotidis strain 2036B Contig_1, whole genome shotgun sequence
+1f023154569d3f12f95e2857686f7e5d	GCF_003952005.1_genomic	Bifidobacterium callimiconis strain 2028B Contig_1, whole genome shotgun sequence
+3f9d9fbe89b8c2880916484df11d00d6	GCF_003952025.1_genomic	Bifidobacterium castoris strain 2020B Contig_1, whole genome shotgun sequence
+5a50477f616ba1cd1c82db5b41ae348d	GCF_003952945.1_genomic	Bifidobacterium samirii strain 2033B Contig_1, whole genome shotgun sequence
+38f5d3f98554c8c7b36cc1a1241f6f52	GCF_004332295.1_genomic	Alloscardovia theropitheci strain GLDI4/2 scaffold10_cov2260_read132, whole genome shotgun sequence
+077d0efb8ef979cf14c607ffbaacc460	GCF_007559275.1_genomic	Bifidobacterium apousia strain W8102 NODE_10_length_2669_cov_278.367260, whole genome shotgun sequence
+b1532774d88676b8f28cfcb9459733fb	GCF_008698145.1_genomic	Bifidobacterium vespertilionis strain RST16 NODE_10_length_117684_cov_98.467603, whole genome shotgun sequence
+724fa2f9522f2ecfed3d0b42ca466b18	GCF_008698235.1_genomic	Bifidobacterium rousetti strain RST9 NODE_10_length_139645_cov_92.721978, whole genome shotgun sequence
+e1b8b5081d1a5669d2c47778034426e1	GCF_009078285.1_genomic	Bifidobacterium jacchi strain MRM 9.3 sequence001, whole genome shotgun sequence
+ab7e3e8d315aef28118958e8bed9dd7a	GCF_009193305.1_genomic	Bifidobacterium cebidarum strain LMG 31469 Contig_1, whole genome shotgun sequence
+9da36acee4b46569abd7faf5b3f43b79	GCF_009193355.1_genomic	Bifidobacterium leontopitheci strain LMG 31471 Contig_1, whole genome shotgun sequence
+2c940fb5666c991c2ed7046019e3faa7	GCF_009299475.1_genomic	Bifidobacterium avesanii strain DSM 100685 Contig_1, whole genome shotgun sequence
+8cacca57d281f77462605ebc2f3aaa0d	GCF_009299485.1_genomic	Bifidobacterium apri strain DSM 100238 Contig_1, whole genome shotgun sequence
+cd1c302b717bc072ffd6e4602cc78fc6	GCF_009299505.1_genomic	Bifidobacterium ramosum strain DSM 100688 Contig_1, whole genome shotgun sequence
+a089f2a10790828b85123a0ea1515d69	GCF_009683175.1_genomic	Bifidobacterium asteroides strain VRA_9sq_n contig01, whole genome shotgun sequence
+75bbba92062d04db6db3ba4eee47a889	GCF_009727065.1_genomic	Bifidobacterium canis strain GSD1FS Contig_1, whole genome shotgun sequence
+b042b6b5b3cba743f5f9875246689416	GCF_010667615.1_genomic	Bifidobacterium choloepi strain BRDM 6 sequence1, whole genome shotgun sequence
+29642381c12ecdd8c26a8310f3c16242	GCF_010667645.1_genomic	Bifidobacterium platyrrhinorum strain SMA15 sequence01, whole genome shotgun sequence
+f3cb9677b86c6bfd612ade7b29aa2418	GCF_010667655.1_genomic	Bifidobacterium saimiriisciurei strain SMA1 sequence01, whole genome shotgun sequence
+39114bf4f4fc5890e1213298704b7b2c	GCF_010667685.1_genomic	Bifidobacterium aerophilum strain TRE17 sequence01, whole genome shotgun sequence
+eb1f15aefc7ec1772ba21ccc25085d01	GCF_012932365.1_genomic	Bifidobacterium sp. DSM 109958 Contig_1, whole genome shotgun sequence
+014c858b2aeff002da1a29de1036378d	GCF_012932375.1_genomic	Bifidobacterium sp. DSM 109959 Contig_1, whole genome shotgun sequence
+ccc10a360ba134a08f19661ad4a62398	GCF_012932425.1_genomic	Bifidobacterium sp. DSM 109957 Contig_1, whole genome shotgun sequence
+593c9887bbb11d37e66c1ea9e99d7ad6	GCF_012932675.1_genomic	Bifidobacterium sp. DSM 109960 Contig_1, whole genome shotgun sequence
+f18a7513daec4b388886c9d487c4205b	GCF_014635685.1_genomic	Galliscardovia ingluviei strain CCM 8606 sequence01, whole genome shotgun sequence
+22533979f3daf0e25c4b50add5a50d9e	GCF_016101585.1_genomic	Bifidobacterium polysaccharolyticum strain W8117 NODE_10_length_2458_cov_260.936789, whole genome shotgun sequence
+da6d89e8ad302402c9b3934ddc1daf91	GCF_016899725.1_genomic	Bifidobacterium pullorum subsp. saeculare strain An836 An836_NODE_100_length_570_cov_0.860045, whole genome shotgun sequence
+3ff89388e6157b9d744e3f2d2fe44be5	GCF_018555385.1_genomic	Bifidobacterium santillanense strain MA2 Contig_1, whole genome shotgun sequence
+a406403923f6164c4274e7559d2ee649	GCF_018555435.2_genomic	Bifidobacterium amazonense strain MA1 Contig_001, whole genome shotgun sequence
+8ebf576a3814118cc34b77081bb36325	GCF_018555455.1_genomic	Bifidobacterium colobi strain LC6 Contig_1, whole genome shotgun sequence
+b812f537b2496f8e628dc20120c3f07f	GCF_019331675.1_genomic	Bifidobacterium miconisargentati strain 82T25 Contig_1, whole genome shotgun sequence
+7c59f733a584012004e59e62015e1f03	GCF_019331695.1_genomic	Bifidobacterium pluvialisilvae strain 82T24 Contig_1, whole genome shotgun sequence
+ae5841fee1f76e2197e49a984afd53c0	GCF_019331715.1_genomic	Bifidobacterium simiiventris strain 81T8 Contig_1, whole genome shotgun sequence
+1446e41069f6f50dc36a217e62d9feb0	GCF_019331725.1_genomic	Bifidobacterium saguinibicoloris strain 79T10 Contig_1, whole genome shotgun sequence
+332d91a2171d56f2c13783fa215dc61a	GCF_019331735.1_genomic	Bifidobacterium miconis strain 82T10 Contig_1, whole genome shotgun sequence
+fa1c370ebbfebd2c8dd97644d5d83e13	GCF_019331775.1_genomic	Bifidobacterium phasiani strain 6T3 Contig_1, whole genome shotgun sequence
+465d7ee47c4d7ed8eeb923056a66b40c	GCF_019331805.1_genomic	Bifidobacterium pongonis strain 64T4 Contig_1, whole genome shotgun sequence
+e24b3aea94ed64a900aa4cd18de5ee32	GCF_020884755.1_genomic	Bifidobacterium mizhiense strain S053-2 contig1, whole genome shotgun sequence
+1bdd7469e9791b58fd516e16e285a040	GCF_022640935.1_genomic	MAG: Bifidobacterium sp. isolate UW_MP_BIF12_1 Ga0455797_000031, whole genome shotgun sequence
+e8ad997601b7c34492e187c1a106bd03	GCF_022647885.1_genomic	MAG: Bifidobacterium sp. isolate UW_MP_BIF3_1 Ga0455833_0004, whole genome shotgun sequence
+b6a6fe365c51d58aa283ab8c6e742100	GCF_022655035.1_genomic	MAG: Bifidobacterium tibiigranuli isolate UW_MP_BIF9_2 Ga0455779_00009, whole genome shotgun sequence
+25eba3300e787841ae03dc091402782a	GCF_026537325.1_genomic	Bifidobacterium sp. B4142 B4142_Bifido_NODE_1, whole genome shotgun sequence
+e4c0db76ba4629c540538c8ae646fd23	GCF_029433295.1_genomic	Bifidobacterium sp. ESL0784 NODE_1_length_690169_cov_285.466542, whole genome shotgun sequence
+47ed9173ef25a1e6dbfeba5edd2cdd26	GCF_029433335.1_genomic	Bifidobacterium sp. ESL0745 NODE_1_length_1767666_cov_230.572010, whole genome shotgun sequence
+5dc8f1c6877f11e89ead20a2598aa619	GCF_029433395.1_genomic	Bifidobacterium sp. ESL0763 ESL0763_1, whole genome shotgun sequence
+3e931878c91b84550fd15f0beb580f46	GCF_900094885.1_genomic	Bifidobacterium commune strain R-52791, whole genome shotgun sequence
+c3a2b9962556839df2694f149e0d255c	GCF_900129045.1_genomic	Bifidobacterium merycicum DSM 6492, whole genome shotgun sequence
+b5a5124f66dd2a0c908a70b97fb607e4	GCF_945269915.1_genomic	MAG: uncultured Bifidobacterium sp. isolate SRR11267074_bin.3_metawrap_v1.3.0_MAG ERZ9515154_7, whole genome shotgun sequence
+0a9436c7b91a00768248e7b1772844a0	GCF_949292005.1_genomic	Uncultured Bifidobacterium sp. isolate SI.O67.metabat-bins.98 SI.O67.metabat-bins.98.fa_k141_601, whole genome shotgun sequence
+3a245b7c7529e4f7ea9e40fea6457769	GCF_959020145.1_genomic	MAG: uncultured Bifidobacterium sp. isolate ERR10149223_bin.5_MetaWRAP_v1.3_MAG ERZ19076452.18, whole genome shotgun sequence
+bb0d4bd7f8c07cb1e975d9bc65a27eff	GCF_959020155.1_genomic	MAG: uncultured Bifidobacterium sp. isolate ERR10149223_bin.28_MetaWRAP_v1.3_MAG ERZ19076452.33, whole genome shotgun sequence
+7614d8258949aa1829ea56076ebc5cb8	GCF_959028125.1_genomic	MAG: uncultured Bifidobacterium sp. isolate ERR10149229_bin.50_MetaWRAP_v1.3_MAG ERZ19081522.17, whole genome shotgun sequence

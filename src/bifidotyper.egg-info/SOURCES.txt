@@ -4,6 +4,7 @@ src/bifidotyper/__init__.py
 src/bifidotyper/cli.py
 src/bifidotyper/processor.py
 src/bifidotyper/references.py
+src/bifidotyper/slyph.py
 src/bifidotyper.egg-info/PKG-INFO
 src/bifidotyper.egg-info/SOURCES.txt
 src/bifidotyper.egg-info/dependency_links.txt

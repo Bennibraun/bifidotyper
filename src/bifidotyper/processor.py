@@ -14,9 +14,18 @@ def get_base_name(filename, r1_suffix, r2_suffix):
     basename = basename.replace(r1_suffix, '').replace(r2_suffix, '')
     return basename
 
+def make_absolute_path(file, base_dir):
+    """Convert a file path to an absolute path if it is not already"""
+    if not file.startswith(("~", "/")):
+        return os.path.join(base_dir, file)
+    return file
+
 def build_sample_dict(single_end=None, paired_end=None, r1_suffix="_R1", r2_suffix="_R2"):
+    base_dir = os.getcwd()
     sample_dict = {}
+    
     if single_end:
+        single_end = [make_absolute_path(file, base_dir) for file in single_end]
         validate_files(single_end)
         for file in single_end:
             sample_name = get_base_name(file, r1_suffix, r2_suffix)
@@ -25,6 +34,7 @@ def build_sample_dict(single_end=None, paired_end=None, r1_suffix="_R1", r2_suff
                 'files': {'R1': file}
             }
     elif paired_end:
+        paired_end = [make_absolute_path(file, base_dir) for file in paired_end]
         validate_files(paired_end)
         # Group paired-end files by their base name
         r1_files = {}

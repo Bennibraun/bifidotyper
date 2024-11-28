@@ -9,7 +9,7 @@ class ReferenceManager:
     def __init__(self):
         # Get the package's root directory
         self.package_root = pathlib.Path(__file__).parent.parent.absolute()
-        self.reference_dir = self.package_root / 'data' / 'references'
+        self.reference_dir = self.package_root / 'data' / 'reference'
         
         # Ensure reference directory exists
         if not self.reference_dir.exists():
@@ -21,6 +21,7 @@ class ReferenceManager:
             'bl_genome': self.reference_dir / 'CP001095.1_genome.fasta',
             'bl_coding_seqs': self.reference_dir / 'CP001095.1_coding_seqs.gb',
             'bl_genes': self.reference_dir / 'CP001095.1_genes.gff3',
+            'genomes_dir': self.reference_dir / 'genomes_ncbi_gtdb_drep95',
         }
         
         # Validate all reference files exist

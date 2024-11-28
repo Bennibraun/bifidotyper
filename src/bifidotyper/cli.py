@@ -2,6 +2,9 @@ import argparse
 import sys
 from .processor import build_sample_dict
 from .references import ReferenceManager
+import glob
+import os
+from .sylph import SylphUtils, SylphError
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Process FASTQ files for bifidotyper.")
@@ -13,6 +16,8 @@ def parse_args():
     suffix_group = parser.add_argument_group('paired-end options')
     suffix_group.add_argument('--r1-suffix', help="Suffix for R1 files (only for paired-end mode)")
     suffix_group.add_argument('--r2-suffix', help="Suffix for R2 files (only for paired-end mode)")
+    
+    parser.add_argument('-t', '--threads', type=int, default=1, help="Number of threads to use for parallel processing.")
     
     args = parser.parse_args()
     
@@ -57,9 +62,41 @@ def main():
                                       r1_suffix=args.r1_suffix,
                                       r2_suffix=args.r2_suffix)
     
-    print(sample_dict)
-    reference_files = get_reference_files()
-    print(reference_files)
+    # Get the reference files
+    refs = get_reference_files()
+    
+    # Initialize Sylph utility
+    sylph = SylphUtils()
+    
+    try:
+        # Sketch genomes
+        genome_db = sylph.sketch_genomes(genomes=glob.glob(os.path.join(refs['genomes_dir'], '*.fna')), output_name='genome_sketches', threads=args.threads)
+        
+        if args.single_end:
+            fastq_files = []
+            for sample in sample_dict.values():
+                fastq_files.append(sample['files'].values())
+            read_sketches = sylph.sketch_reads(fastq_se=fastq_files, threads=args.threads)
+        else:
+            # grab all R1 and R2 files separately, in order
+            fastq_files_r1, fastq_files_r2 = [], []
+            for sample in sample_dict.values():
+                fastq_files_r1.append(sample['files']['R1'])
+                fastq_files_r2.append(sample['files']['R2'])
+            read_sketches = sylph.sketch_reads(fastq_r1=fastq_files_r1, fastq_r2=fastq_files_r2, threads=args.threads)
+        
+        print(read_sketches)
+        # # Query genomes
+        # query_result = sylph.query_genomes(read_sketches, genome_db)
+        
+        # # Profile genomes
+        # profile_result = sylph.profile_genomes(read_sketches, genome_db)
+        
+        # print(f"Query result: {query_result}")
+        # print(f"Profile result: {profile_result}")
+    
+    except SylphError as e:
+        print(f"Sylph processing error: {e}")
 
 if __name__ == "__main__":
     main()

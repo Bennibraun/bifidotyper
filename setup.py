@@ -6,7 +6,7 @@ setup(
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     package_data={
-        "bifidotyper": ["data/references/*"],
+        "bifidotyper": ["data/reference/*"],
     },
     include_package_data=True,
     entry_points={
