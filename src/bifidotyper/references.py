@@ -2,6 +2,7 @@ import os
 import sys
 import pkg_resources
 import pathlib
+from .logger import logger
 
 class ReferenceManager:
     """Manages access to reference files for the bifidotyper package"""
@@ -26,6 +27,8 @@ class ReferenceManager:
         
         # Validate all reference files exist
         self._validate_references()
+
+        logger.info("References validated.")
     
     def _validate_references(self):
         """Ensure all required reference files are present"""
@@ -50,9 +53,9 @@ def main():
         ref_manager = ReferenceManager()
         # Use reference files in your program
         ref1_path = ref_manager.get_reference_path('ref1')
-        print(f"Using reference file: {ref1_path}")
+        logger.info(f"Using reference file: {ref1_path}")
         
     except FileNotFoundError as e:
-        print(f"Error: {e}")
-        print("Please ensure the package is properly installed with reference files.")
+        logger.info(f"Error: {e}")
+        logger.info("Please ensure the package is properly installed with reference files.")
         sys.exit(1)

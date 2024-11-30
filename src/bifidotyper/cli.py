@@ -4,7 +4,13 @@ from .processor import build_sample_dict
 from .references import ReferenceManager
 import glob
 import os
+import subprocess
 from .sylph import SylphUtils, SylphError
+from .hmo_genes import HMOUtils, HMOError
+from .logger import logger
+import tqdm
+
+disable_tqdm = not sys.stdout.isatty()  # Disable if output is redirected
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Process FASTQ files for bifidotyper.")
@@ -51,6 +57,32 @@ def get_reference_files():
         sys.exit(1)
 
 def main():
+
+    print(r'''
+$$$$$$$\  $$$$$$\ $$$$$$$$\ $$$$$$\ $$$$$$$\   $$$$$$\ $$$$$$$$\ $$\     $$\ $$$$$$$\  $$$$$$$$\ $$$$$$$\  
+$$  __$$\ \_$$  _|$$  _____|\_$$  _|$$  __$$\ $$  __$$\\__$$  __|\$$\   $$  |$$  __$$\ $$  _____|$$  __$$\ 
+$$ |  $$ |  $$ |  $$ |        $$ |  $$ |  $$ |$$ /  $$ |  $$ |    \$$\ $$  / $$ |  $$ |$$ |      $$ |  $$ |
+$$$$$$$\ |  $$ |  $$$$$\      $$ |  $$ |  $$ |$$ |  $$ |  $$ |     \$$$$  /  $$$$$$$  |$$$$$\    $$$$$$$  |
+$$  __$$\   $$ |  $$  __|     $$ |  $$ |  $$ |$$ |  $$ |  $$ |      \$$  /   $$  ____/ $$  __|   $$  __$$< 
+$$ |  $$ |  $$ |  $$ |        $$ |  $$ |  $$ |$$ |  $$ |  $$ |       $$ |    $$ |      $$ |      $$ |  $$ |
+$$$$$$$  |$$$$$$\ $$ |      $$$$$$\ $$$$$$$  | $$$$$$  |  $$ |       $$ |    $$ |      $$$$$$$$\ $$ |  $$ |
+\_______/ \______|\__|      \______|\_______/  \______/   \__|       \__|    \__|      \________|\__|  \__|
+                                                                                                           
+    ''')
+
+    print('Loading software and reference data...')
+
+    # Check for external software
+    software = ['bowtie2','sylph','samtools','htseq-count']
+    for s in software:
+        try:
+            subprocess.run([s, '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        except FileNotFoundError:
+            print(f"Error: {s} not found in PATH. Please install {s} and ensure it is in your PATH.")
+            sys.exit(1)
+
+    logger.info("All required software found in PATH.")
+
     args = parse_args()
     
     if args.single_end:
@@ -65,38 +97,65 @@ def main():
     # Get the reference files
     refs = get_reference_files()
     
+
+    logger.info("Processing FASTQ files with Sylph...")
+    print('Processing FASTQ files with Sylph...')
+
     # Initialize Sylph utility
-    sylph = SylphUtils()
+    sylph = SylphUtils(args=args)
     
     try:
         # Sketch genomes
+        print('Sketching genomes...')
         genome_db = sylph.sketch_genomes(genomes=glob.glob(os.path.join(refs['genomes_dir'], '*.fna.gz')), output_name='genome_sketches', threads=args.threads)
         
         if args.single_end:
             fastq_files = []
-            for sample in sample_dict.values():
+            for sample in tqdm.tqdm(sample_dict.values(), desc="Sketching reads", unit="sample", total=len(sample_dict), disable=disable_tqdm):
                 fastq_files.append(sample['files'].values())
             read_sketches = sylph.sketch_reads(fastq_se=fastq_files, threads=args.threads)
         else:
             # grab all R1 and R2 files separately, in order
             fastq_files_r1, fastq_files_r2 = [], []
-            for sample in sample_dict.values():
+            for sample in tqdm.tqdm(sample_dict.values(), desc="Sketching reads", unit="sample", total=len(sample_dict), disable=disable_tqdm):
                 fastq_files_r1.append(sample['files']['R1'])
                 fastq_files_r2.append(sample['files']['R2'])
             read_sketches = sylph.sketch_reads(fastq_r1=fastq_files_r1, fastq_r2=fastq_files_r2, threads=args.threads)
         
-        print(read_sketches)
+        print('Querying the genome database...')
+
         # Query genomes
         query_result = sylph.query_genomes(read_sketches, genome_db)
-        
         # Profile genomes
         profile_result = sylph.profile_genomes(read_sketches, genome_db)
         
-        print(f"Query result: {query_result}")
-        print(f"Profile result: {profile_result}")
+        logger.info(f"Query result: {query_result}")
+        logger.info(f"Profile result: {profile_result}")
     
     except SylphError as e:
-        print(f"Sylph processing error: {e}")
+        logger.info(f"Sylph processing error: {e}")
+        raise SylphError(f"Sylph processing error: {e}")
+
+    # Now run HMO quantification
+    print('Detecting HMO genes...')
+    if args.single_end:
+        for fastq_se in tqdm.tqdm(fastq_files, desc="Quantifying HMO genes", unit="sample", total=len(fastq_files), disable=disable_tqdm):
+            HMOUtils(genome_fasta=refs['bl_genome'],
+                           gene_annotations_gff3=refs['bl_genes'],
+                           hmo_annotations=refs['humann2_hmo'],
+                           fastq_se=fastq_se,
+                           output_dir='hmo_quantification',
+                           threads=args.threads)
+    else:
+        for fastq_r1, fastq_r2 in tqdm.tqdm(zip(fastq_files_r1, fastq_files_r2), desc="Quantifying HMO genes", unit="sample", total=len(fastq_files_r1), disable=disable_tqdm):
+            HMOUtils(genome_fasta=refs['bl_genome'],
+                           gene_annotations_gff3=refs['bl_genes'],
+                           hmo_annotations=refs['humann2_hmo'],
+                           fastq_pe1=fastq_r1,
+                           fastq_pe2=fastq_r2,
+                           output_dir='hmo_quantification',
+                           threads=args.threads)
+    print('Done!')
 
 if __name__ == "__main__":
     main()

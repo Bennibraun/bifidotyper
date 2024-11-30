@@ -2,11 +2,13 @@ MANIFEST.in
 setup.py
 src/bifidotyper/__init__.py
 src/bifidotyper/cli.py
+src/bifidotyper/hmo_genes.py
 src/bifidotyper/processor.py
 src/bifidotyper/references.py
-src/bifidotyper/slyph.py
+src/bifidotyper/sylph.py
 src/bifidotyper.egg-info/PKG-INFO
 src/bifidotyper.egg-info/SOURCES.txt
 src/bifidotyper.egg-info/dependency_links.txt
 src/bifidotyper.egg-info/entry_points.txt
+src/bifidotyper.egg-info/requires.txt
 src/bifidotyper.egg-info/top_level.txt

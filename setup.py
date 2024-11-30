@@ -14,4 +14,11 @@ setup(
             'bifidotyper=bifidotyper.cli:main',
         ],
     },
+	install_requires=[
+        'numpy',
+        'pandas',
+        'seaborn',
+        'matplotlib',
+		'tqdm',
+    ],
 )

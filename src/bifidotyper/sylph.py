@@ -3,16 +3,23 @@ import glob
 import subprocess
 import typing
 from pathlib import Path
+from .logger import logger
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 class SylphError(Exception):
     """Custom exception for Sylph-related errors."""
     pass
 
 class SylphUtils:
-    def __init__(self, 
+    def __init__(self,
+                 args,
                  genome_sketch_dir: str = 'sylph_genome_sketches', 
                  fastq_sketch_dir: str = 'sylph_fastq_sketches', 
-                 genome_query_dir: str = 'sylph_genome_queries'):
+                 genome_query_dir: str = 'sylph_genome_queries',
+                 ):
         """
         Initialize Sylph utility with configurable directory paths.
         
@@ -21,6 +28,7 @@ class SylphUtils:
             fastq_sketch_dir (str): Directory to store fastq sketches
             genome_query_dir (str): Directory to store genome query results
         """
+        self.args = args
         self.genome_sketch_dir = genome_sketch_dir
         self.fastq_sketch_dir = fastq_sketch_dir
         self.genome_query_dir = genome_query_dir
@@ -45,9 +53,8 @@ class SylphUtils:
             SylphError: If the command fails
         """
         try:
-            # print(f"Running command: {' '.join(command)}")
+            logger.info(f"Running command: {' '.join(command)}")
             result = subprocess.run(command, check=True, text=True, capture_output=True, shell=False)
-            # print(result)
             return result
         except subprocess.CalledProcessError as e:
             raise SylphError(f"Command '{' '.join(command)}' failed with error: {e.stderr}")
@@ -161,6 +168,32 @@ class SylphUtils:
         
         return os.path.join(self.genome_query_dir, output_name)
 
+    def plot_sylph_results(self, profile_tsv: str, query_tsv: str):
+        """
+        Plot Sylph query and profile results using matplotlib.
+        
+        Args:
+            profile_tsv (str): Path to the profile TSV file
+            query_tsv (str): Path to the query TSV file
+        """
+        
+        # Read TSV file into a pandas DataFrame
+        pdf = pd.read_csv(profile_tsv,sep='\t')
+        qdf = pd.read_csv(query_tsv,sep='\t')
+
+        # Make a strain label that cuts off the contig name at 30 chars
+        qdf['Strain'] = qdf['Contig_name'].apply(lambda x: x[:30])
+        pdf['Strain'] = pdf['Contig_name'].apply(lambda x: x[:30])
+
+        qdf['Sample'] = qdf['Sample_file'].apply(lambda x: os.path.basename(x).replace('.fastq.gz','').replace(self.args['r1_suffix'],'').replace(self.args['r2_suffix'],''))
+        pdf['Sample'] = pdf['Sample_file'].apply(lambda x: os.path.basename(x).replace('.fastq.gz','').replace(self.args['r1_suffix'],'').replace(self.args['r2_suffix'],''))
+
+        # Set up a color scheme to uniquely identify each strain
+        strains = pdf['Strain'].unique()
+
+
+
+
 # Example usage
 def main():
     try:
@@ -179,11 +212,12 @@ def main():
         # Profile genomes
         profile_result = sylph.profile_genomes(read_sketches, genome_db)
         
-        print(f"Query result: {query_result}")
-        print(f"Profile result: {profile_result}")
+        logger.info(f"Query result: {query_result}")
+        logger.info(f"Profile result: {profile_result}")
     
     except SylphError as e:
-        print(f"Sylph processing error: {e}")
+        logger.info(f"Sylph processing error: {e}")
+        raise SylphError(f"Sylph processing error: {e}")
 
 if __name__ == '__main__':
     main()
