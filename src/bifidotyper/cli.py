@@ -70,7 +70,7 @@ def main():
     
     try:
         # Sketch genomes
-        genome_db = sylph.sketch_genomes(genomes=glob.glob(os.path.join(refs['genomes_dir'], '*.fna')), output_name='genome_sketches', threads=args.threads)
+        genome_db = sylph.sketch_genomes(genomes=glob.glob(os.path.join(refs['genomes_dir'], '*.fna.gz')), output_name='genome_sketches', threads=args.threads)
         
         if args.single_end:
             fastq_files = []
@@ -86,14 +86,14 @@ def main():
             read_sketches = sylph.sketch_reads(fastq_r1=fastq_files_r1, fastq_r2=fastq_files_r2, threads=args.threads)
         
         print(read_sketches)
-        # # Query genomes
-        # query_result = sylph.query_genomes(read_sketches, genome_db)
+        # Query genomes
+        query_result = sylph.query_genomes(read_sketches, genome_db)
         
-        # # Profile genomes
-        # profile_result = sylph.profile_genomes(read_sketches, genome_db)
+        # Profile genomes
+        profile_result = sylph.profile_genomes(read_sketches, genome_db)
         
-        # print(f"Query result: {query_result}")
-        # print(f"Profile result: {profile_result}")
+        print(f"Query result: {query_result}")
+        print(f"Profile result: {profile_result}")
     
     except SylphError as e:
         print(f"Sylph processing error: {e}")

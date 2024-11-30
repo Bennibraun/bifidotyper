@@ -67,16 +67,16 @@ class SylphUtils:
         Returns:
             str: Path to the generated .syldb file
         """
-        # Ensure we're in the genome sketch directory
-        os.chdir(self.genome_sketch_dir)
                 
         # Construct sylph sketch command
         command = ['sylph', 'sketch',*genomes,'-t', str(threads), '-o', output_name]
         self._run_command(command)
 
-        os.chdir('..')
-        
-        return os.path.join(self.genome_sketch_dir, f"{output_name}.syldb")
+        # Move all output files into the genome sketch directory
+        syldb = os.path.join(self.genome_sketch_dir, f"{output_name}.syldb")
+        os.rename(f"{output_name}.syldb", syldb)
+
+        return syldb
     
     def sketch_reads(self,
                      fastq_se: list = None,
@@ -94,8 +94,6 @@ class SylphUtils:
         Returns:
             List[str]: Paths to the generated .sylsp files
         """
-        # Ensure we're in the fastq sketch directory
-        os.chdir(self.fastq_sketch_dir)
         
         # Construct sylph sketch command
         if fastq_se:
@@ -107,7 +105,9 @@ class SylphUtils:
         
         self._run_command(command)
 
-        os.chdir('..')
+        # Move all output files into the fastq sketch directory
+        for sylsp in glob.glob('*.sylsp'):
+            os.rename(sylsp, os.path.join(self.fastq_sketch_dir, sylsp))
         
         return glob.glob(os.path.join(self.fastq_sketch_dir, '*.sylsp'))
     
@@ -126,15 +126,14 @@ class SylphUtils:
         Returns:
             str: Path to the generated query TSV file
         """
-        # Ensure we're in the genome query directory
-        os.chdir(self.genome_query_dir)
         
         # Construct sylph query command
         command = ['sylph', 'query'] + sylsp_files + [syldb_file, '-o', output_name]
         self._run_command(command)
 
-        os.chdir('..')
-        
+        # Move the output file into the genome query directory
+        os.rename(output_name, os.path.join(self.genome_query_dir, output_name))
+
         return os.path.join(self.genome_query_dir, output_name)
     
     def profile_genomes(self, 
@@ -152,14 +151,13 @@ class SylphUtils:
         Returns:
             str: Path to the generated profile TSV file
         """
-        # Ensure we're in the genome query directory
-        os.chdir(self.genome_query_dir)
         
         # Construct sylph profile command
         command = ['sylph', 'profile'] + sylsp_files + [syldb_file, '-o', output_name]
         self._run_command(command)
-        
-        os.chdir('..')
+
+        # Move the output file into the genome query directory
+        os.rename(output_name, os.path.join(self.genome_query_dir, output_name))
         
         return os.path.join(self.genome_query_dir, output_name)
 
