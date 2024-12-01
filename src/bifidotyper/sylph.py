@@ -14,12 +14,7 @@ class SylphError(Exception):
     pass
 
 class SylphUtils:
-    def __init__(self,
-                 args,
-                 genome_sketch_dir: str = 'sylph_genome_sketches', 
-                 fastq_sketch_dir: str = 'sylph_fastq_sketches', 
-                 genome_query_dir: str = 'sylph_genome_queries',
-                 ):
+    def __init__(self,args):
         """
         Initialize Sylph utility with configurable directory paths.
         
@@ -29,9 +24,9 @@ class SylphUtils:
             genome_query_dir (str): Directory to store genome query results
         """
         self.args = args
-        self.genome_sketch_dir = genome_sketch_dir
-        self.fastq_sketch_dir = fastq_sketch_dir
-        self.genome_query_dir = genome_query_dir
+        self.genome_sketch_dir = 'sylph_genome_sketches'
+        self.fastq_sketch_dir = 'sylph_fastq_sketches'
+        self.genome_query_dir = 'sylph_genome_queries'
         
         # Ensure directories exist
         for dir_path in [self.genome_sketch_dir, 
@@ -94,8 +89,9 @@ class SylphUtils:
         Sketch read files using Sylph.
         
         Args:
-            fastq_path (str): Path to FASTQ files (e.g., '*.fastq.gz')
-            is_paired_end (bool): Whether the reads are paired-end
+            fastq_se (List[str]): List of single-end fastq files
+            fastq_r1 (List[str]): List of R1 fastq files
+            fastq_r2 (List[str]): List of R2 fastq files
             threads (int): Number of CPU threads to use
         
         Returns:
@@ -168,28 +164,6 @@ class SylphUtils:
         
         return os.path.join(self.genome_query_dir, output_name)
 
-    def plot_sylph_results(self, profile_tsv: str, query_tsv: str):
-        """
-        Plot Sylph query and profile results using matplotlib.
-        
-        Args:
-            profile_tsv (str): Path to the profile TSV file
-            query_tsv (str): Path to the query TSV file
-        """
-        
-        # Read TSV file into a pandas DataFrame
-        pdf = pd.read_csv(profile_tsv,sep='\t')
-        qdf = pd.read_csv(query_tsv,sep='\t')
-
-        # Make a strain label that cuts off the contig name at 30 chars
-        qdf['Strain'] = qdf['Contig_name'].apply(lambda x: x[:30])
-        pdf['Strain'] = pdf['Contig_name'].apply(lambda x: x[:30])
-
-        qdf['Sample'] = qdf['Sample_file'].apply(lambda x: os.path.basename(x).replace('.fastq.gz','').replace(self.args['r1_suffix'],'').replace(self.args['r2_suffix'],''))
-        pdf['Sample'] = pdf['Sample_file'].apply(lambda x: os.path.basename(x).replace('.fastq.gz','').replace(self.args['r1_suffix'],'').replace(self.args['r2_suffix'],''))
-
-        # Set up a color scheme to uniquely identify each strain
-        strains = pdf['Strain'].unique()
 
 
 

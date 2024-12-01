@@ -4,4 +4,4 @@ from .references import ReferenceManager
 
 __version__ = "0.1.0"
 
-__all__ = ["main", "build_sample_dict", "ReferenceManager","SylphError","SylphUtils","HMOUtils","HMOError"]
+__all__ = ["main", "build_sample_dict", "ReferenceManager","SylphError","SylphUtils","HMOUtils","HMOError","PlotUtils","logger"]

@@ -14,7 +14,9 @@ class HMOError(Exception):
     pass
 
 class HMOUtils:
-    def __init__(self, 
+    def __init__(self,
+                 args,
+                 sample_name: str,
                  genome_fasta: str, 
                  gene_annotations_gff3: str, 
                  hmo_annotations: str,
@@ -31,6 +33,8 @@ class HMOUtils:
             gene_annotations_gff3 (str): Path to gene annotations GFF3 file
             hmo_annotations (str): Path to HMO annotations file
         """
+        self.args = args
+        self.sample_name = sample_name
         self.genome_fasta = genome_fasta
         self.gene_annotations_gff3 = gene_annotations_gff3
         self.hmo_annotations = hmo_annotations
@@ -54,7 +58,7 @@ class HMOUtils:
         else:
             valid_files.extend([self.fastq_pe1, self.fastq_pe2])
 
-        for file_path in valid_files:                            
+        for file_path in valid_files:
             if not os.path.exists(file_path):
                 raise HMOError(f"File '{file_path}' does not exist")
         
@@ -74,7 +78,7 @@ class HMOUtils:
         self.process_gene_counts(gene_counts)
 
     
-    def _run_command(self, command: typing.List[str], logfile:str = None) -> subprocess.CompletedProcess:
+    def _run_command(self, command: typing.List[str], logfile:str = None, stdout=None) -> subprocess.CompletedProcess:
         """
         Execute an HMO command with error handling.
         
@@ -93,9 +97,14 @@ class HMOUtils:
         else:
             logfile = subprocess.DEVNULL
         
+        if stdout:
+            stdout = open(stdout, 'w')
+        else:
+            stdout = logfile
+        
         try:
             logger.info(f"Running command: {' '.join(command)}")
-            subprocess.run(command, check=True, text=True, capture_output=False, shell=False, stdout=logfile, stderr=logfile)
+            subprocess.run(command, check=True, text=True, capture_output=False, shell=False, stdout=stdout, stderr=logfile)
         except subprocess.CalledProcessError as e:
             raise HMOError(f"Command '{' '.join(command)}' failed with error: {e.stderr}")
     
@@ -113,18 +122,19 @@ class HMOUtils:
         genome_index = os.path.join(self.output_dir, 'genome_index')
 
         # Construct bowtie2-build command
-        command = ['bowtie2-build', self.genome_fasta, genome_index]
-        self._run_command(command, logfile=os.path.join(self.output_dir, 'bowtie2_build.log'))
+        if not os.path.exists(genome_index+'.1.bt2'):
+            command = ['bowtie2-build', self.genome_fasta, genome_index]
+            self._run_command(command, logfile=os.path.join(self.output_dir, 'bowtie2_build.log'))
         
         # Construct bowtie2 command
         if self.fastq_se:
-            sam_file = os.path.join(self.output_dir, os.path.basename(self.fastq_se)+'.B.longum.sam')
+            sam_file = os.path.join(self.output_dir, self.sample_name+'.B.longum.sam')
             command = ['bowtie2','--no-unal', '-x', genome_index, '-U', self.fastq_se, '-S', sam_file, '-p', str(self.threads)]
         else:
-            sam_file = os.path.join(self.output_dir, os.path.basename(self.fastq_pe1)+'.B.longum.sam')
+            sam_file = os.path.join(self.output_dir, self.sample_name+'.B.longum.sam')
             command = ['bowtie2','--no-unal', '-x', genome_index, '-1', self.fastq_pe1, '-2', self.fastq_pe2, '-S', sam_file, '-p', str(self.threads)]
         
-        self._run_command(command, logfile=os.path.join(self.output_dir, 'bowtie2.log'))
+        self._run_command(command, logfile=os.path.join(self.output_dir, self.sample_name+'.bowtie2.log'))
 
         return sam_file
 
@@ -153,10 +163,10 @@ class HMOUtils:
     def run_gene_quantification(self, bam_file: str) -> str:
 
         # Construct htseq-count command
-        gene_counts_file = os.path.join(self.output_dir, 'gene_counts.txt')
-        gene_counts_log = os.path.join(self.output_dir, 'htseq_count.log')
+        gene_counts_file = os.path.join(self.output_dir, self.sample_name+'.gene_counts.txt')
+        gene_counts_log = os.path.join(self.output_dir, self.sample_name+'.htseq_count.log')
         command = ['htseq-count', '-f', 'bam', '-r', 'pos', '-s', 'no', '-t', 'CDS', '-i', 'ID', bam_file, self.gene_annotations_gff3]
-        self._run_command(command,logfile=gene_counts_log)
+        self._run_command(command,logfile=gene_counts_log,stdout=gene_counts_file)
 
         os.remove(bam_file)
         os.remove(bam_file+'.bai')
@@ -178,9 +188,9 @@ class HMOUtils:
         df = df.merge(HMOs, on='gene_id', how='left').dropna()
 
         clusters = df.groupby("Cluster")["Present"].all().reset_index()
-        clusters.to_csv(os.path.join(self.output_dir,'cluster_presence.csv'), index=False)
+        clusters.to_csv(os.path.join(self.output_dir,self.sample_name+'.cluster_presence.csv'), index=False)
 
-        logger.info('Saved cluster presence table to {}'.format(os.path.join(self.output_dir,'cluster_presence.csv')))
+        logger.info('Saved cluster presence table to {}'.format(os.path.join(self.output_dir,self.sample_name+'.cluster_presence.csv')))
 
         # Plot "Present" genes per cluster as bar plot
         fig,ax = plt.subplots(figsize=(3,2), dpi=300)
@@ -192,13 +202,14 @@ class HMOUtils:
         plt.xticks(rotation=90)
         plt.title('Percent of HMO genes detected\nin each cluster')
         plt.ylabel('Percent')
+        plt.xlabel(self.sample_name)
         for i in range(0,101,25):
             plt.axhline(i, color='black', linestyle='--', alpha=0.5, linewidth=0.5, zorder=0)
         sns.despine()
-        plt.savefig(os.path.join(self.output_dir,'HMO_percent_gene_detection.pdf'), dpi=300, bbox_inches='tight')
-        plt.savefig(os.path.join(self.output_dir,'HMO_percent_gene_detection.png'), dpi=300, bbox_inches='tight')
+        plt.savefig(os.path.join(self.output_dir,self.sample_name+'.HMO_percent_gene_detection.pdf'), dpi=300, bbox_inches='tight')
+        plt.savefig(os.path.join(self.output_dir,self.sample_name+'.HMO_percent_gene_detection.png'), dpi=300, bbox_inches='tight')
 
-        logger.info('Saved HMO gene detection plot to {}'.format(os.path.join(self.output_dir,'HMO_percent_gene_detection.pdf')))
+        logger.info('Saved HMO gene detection plot to {}'.format(os.path.join(self.output_dir,self.sample_name+'.HMO_percent_gene_detection.pdf')))
 
         return
 

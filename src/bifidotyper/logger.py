@@ -1,5 +1,9 @@
 import logging
 import sys
+import os
+
+# delete log file if it exists
+os.remove('bifidotyper.log') if os.path.exists('bifidotyper.log') else None
 
 # Configure the logger
 logging.basicConfig(

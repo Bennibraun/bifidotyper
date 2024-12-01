@@ -7,8 +7,13 @@ import os
 import subprocess
 from .sylph import SylphUtils, SylphError
 from .hmo_genes import HMOUtils, HMOError
+from .plotting import PlotUtils
 from .logger import logger
 import tqdm
+
+import warnings
+warnings.filterwarnings("ignore")
+
 
 disable_tqdm = not sys.stdout.isatty()  # Disable if output is redirected
 
@@ -94,67 +99,109 @@ $$$$$$$  |$$$$$$\ $$ |      $$$$$$\ $$$$$$$  | $$$$$$  |  $$ |       $$ |    $$ 
                                       r1_suffix=args.r1_suffix,
                                       r2_suffix=args.r2_suffix)
     
+    if args.single_end:
+        fastq_files = []
+        for sample in tqdm.tqdm(sample_dict.values(), desc="Sketching reads", unit="samples", total=len(sample_dict), disable=disable_tqdm):
+            fastq_files.append(sample['files'].values())
+    else:
+        fastq_files_r1, fastq_files_r2 = [], []
+        for sample in tqdm.tqdm(sample_dict.values(), desc="Sketching reads", unit="samples", total=len(sample_dict), disable=disable_tqdm):
+            fastq_files_r1.append(sample['files']['R1'])
+            fastq_files_r2.append(sample['files']['R2'])
+    
     # Get the reference files
     refs = get_reference_files()
-    
 
     logger.info("Processing FASTQ files with Sylph...")
     print('Processing FASTQ files with Sylph...')
 
-    # Initialize Sylph utility
-    sylph = SylphUtils(args=args)
+    run_sylph = True
+    output_files = ['sylph_genome_queries/genome_profile.tsv', 'sylph_genome_queries/genome_query.tsv']
+    # If all of these files exist, skip Sylph processing
+    if all([os.path.exists(f) for f in output_files]):
+        print("Sylph output files already exist. Skipping Sylph processing.")
+        print("To force re-run, delete the output files and re-run the script.")
+        run_sylph = False
     
-    try:
-        # Sketch genomes
-        print('Sketching genomes...')
-        genome_db = sylph.sketch_genomes(genomes=glob.glob(os.path.join(refs['genomes_dir'], '*.fna.gz')), output_name='genome_sketches', threads=args.threads)
-        
-        if args.single_end:
-            fastq_files = []
-            for sample in tqdm.tqdm(sample_dict.values(), desc="Sketching reads", unit="sample", total=len(sample_dict), disable=disable_tqdm):
-                fastq_files.append(sample['files'].values())
-            read_sketches = sylph.sketch_reads(fastq_se=fastq_files, threads=args.threads)
-        else:
-            # grab all R1 and R2 files separately, in order
-            fastq_files_r1, fastq_files_r2 = [], []
-            for sample in tqdm.tqdm(sample_dict.values(), desc="Sketching reads", unit="sample", total=len(sample_dict), disable=disable_tqdm):
-                fastq_files_r1.append(sample['files']['R1'])
-                fastq_files_r2.append(sample['files']['R2'])
-            read_sketches = sylph.sketch_reads(fastq_r1=fastq_files_r1, fastq_r2=fastq_files_r2, threads=args.threads)
-        
-        print('Querying the genome database...')
+    if run_sylph:
+        # Initialize Sylph utility
+        sylph = SylphUtils(args=args)
 
-        # Query genomes
-        query_result = sylph.query_genomes(read_sketches, genome_db)
-        # Profile genomes
-        profile_result = sylph.profile_genomes(read_sketches, genome_db)
+        try:
+            # Sketch genomes
+            print('Sketching genomes...')
+            genome_db = sylph.sketch_genomes(genomes=glob.glob(os.path.join(refs['genomes_dir'], '*.fna.gz')), output_name='genome_sketches', threads=args.threads)
+            
+            if args.single_end:
+                read_sketches = sylph.sketch_reads(fastq_se=fastq_files, threads=args.threads)
+            else:
+                read_sketches = sylph.sketch_reads(fastq_r1=fastq_files_r1, fastq_r2=fastq_files_r2, threads=args.threads)
+            
+            print('Querying the genome database...')
+
+            # Query genomes
+            query_result = sylph.query_genomes(read_sketches, genome_db)
+            # Profile genomes
+            profile_result = sylph.profile_genomes(read_sketches, genome_db)
+            
+            logger.info(f"Query result: {query_result}")
+            logger.info(f"Profile result: {profile_result}")
         
-        logger.info(f"Query result: {query_result}")
-        logger.info(f"Profile result: {profile_result}")
-    
-    except SylphError as e:
-        logger.info(f"Sylph processing error: {e}")
-        raise SylphError(f"Sylph processing error: {e}")
+        except SylphError as e:
+            logger.info(f"Sylph processing error: {e}")
+            raise SylphError(f"Sylph processing error: {e}")
 
     # Now run HMO quantification
     print('Detecting HMO genes...')
+
+    def get_sample_name(fastq):
+        return os.path.basename(fastq).replace('.fastq.gz','').replace(args.r1_suffix,'').replace(args.r2_suffix,'')
+
     if args.single_end:
-        for fastq_se in tqdm.tqdm(fastq_files, desc="Quantifying HMO genes", unit="sample", total=len(fastq_files), disable=disable_tqdm):
-            HMOUtils(genome_fasta=refs['bl_genome'],
-                           gene_annotations_gff3=refs['bl_genes'],
-                           hmo_annotations=refs['humann2_hmo'],
-                           fastq_se=fastq_se,
-                           output_dir='hmo_quantification',
-                           threads=args.threads)
+        for fastq_se in tqdm.tqdm(fastq_files, desc="Quantifying HMO genes", unit="samples", total=len(fastq_files), disable=disable_tqdm):
+            sample_name = get_sample_name(fastq_se)
+            if all(os.path.exists(f) for f in [f'hmo_quantification/{sample_name}.gene_counts.txt',f'hmo_quantification/{sample_name}.cluster_presence.csv']):
+                print(f"Skipping {sample_name} as output files already exist.")
+                continue
+            HMOUtils(args=args,
+                        sample_name=sample_name,
+                        genome_fasta=refs['bl_genome'],
+                        gene_annotations_gff3=refs['bl_genes'],
+                        hmo_annotations=refs['humann2_hmo'],
+                        fastq_se=fastq_se,
+                        output_dir='hmo_quantification',
+                        threads=args.threads)
     else:
-        for fastq_r1, fastq_r2 in tqdm.tqdm(zip(fastq_files_r1, fastq_files_r2), desc="Quantifying HMO genes", unit="sample", total=len(fastq_files_r1), disable=disable_tqdm):
-            HMOUtils(genome_fasta=refs['bl_genome'],
-                           gene_annotations_gff3=refs['bl_genes'],
-                           hmo_annotations=refs['humann2_hmo'],
-                           fastq_pe1=fastq_r1,
-                           fastq_pe2=fastq_r2,
-                           output_dir='hmo_quantification',
-                           threads=args.threads)
+        for fastq_r1, fastq_r2 in tqdm.tqdm(zip(fastq_files_r1, fastq_files_r2), desc="Quantifying HMO genes", unit="samples", total=len(fastq_files_r1), disable=disable_tqdm):
+            sample_name = get_sample_name(fastq_r1)
+            if all(os.path.exists(f) for f in [f'hmo_quantification/{sample_name}.gene_counts.txt',f'hmo_quantification/{sample_name}.cluster_presence.csv']):
+                print(f"Skipping {sample_name} as output files already exist.")
+                continue
+            HMOUtils(args=args,
+                        sample_name=sample_name,
+                        genome_fasta=refs['bl_genome'],
+                        gene_annotations_gff3=refs['bl_genes'],
+                        hmo_annotations=refs['humann2_hmo'],
+                        fastq_pe1=fastq_r1,
+                        fastq_pe2=fastq_r2,
+                        output_dir='hmo_quantification',
+                        threads=args.threads)
+    
+    # Run plotting
+    print('Plotting results...')
+    logger.info("Plotting results...")
+
+    plot_u = PlotUtils(args=args,
+                        sylph_profile='sylph_genome_queries/genome_profile.tsv',
+                        sylph_query='sylph_genome_queries/genome_query.tsv',
+                        hmo_genes='hmo_quantification/*.gene_counts.txt',
+                        output_dir='plots')
+
+    plot_u.plot_sylph_profile()
+
+    plot_u.plot_sylph_query()
+
+
     print('Done!')
 
 if __name__ == "__main__":
