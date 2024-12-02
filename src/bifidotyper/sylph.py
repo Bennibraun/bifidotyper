@@ -107,7 +107,7 @@ class SylphUtils:
             raise SylphError("Either fastq_se or fastq_r1 and fastq_r2 must be provided")
         
         self._run_command(command)
-
+        
         # Move all output files into the fastq sketch directory
         for sylsp in glob.glob('*.sylsp'):
             os.rename(sylsp, os.path.join(self.fastq_sketch_dir, sylsp))
@@ -195,3 +195,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

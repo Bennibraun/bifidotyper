@@ -27,6 +27,8 @@ def parse_args():
     suffix_group = parser.add_argument_group('paired-end options')
     suffix_group.add_argument('--r1-suffix', help="Suffix for R1 files (only for paired-end mode)")
     suffix_group.add_argument('--r2-suffix', help="Suffix for R2 files (only for paired-end mode)")
+
+    parser.add_argument('-l', '--read-length', type=int, default=None, help="Read length for accurate plotting (only affects some plots).")
     
     parser.add_argument('-t', '--threads', type=int, default=1, help="Number of threads to use for parallel processing.")
     
