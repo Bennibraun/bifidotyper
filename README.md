@@ -4,13 +4,6 @@ Bifidotyper is a bioinformatics tool designed to take you from raw FastQ files t
 
 Bifidotyper was developed as part of a PhD rotation in the [Olm Lab](https://www.colorado.edu/lab/olm/).
 
-## Features
-
-- Sketch genomes and reads using Sylph.
-- Query and profile genomes.
-- Detect HMO genes in sequencing data.
-- Generate informative plots for taxonomic abundance and containment indices.
-
 ## Installation
 
 Clone the repository and install the package:
