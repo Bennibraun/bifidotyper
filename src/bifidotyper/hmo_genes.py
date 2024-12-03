@@ -17,8 +17,7 @@ class HMOUtils:
     def __init__(self,
                  args,
                  sample_name: str,
-                 genome_fasta: str, 
-                 gene_annotations_gff3: str, 
+                 genes_fasta: str, 
                  hmo_annotations: str,
                  fastq_se: str = None,
                  fastq_pe1: str = None,
@@ -35,8 +34,7 @@ class HMOUtils:
         """
         self.args = args
         self.sample_name = sample_name
-        self.genome_fasta = genome_fasta
-        self.gene_annotations_gff3 = gene_annotations_gff3
+        self.genes_fasta = genes_fasta
         self.hmo_annotations = hmo_annotations
         self.fastq_se = fastq_se
         self.fastq_pe1 = fastq_pe1
@@ -52,7 +50,7 @@ class HMOUtils:
 
         
         # Ensure all the files exist
-        valid_files = [self.genome_fasta, self.gene_annotations_gff3, self.hmo_annotations]
+        valid_files = [self.genes_fasta, self.hmo_annotations]
         if self.fastq_se:
             valid_files.append(self.fastq_se)
         else:
@@ -65,17 +63,11 @@ class HMOUtils:
         # Ensure output directory exists
         os.makedirs(self.output_dir, exist_ok=True)
 
-        # Run bowtie2
-        sam_file = self.run_bowtie2()
-
-        # Run samtools postprocessing
-        bam_file = self.run_samtools_postprocessing(sam_file)
-
-        # Run gene quantification
-        gene_counts = self.run_gene_quantification(bam_file)
+        # Run Salmon
+        self.run_salmon()
 
         # Process gene counts
-        self.process_gene_counts(gene_counts)
+        self.process_gene_counts()
 
     
     def _run_command(self, command: typing.List[str], logfile:str = None, stdout=None) -> subprocess.CompletedProcess:
@@ -108,95 +100,45 @@ class HMOUtils:
         except subprocess.CalledProcessError as e:
             raise HMOError(f"Command '{' '.join(command)}' failed with error: {e.stderr}")
     
-    def run_bowtie2(self) -> str:
-        """
-        Run Bowtie2 to align reads to the genome.
-
-        Returns:
-            str: Path to the generated SAM file
-
-        Raises:
-            HMOError: If the command fails
-        """
-
-        genome_index = os.path.join(self.output_dir, 'genome_index')
-
-        # Construct bowtie2-build command
-        if not os.path.exists(genome_index+'.1.bt2'):
-            command = ['bowtie2-build', self.genome_fasta, genome_index]
-            self._run_command(command, logfile=os.path.join(self.output_dir, 'bowtie2_build.log'))
+    def run_salmon(self):
         
-        # Construct bowtie2 command
+        if not os.path.exists(os.path.join(self.output_dir, 'B_longum_salmon_index')):
+            index_cmd = ['salmon', 'index', '-t', self.genes_fasta, '-i', os.path.join(self.output_dir, 'B_longum_salmon_index')]
+            self._run_command(index_cmd, logfile=os.path.join(self.output_dir, 'salmon_index.log'))
+
         if self.fastq_se:
-            sam_file = os.path.join(self.output_dir, self.sample_name+'.B.longum.sam')
-            command = ['bowtie2','--no-unal', '-x', genome_index, '-U', self.fastq_se, '-S', sam_file, '-p', str(self.threads)]
+            quant_cmd = ['salmon', 'quant', '-i', os.path.join(self.output_dir, 'B_longum_salmon_index'), '-l', 'A', '-r', self.fastq_se, '-p', str(self.threads), '--validateMappings', '-o', os.path.join(self.output_dir, self.sample_name+'_salmon')]
         else:
-            sam_file = os.path.join(self.output_dir, self.sample_name+'.B.longum.sam')
-            command = ['bowtie2','--no-unal', '-x', genome_index, '-1', self.fastq_pe1, '-2', self.fastq_pe2, '-S', sam_file, '-p', str(self.threads)]
+            quant_cmd = ['salmon', 'quant', '-i', os.path.join(self.output_dir, 'B_longum_salmon_index'), '-l', 'A', '-1', self.fastq_pe1, '-2', self.fastq_pe2, '-p', str(self.threads), '--validateMappings', '-o', os.path.join(self.output_dir, self.sample_name+'_salmon')]
+        self._run_command(quant_cmd, logfile=os.path.join(self.output_dir, self.sample_name+'_salmon.log'))
+
+
+    def process_gene_counts(self):
         
-        self._run_command(command, logfile=os.path.join(self.output_dir, self.sample_name+'.bowtie2.log'))
+        salmon_counts = pd.read_csv(os.path.join(self.output_dir, self.sample_name+'_salmon','quant.sf'), sep='\t')
 
-        return sam_file
+        hmo = pd.read_csv(self.hmo_annotations,sep=';')[['Blon','Cluster']]
+        hmo = hmo.rename(columns={'Blon':'Name'})
+        # Some cells have multiple "Blon" ids, we need to split them into separate rows
+        hmo = hmo.assign(Name=hmo.Name.str.split(' ')).explode('Name')
+        # Now remove any row that doesn't match the format "Blon_XXXX"
+        hmo = hmo[hmo['Name'].str.match(r'Blon_\d+')]
 
-    def run_samtools_postprocessing(self, sam_file: str) -> str:
+        salmon_counts = pd.merge(salmon_counts,hmo,left_on='Name',right_on='Name',how='left')
+        salmon_counts.dropna(inplace=True)
+        salmon_counts['Present'] = salmon_counts['NumReads'] > 0
+        salmon_counts.to_csv(os.path.join(self.output_dir,self.sample_name+'.salmon_counts_annotated.csv'), index=False, sep='\t')
+        logger.info('Saved annotated salmon counts to {}'.format(os.path.join(self.output_dir,self.sample_name+'.salmon_counts_annotated.tsv')))
 
-        # Construct samtools view command
-        bam_file = sam_file.replace('.sam', '.bam')
-        command = ['samtools', 'view', '-bS', sam_file, '-o', bam_file, '-@', str(self.threads)]
-        self._run_command(command)
-
-        os.remove(sam_file)
-
-        # Construct samtools sort command
-        sorted_bam_file = bam_file.replace('.bam', '.sorted.bam')
-        command = ['samtools', 'sort', bam_file, '-o', sorted_bam_file, '-@', str(self.threads)]
-        self._run_command(command)
-
-        os.remove(bam_file)
-
-        # Construct samtools index command
-        command = ['samtools', 'index', sorted_bam_file, '-@', str(self.threads)]
-        self._run_command(command)
-
-        return sorted_bam_file
-
-    def run_gene_quantification(self, bam_file: str) -> str:
-
-        # Construct htseq-count command
-        gene_counts_file = os.path.join(self.output_dir, self.sample_name+'.gene_counts.txt')
-        gene_counts_log = os.path.join(self.output_dir, self.sample_name+'.htseq_count.log')
-        command = ['htseq-count', '-f', 'bam', '-r', 'pos', '-s', 'no', '-t', 'CDS', '-i', 'ID', bam_file, self.gene_annotations_gff3]
-        self._run_command(command,logfile=gene_counts_log,stdout=gene_counts_file)
-
-        os.remove(bam_file)
-        os.remove(bam_file+'.bai')
-
-        return gene_counts_file
-
-    def process_gene_counts(self, gene_counts_file: str):
-        
-        df = pd.read_csv(gene_counts_file, header=None, names=['gene','count'], sep='\t')
-        # drop last 5 rows which are metadata
-        df = df[:-5]
-
-        df['Present'] = np.where(df['count'] > 0, True,False)
-        df['gene_id'] = df['gene'].str.replace('cds-', '')
-
-        HMOs = pd.read_csv(self.hmo_annotations,sep=';')
-        HMOs['gene_id'] = HMOs['HMOgenes'].str.split('_cds_').str[1].str.split('_').str[0]
-
-        df = df.merge(HMOs, on='gene_id', how='left').dropna()
-
-        clusters = df.groupby("Cluster")["Present"].all().reset_index()
-        clusters.to_csv(os.path.join(self.output_dir,self.sample_name+'.cluster_presence.csv'), index=False)
-
-        logger.info('Saved cluster presence table to {}'.format(os.path.join(self.output_dir,self.sample_name+'.cluster_presence.csv')))
+        clusters = salmon_counts.groupby('Cluster')['Present'].all().reset_index()
+        clusters.to_csv(os.path.join(self.output_dir,self.sample_name+'.cluster_presence.csv'), index=False, sep='\t')
+        logger.info('Saved cluster presence table to {}'.format(os.path.join(self.output_dir,self.sample_name+'.cluster_presence.tsv')))
 
         # Plot "Present" genes per cluster as bar plot
         fig,ax = plt.subplots(figsize=(3,2), dpi=300)
-        clust_ct = df.groupby('Cluster').sum()['Present'].reset_index()
+        clust_ct = salmon_counts.groupby('Cluster').sum()['Present'].reset_index()
         # Get total genes in each cluster
-        clust_ct['Total'] = df.groupby('Cluster').count()['gene'].values
+        clust_ct['Total'] = salmon_counts.groupby('Cluster').count()['Name'].values
         clust_ct['Percent'] = clust_ct['Present'] / clust_ct['Total'] * 100
         sns.barplot(x='Cluster', y='Percent', data=clust_ct, ax=ax)
         plt.xticks(rotation=90)
@@ -208,7 +150,6 @@ class HMOUtils:
         sns.despine()
         plt.savefig(os.path.join(self.output_dir,self.sample_name+'.HMO_percent_gene_detection.pdf'), dpi=300, bbox_inches='tight')
         plt.savefig(os.path.join(self.output_dir,self.sample_name+'.HMO_percent_gene_detection.png'), dpi=300, bbox_inches='tight')
-
         logger.info('Saved HMO gene detection plot to {}'.format(os.path.join(self.output_dir,self.sample_name+'.HMO_percent_gene_detection.pdf')))
 
         return

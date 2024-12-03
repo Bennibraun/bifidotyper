@@ -20,8 +20,7 @@ class ReferenceManager:
         self._reference_files = {
             'humann2_hmo': self.reference_dir / 'humann2_HMO_annotation.csv',
             'bl_genome': self.reference_dir / 'CP001095.1_genome.fasta',
-            'bl_coding_seqs': self.reference_dir / 'CP001095.1_coding_seqs.gb',
-            'bl_genes': self.reference_dir / 'CP001095.1_genes.gff3',
+            'bl_genes': self.reference_dir / 'CP001095.1_gene_sequences.fasta',
             'genomes_dir': self.reference_dir / 'genomes_ncbi_gtdb_drep95',
         }
         

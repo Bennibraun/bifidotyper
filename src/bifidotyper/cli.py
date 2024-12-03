@@ -162,13 +162,12 @@ $$$$$$$  |$$$$$$\ $$ |      $$$$$$\ $$$$$$$  | $$$$$$  |  $$ |       $$ |    $$ 
     if args.single_end:
         for fastq_se in tqdm.tqdm(fastq_files, desc="Quantifying HMO genes", unit="samples", total=len(fastq_files), disable=disable_tqdm):
             sample_name = get_sample_name(fastq_se)
-            if all(os.path.exists(f) for f in [f'hmo_quantification/{sample_name}.gene_counts.txt',f'hmo_quantification/{sample_name}.cluster_presence.csv']):
+            if all(os.path.exists(f) for f in [f'hmo_quantification/{sample_name}.salmon_counts_annotated.tsv',f'hmo_quantification/{sample_name}.cluster_presence.tsv']):
                 print(f"Skipping {sample_name} as output files already exist.")
                 continue
             HMOUtils(args=args,
                         sample_name=sample_name,
-                        genome_fasta=refs['bl_genome'],
-                        gene_annotations_gff3=refs['bl_genes'],
+                        genes_fasta=refs['bl_genes'],
                         hmo_annotations=refs['humann2_hmo'],
                         fastq_se=fastq_se,
                         output_dir='hmo_quantification',
@@ -176,13 +175,12 @@ $$$$$$$  |$$$$$$\ $$ |      $$$$$$\ $$$$$$$  | $$$$$$  |  $$ |       $$ |    $$ 
     else:
         for fastq_r1, fastq_r2 in tqdm.tqdm(zip(fastq_files_r1, fastq_files_r2), desc="Quantifying HMO genes", unit="samples", total=len(fastq_files_r1), disable=disable_tqdm):
             sample_name = get_sample_name(fastq_r1)
-            if all(os.path.exists(f) for f in [f'hmo_quantification/{sample_name}.gene_counts.txt',f'hmo_quantification/{sample_name}.cluster_presence.csv']):
+            if all(os.path.exists(f) for f in [f'hmo_quantification/{sample_name}.salmon_counts_annotated.tsv',f'hmo_quantification/{sample_name}.cluster_presence.tsv']):
                 print(f"Skipping {sample_name} as output files already exist.")
                 continue
             HMOUtils(args=args,
                         sample_name=sample_name,
-                        genome_fasta=refs['bl_genome'],
-                        gene_annotations_gff3=refs['bl_genes'],
+                        genes_fasta=refs['bl_genes'],
                         hmo_annotations=refs['humann2_hmo'],
                         fastq_pe1=fastq_r1,
                         fastq_pe2=fastq_r2,

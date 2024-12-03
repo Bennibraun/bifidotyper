@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Extract the genes from the gff3 annotation file
+# Input fasta and gff3 were retrieved from NCBI
+
+# Convert the gff3 genes to bed
 awk 'BEGIN {OFS="\t"} $3 == "gene" { 
     split($9, attr, ";");
     for (i in attr) {
@@ -11,6 +13,6 @@ awk 'BEGIN {OFS="\t"} $3 == "gene" {
     print $1, $4-1, $5, name, ".", $7;
 }' CP001095.1_genes.gff3 > CP001095.1_genes.bed
 
-# Input fasta and gff3 were retrieved from NCBI
+# Extract the gene sequences from the fasta file
 bedtools getfasta -fi CP001095.1_genome.fasta -bed CP001095.1_genes.bed -fo CP001095.1_gene_sequences.fasta -nameOnly
 
