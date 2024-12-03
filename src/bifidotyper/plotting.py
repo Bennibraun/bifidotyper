@@ -120,7 +120,7 @@ class PlotUtils:
 
         ### Taxonomic Abundance ###
 
-        fig,ax = plt.subplots(figsize=(10,4),dpi=300)
+        fig,ax = plt.subplots(figsize=(10+pdf['Sample'].nunique()*0.2,6),dpi=300)
         strains = pdf['Strain'].unique()
         strain_colors = dict(zip(strains,sns.color_palette('tab20',len(strains)).as_hex()))
 
@@ -138,8 +138,8 @@ class PlotUtils:
         plt.title('Relative abundance of strains in each sample')
         plt.tight_layout()
         sns.despine()
-        plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_barplot.pdf'), dpi=300, bbox_inches='tight')
-        plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_barplot.png'), dpi=300, bbox_inches='tight')
+        plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_profile_barplot.pdf'), dpi=300, bbox_inches='tight')
+        plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_profile_barplot.png'), dpi=300, bbox_inches='tight')
 
         # Standardize colors - set similar genomes to similar colors, make lookup table with nice names
         
@@ -239,24 +239,6 @@ class PlotUtils:
         plt.savefig(os.path.join(self.output_dir,f'relative_abundance_of_reads_per_genome_barplot.pdf'), dpi=300, bbox_inches='tight')
         plt.savefig(os.path.join(self.output_dir,f'relative_abundance_of_reads_per_genome_barplot.png'), dpi=300, bbox_inches='tight')
 
-        # 3. Taxonomic Abundance out of 100%
-        fig,ax = plt.subplots(figsize=(10,4),dpi=300)
-
-        rel_pdf.pivot(index='Sample', columns='Strain', values='Taxonomic_abundance').plot(
-            kind='bar',
-            stacked=True,
-            ax=ax,
-            color=[strain_colors[strain] for strain in rel_pdf['Strain'].unique()],
-        )
-
-        ax.legend(loc='center left', bbox_to_anchor=(1, 0), frameon=False)
-        plt.ylabel('Relative Abundance (%)')
-        plt.xticks(rotation=45, ha='right')
-        plt.title('Relative abundance of strains in each sample')
-        plt.tight_layout()
-        sns.despine()
-        plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_barplot.pdf'), dpi=300, bbox_inches='tight')
-        plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_barplot.png'), dpi=300, bbox_inches='tight')
 
         rel_pdf.to_csv('/home/bebr1814/playground/plots/debug.tsv',sep='\t')
 
