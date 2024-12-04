@@ -141,8 +141,6 @@ class PlotUtils:
         plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_profile_barplot.pdf'), dpi=300, bbox_inches='tight')
         plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_profile_barplot.png'), dpi=300, bbox_inches='tight')
 
-        # Standardize colors - set similar genomes to similar colors, make lookup table with nice names
-        
         ### Taxonomic Abundance Relative to Seq Depth ###
 
         fig,ax = plt.subplots(figsize=(10,4),dpi=300)

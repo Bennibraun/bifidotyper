@@ -30,6 +30,10 @@ def parse_args():
 
     parser.add_argument('-l', '--read-length', type=int, default=None, help="Read length for accurate plotting (only affects some plots).")
     
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-g', '--genome-dir', type=str, default=None, help="(Optional) Directory containing genomes to use in place of the provided Bifidobacterial genomes. Please provide genomes as .fna or .fna.gz files.")
+    group.add_argument('-s', '--genome-sketch', type=str, default=None, help="(Optional) Path to a pre-sketched genome database (.syldb) to use in place of the provided Bifidobacterial genomes. You can use `sylph sketch` to generate this.")
+
     parser.add_argument('-t', '--threads', type=int, default=1, help="Number of threads to use for parallel processing.")
     
     args = parser.parse_args()
@@ -131,8 +135,19 @@ $$$$$$$  |$$$$$$\ $$ |      $$$$$$\ $$$$$$$  | $$$$$$  |  $$ |       $$ |    $$ 
 
         try:
             # Sketch genomes
-            print('Sketching genomes...')
-            genome_db = sylph.sketch_genomes(genomes=glob.glob(os.path.join(refs['genomes_dir'], '*.fna.gz')), output_name='genome_sketches', threads=args.threads)
+            if args.genome_dir:
+                print('Sketching genomes...')
+                genomes = glob.glob(os.path.join(args.genome_dir, '*.fna.gz'))
+                if len(genomes) == 0:
+                    genomes = glob.glob(os.path.join(args.genome_dir, '*.fna'))
+                    if len(genomes) == 0:
+                        raise FileNotFoundError(f"No genome files found in {args.genome_dir}")
+                genome_db = sylph.sketch_genomes(genomes=genomes, output_name='genome_sketches', threads=args.threads)
+            elif args.genome_sketch:
+                genome_db = args.genome_sketch
+                assert os.path.exists(genome_db), f"Genome sketch file {genome_db} not found."
+            else:
+                genome_db = refs['bifidobacteria_sketches']
             
             if args.single_end:
                 read_sketches = sylph.sketch_reads(fastq_se=fastq_files, threads=args.threads)

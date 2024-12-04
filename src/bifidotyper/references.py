@@ -21,7 +21,7 @@ class ReferenceManager:
             'humann2_hmo': self.reference_dir / 'humann2_HMO_annotation.csv',
             'bl_genome': self.reference_dir / 'CP001095.1_genome.fasta',
             'bl_genes': self.reference_dir / 'CP001095.1_gene_sequences.fasta',
-            'genomes_dir': self.reference_dir / 'genomes_ncbi_gtdb_drep95',
+            'bifidobacteria_sketches': self.reference_dir / 'bifidobacteria_sketches.syldb',
         }
         
         # Validate all reference files exist
