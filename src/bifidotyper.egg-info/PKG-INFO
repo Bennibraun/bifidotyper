@@ -5,3 +5,4 @@ Requires-Dist: numpy
 Requires-Dist: pandas
 Requires-Dist: seaborn
 Requires-Dist: matplotlib
+Requires-Dist: tqdm

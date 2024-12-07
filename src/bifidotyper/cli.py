@@ -84,7 +84,7 @@ $$$$$$$  |$$$$$$\ $$ |      $$$$$$\ $$$$$$$  | $$$$$$  |  $$ |       $$ |    $$ 
     print('Loading software and reference data...')
 
     # Check for external software
-    software = ['bowtie2','sylph','samtools','htseq-count']
+    software = ['salmon','sylph']
     for s in software:
         try:
             subprocess.run([s, '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -210,6 +210,7 @@ $$$$$$$  |$$$$$$\ $$ |      $$$$$$\ $$$$$$$  | $$$$$$  |  $$ |       $$ |    $$ 
                         sylph_profile='sylph_genome_queries/genome_profile.tsv',
                         sylph_query='sylph_genome_queries/genome_query.tsv',
                         hmo_genes='hmo_quantification/*.gene_counts.txt',
+                        genome_colors_df=refs['genome_colors_df'],
                         output_dir='plots')
 
     plot_u.plot_sylph_profile()

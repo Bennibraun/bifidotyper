@@ -127,11 +127,11 @@ class HMOUtils:
         salmon_counts = pd.merge(salmon_counts,hmo,left_on='Name',right_on='Name',how='left')
         salmon_counts.dropna(inplace=True)
         salmon_counts['Present'] = salmon_counts['NumReads'] > 0
-        salmon_counts.to_csv(os.path.join(self.output_dir,self.sample_name+'.salmon_counts_annotated.csv'), index=False, sep='\t')
+        salmon_counts.to_csv(os.path.join(self.output_dir,self.sample_name+'.salmon_counts_annotated.tsv'), index=False, sep='\t')
         logger.info('Saved annotated salmon counts to {}'.format(os.path.join(self.output_dir,self.sample_name+'.salmon_counts_annotated.tsv')))
 
         clusters = salmon_counts.groupby('Cluster')['Present'].all().reset_index()
-        clusters.to_csv(os.path.join(self.output_dir,self.sample_name+'.cluster_presence.csv'), index=False, sep='\t')
+        clusters.to_csv(os.path.join(self.output_dir,self.sample_name+'.cluster_presence.tsv'), index=False, sep='\t')
         logger.info('Saved cluster presence table to {}'.format(os.path.join(self.output_dir,self.sample_name+'.cluster_presence.tsv')))
 
         # Plot "Present" genes per cluster as bar plot

@@ -1,8 +1,11 @@
 MANIFEST.in
+README.md
 setup.py
 src/bifidotyper/__init__.py
 src/bifidotyper/cli.py
 src/bifidotyper/hmo_genes.py
+src/bifidotyper/logger.py
+src/bifidotyper/plotting.py
 src/bifidotyper/processor.py
 src/bifidotyper/references.py
 src/bifidotyper/sylph.py

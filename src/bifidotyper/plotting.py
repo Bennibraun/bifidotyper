@@ -7,10 +7,9 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import gzip
-import sys
 
 class PlotUtils:
-    def __init__(self,args,sylph_profile:str,sylph_query:str,hmo_genes:str,output_dir:str='plots'):
+    def __init__(self,args,sylph_profile:str,sylph_query:str,hmo_genes:str,genome_colors_df:str,output_dir:str='plots'):
         """
         Initialize Plotting utility with configurable directory paths.
         
@@ -24,8 +23,9 @@ class PlotUtils:
         self.sylph_profile = sylph_profile
         self.sylph_query = sylph_query
         self.hmo_genes = glob.glob(hmo_genes)
-        self.read_counts = self.retrieve_bowtie2_read_counts()
+        self.genome_colors_df = pd.read_csv(genome_colors_df)
         self.output_dir = output_dir
+
 
         os.makedirs(self.output_dir,exist_ok=True)
         
@@ -34,28 +34,6 @@ class PlotUtils:
                             self.sylph_query]:
                 if not os.path.exists(file_path):
                     raise FileNotFoundError(f"File not found: {file_path}") 
-    
-    def retrieve_bowtie2_read_counts(self):
-        # Results should be at hmo_quantification/*.bowtie2.log
-        bowtie2_logs = glob.glob('hmo_quantification/*.bowtie2.log')
-        if len(bowtie2_logs) == 0:
-            raise FileNotFoundError("Bowtie2 log files not found")
-        read_counts = pd.DataFrame(columns=['Sample','Total_Reads','Aligned_Reads'])
-        for bowtie2_log in bowtie2_logs:
-            sample_name = os.path.basename(bowtie2_log).replace('.bowtie2.log','')
-            with open(bowtie2_log) as f:
-                for line in f:
-                    if 'reads; of these' in line:
-                        total_reads = int(line.split(' ')[0])
-                    elif 'overall alignment rate' in line:
-                        aligned_reads = int(float(line.split(' ')[0].replace('%',''))/100 * total_reads)
-            if self.args.paired_end:
-                # Bowtie2 reports for pairs, not reads, so double
-                total_reads *= 2
-                aligned_reads *= 2
-            read_counts.loc[len(read_counts)] = [sample_name,total_reads,aligned_reads]
-        
-        return read_counts
 
     def plot_sylph_profile(self):
         """
@@ -64,10 +42,13 @@ class PlotUtils:
         
         pdf = pd.read_csv(self.sylph_profile,sep='\t')
 
-        pdf['Strain'] = pdf['Contig_name'].apply(lambda x: x[:40]+'...' if len(x) > 40 else x)
         pdf['Sample'] = pdf['Sample_file'].apply(lambda x: os.path.basename(x).replace('.fastq.gz','').replace(self.args.r1_suffix,'').replace(self.args.r2_suffix,''))
+        pdf = pdf.merge(self.genome_colors_df,how='left',on='Genome_file').drop_duplicates()
+        pdf['Strain'] = pdf['Label']
         strains = pdf['Strain'].unique()
-        strain_colors_dict = {strain: color for strain, color in zip(strains, plt.cm.hsv([i / len(strains) for i in range(len(strains))]))}
+        # 'Color' contains a unique hex code for each strain, grouped by ANI clustering
+        pdf.to_csv('/home/bebr1814/playground/plotting_df.csv')
+
 
         ### Taxonomic Abundance Heatmap ###
         heatmap_data = pdf.pivot_table(
@@ -118,18 +99,18 @@ class PlotUtils:
         plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_heatmap.pdf'), dpi=300, bbox_inches='tight')
         plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_heatmap.png'), dpi=300, bbox_inches='tight')
 
+
         ### Taxonomic Abundance ###
 
         fig,ax = plt.subplots(figsize=(10+pdf['Sample'].nunique()*0.2,6),dpi=300)
         strains = pdf['Strain'].unique()
-        strain_colors = dict(zip(strains,sns.color_palette('tab20',len(strains)).as_hex()))
 
         # Plot with the correct color palette
         pdf.pivot(index='Sample', columns='Strain', values='Taxonomic_abundance').plot(
             kind='bar',
             stacked=True,
             ax=ax,
-            color=[strain_colors[strain] for strain in pdf['Strain'].unique()],
+            color=[pdf[pdf['Strain'] == strain]['Color'].values[0] for strain in strains],
         )
 
         ax.legend(loc='center left', bbox_to_anchor=(1, 0), frameon=False)
@@ -141,105 +122,7 @@ class PlotUtils:
         plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_profile_barplot.pdf'), dpi=300, bbox_inches='tight')
         plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_profile_barplot.png'), dpi=300, bbox_inches='tight')
 
-        ### Taxonomic Abundance Relative to Seq Depth ###
-
-        fig,ax = plt.subplots(figsize=(10,4),dpi=300)
-        strains = pdf['Strain'].unique()
-        strain_colors = dict(zip(strains,sns.color_palette('tab20',len(strains)).as_hex()))
-        rel_pdf = pdf.merge(self.read_counts,on='Sample')
         
-        # Refactor normalization
-        # Use effective coverage from sylph and genome size for each genome to calculate reads mapped to genome (eff_cov * genome_length)
-        # Divide by read size (default 150? user input) to get number of reads mapped to each genome
-        # Then normalize taxonomic abundance to that
-
-        def get_read_lengths(fastq_gz):
-            # open a gzipped fastq file and read the first 200 lines, checking the length of each read.
-            lengths = []
-            with gzip.open(fastq_gz, 'rt') as f:
-                for i in range(1,200*4):
-                    line = f.readline()
-                    if (i-1) % 4 == 1:
-                        lengths.append(len(line.strip()))
-            # return the most common read length
-            return max(set(lengths), key=lengths.count)
-        
-        if self.args.read_length is None:
-            rel_pdf['Read_length'] = rel_pdf['Sample_file'].apply(get_read_lengths)
-        else:
-            rel_pdf['Read_length'] = self.args.read_length
-        
-        def get_genome_size(fna_gz):
-            total_size = 0
-            with gzip.open(fna_gz, 'rt') as f:
-                for line in f.readlines():
-                    if line.startswith('>'):
-                        continue
-                    total_size += len(line.strip())
-            return total_size
-    
-        genome_sizes = {}
-        for fna_gz in rel_pdf['Genome_file'].unique():
-            genome_sizes[fna_gz] = get_genome_size(fna_gz)
-        
-        rel_pdf['Genome_size'] = rel_pdf['Genome_file'].apply(lambda x: genome_sizes[x])
-
-        # rel_pdf['Taxonomic_abundance_norm'] = rel_pdf['Taxonomic_abundance'] * (rel_pdf['Aligned_Reads'] / rel_pdf['Total_Reads'])
-        rel_pdf['n_reads_mapped'] = rel_pdf['Eff_cov'] * rel_pdf['Genome_size'] / rel_pdf['Read_length']
-        
-        rel_pdf['n_reads_mapped_out_of_all_reads'] = rel_pdf['n_reads_mapped'] / rel_pdf['Total_Reads']
-
-        # 1. # reads mapped to each genome
-        for sample in rel_pdf['Sample'].unique():
-            plot_df = rel_pdf[rel_pdf['Sample'] == sample]
-            sorted_data = plot_df.sort_values('n_reads_mapped', ascending=False)
-            fig, ax = plt.subplots(figsize=(4,sorted_data.shape[0]*0.5), dpi=300)
-            sns.barplot(data=sorted_data, y='Strain', x='n_reads_mapped', hue='Strain', ax=ax, palette=strain_colors)
-
-            ax.legend(loc='center left', bbox_to_anchor=(1, 0), frameon=False)
-            plt.xlabel('# of Reads Mapped')
-            # plt.xticks(rotation=45, ha='right')
-            plt.title(f'{sample}\nNumber of reads mapped to each strain')
-            plt.tight_layout()
-            sns.despine()
-
-            plt.savefig(os.path.join(self.output_dir, f'{sample}_number_of_reads_per_genome_barplot.pdf'), dpi=300, bbox_inches='tight')
-            plt.savefig(os.path.join(self.output_dir, f'{sample}_number_of_reads_per_genome_barplot.png'), dpi=300, bbox_inches='tight')
-
-        # Combined version
-        fig,ax = plt.subplots(figsize=(10,4),dpi=300)
-        sns.barplot(data=rel_pdf, x='Sample', y='n_reads_mapped', hue='Strain', ax=ax, palette=strain_colors)
-
-        ax.legend(loc='center left', bbox_to_anchor=(1, 0), frameon=False)
-        plt.ylabel('# of Reads Mapped')
-        plt.xticks(rotation=45, ha='right')
-        plt.title('Number of reads mapped to each strain')
-        plt.tight_layout()
-        sns.despine()
-        plt.savefig(os.path.join(self.output_dir,f'number_of_reads_per_genome_combined_barplot.pdf'), dpi=300, bbox_inches='tight')
-        plt.savefig(os.path.join(self.output_dir,f'number_of_reads_per_genome_combined_barplot.png'), dpi=300, bbox_inches='tight')
-
-        # 2. # reads mapped to each genome normalized to total reads in sample
-        fig,ax = plt.subplots(figsize=(10,4),dpi=300)
-        rel_pdf.pivot(index='Sample', columns='Strain', values='n_reads_mapped_out_of_all_reads').plot(
-            kind='bar',
-            stacked=True,
-            ax=ax,
-            color=[strain_colors[strain] for strain in rel_pdf['Strain'].unique()],
-        )
-
-        ax.legend(loc='center left', bbox_to_anchor=(1, 0), frameon=False)
-        plt.ylabel('Relative Abundance of Reads Mapped to Genome')
-        plt.xticks(rotation=45, ha='right')
-        plt.title('Relative abundance of reads mapped to each genome')
-        plt.tight_layout()
-        sns.despine()
-        plt.savefig(os.path.join(self.output_dir,f'relative_abundance_of_reads_per_genome_barplot.pdf'), dpi=300, bbox_inches='tight')
-        plt.savefig(os.path.join(self.output_dir,f'relative_abundance_of_reads_per_genome_barplot.png'), dpi=300, bbox_inches='tight')
-
-
-        rel_pdf.to_csv('/home/bebr1814/playground/plots/debug.tsv',sep='\t')
-
 
     def plot_sylph_query(self):
 
