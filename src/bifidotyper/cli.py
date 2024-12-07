@@ -209,13 +209,16 @@ $$$$$$$  |$$$$$$\ $$ |      $$$$$$\ $$$$$$$  | $$$$$$  |  $$ |       $$ |    $$ 
     plot_u = PlotUtils(args=args,
                         sylph_profile='sylph_genome_queries/genome_profile.tsv',
                         sylph_query='sylph_genome_queries/genome_query.tsv',
-                        hmo_genes='hmo_quantification/*.gene_counts.txt',
+                        hmo_genes='hmo_quantification/*.salmon_counts_annotated.tsv',
                         genome_colors_df=refs['genome_colors_df'],
                         output_dir='plots')
+    
+    plot_u.plot_hmo_genes()
 
     plot_u.plot_sylph_profile()
 
     plot_u.plot_sylph_query()
+
 
 
     print('Done!')

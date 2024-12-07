@@ -1,12 +1,17 @@
 import os
 import glob
-from pathlib import Path
 from .logger import logger
 import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+from matplotlib.path import Path
+from matplotlib.patches import PathPatch
+from matplotlib.colors import ListedColormap, Normalize
+from matplotlib.gridspec import GridSpec
 import gzip
+import natsort
+import palettable
 
 class PlotUtils:
     def __init__(self,args,sylph_profile:str,sylph_query:str,hmo_genes:str,genome_colors_df:str,output_dir:str='plots'):
@@ -49,7 +54,6 @@ class PlotUtils:
         # 'Color' contains a unique hex code for each strain, grouped by ANI clustering
         pdf.to_csv('/home/bebr1814/playground/plotting_df.csv')
 
-
         ### Taxonomic Abundance Heatmap ###
         heatmap_data = pdf.pivot_table(
             index='Sample', 
@@ -57,44 +61,54 @@ class PlotUtils:
             values='Taxonomic_abundance', 
             aggfunc='first'
         )
-        
+
+        # Remove columns where the highest value is lower than 5
+        heatmap_data = heatmap_data.loc[:, heatmap_data.max() >= 5]
+
         # Determine optimal figure size based on data dimensions
         num_rows, num_cols = heatmap_data.shape
         base_size = 0.7  # Size per cell
-        fig_width = max(8, num_cols * base_size)
-        fig_height = max(6, num_rows * base_size)
+        fig_height = 6 + num_rows * 0.2
+        fig_width = 4 + num_cols * 0.5
+
+        fig,ax = plt.subplots(figsize=(fig_width,fig_height),dpi=300)
+
+        # Order the columns from highest to lowest total abundance
+        heatmap_data = heatmap_data[heatmap_data.sum().sort_values(ascending=False).index]
         
-        plt.figure(figsize=(fig_width, fig_height))
-        
+        # Sort by sample
+        heatmap_data = heatmap_data.reindex(natsort.natsorted(heatmap_data.index.tolist()))
+
         # Create heatmap with masked values
         mask = heatmap_data.isna()
-        
+
         # Custom color palette with ascending purple
         cmap = sns.color_palette('Purples', as_cmap=True)
-        
+
         # Generate heatmap
         sns.heatmap(
             heatmap_data, 
             annot=True,  # Show values
-            fmt='.2f',   # Two decimal places
+            fmt='.1f',   # Rounded values
             cmap=cmap,   # Color palette
             mask=mask,   # Mask missing values
             cbar_kws={
                 'label': 'Taxonomic Abundance (%)',
-                'shrink': 0.8
+                'shrink': 0.2
             },
             linewidths=0.5,  # Add grid lines
-            square=True,     # Make cells square
+            # square=True,     # Make cells square
+            ax=ax,
         )
-        
-        plt.title('Taxonomic Abundance Heatmap', fontsize=14, pad=20)
+
+        plt.title('Taxonomic Abundance Per Sample', fontsize=14, pad=20)
         plt.xlabel('Bifidobacterial Strains', fontsize=10, labelpad=10)
         plt.ylabel('Samples', fontsize=10, labelpad=10)
-        
+
         # Rotate x and y axis labels for readability
         plt.xticks(rotation=45, ha='right', fontsize=8)
         plt.yticks(rotation=0, fontsize=8)
-        
+
         plt.tight_layout()
         plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_heatmap.pdf'), dpi=300, bbox_inches='tight')
         plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_heatmap.png'), dpi=300, bbox_inches='tight')
@@ -102,27 +116,117 @@ class PlotUtils:
 
         ### Taxonomic Abundance ###
 
-        fig,ax = plt.subplots(figsize=(10+pdf['Sample'].nunique()*0.2,6),dpi=300)
-        strains = pdf['Strain'].unique()
+        fig,ax = plt.subplots(figsize=(8,10+pdf['Sample'].nunique()*0.2),dpi=300)
+        # strains = pdf['Strain'].unique()
 
-        # Plot with the correct color palette
-        pdf.pivot(index='Sample', columns='Strain', values='Taxonomic_abundance').plot(
-            kind='bar',
+        pivot_pdf = pdf.pivot(index='Sample', columns='Strain', values='Taxonomic_abundance')
+        pivot_pdf = pivot_pdf.reindex(natsort.natsorted(pivot_pdf.index.tolist(),reverse=True))
+
+        # add edges
+        pivot_pdf.plot(
+            kind='barh',
             stacked=True,
             ax=ax,
-            color=[pdf[pdf['Strain'] == strain]['Color'].values[0] for strain in strains],
+            # color=[pdf[pdf['Strain'] == strain]['Color'].values[0] for strain in strains],
+            edgecolor='grey',
+            width=0.8,
+            cmap=palettable.tableau.GreenOrange_12.mpl_colormap,
         )
 
-        ax.legend(loc='center left', bbox_to_anchor=(1, 0), frameon=False)
-        plt.ylabel('Relative Abundance (%)')
+        ax.legend(loc='center left', bbox_to_anchor=(1, 0.9), frameon=False)
+        plt.xlabel('Taxonomic Abundance (%)')
         plt.xticks(rotation=45, ha='right')
-        plt.title('Relative abundance of strains in each sample')
+        plt.title('Taxonomic Abundance Per Sample')
         plt.tight_layout()
         sns.despine()
+        plt.show()
         plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_profile_barplot.pdf'), dpi=300, bbox_inches='tight')
         plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_profile_barplot.png'), dpi=300, bbox_inches='tight')
 
+    def plot_hmo_genes(self):
         
+        dfs = []
+
+        for file in self.hmo_genes:
+            df = pd.read_csv(file, sep='\t')
+            label = os.path.basename(file).replace('.salmon_counts_annotated.tsv','')
+            df = df[['Name', 'Cluster', 'RPM']]
+            df = df.rename(columns={'RPM': label})
+            dfs.append(df)
+
+        # Merge all DataFrames on 'Name' and 'Cluster'
+        salmon_df = dfs[0]
+        for df in dfs[1:]:
+            salmon_df = pd.merge(salmon_df, df, on=['Name', 'Cluster'], how='outer')
+        
+        ### "RPM" Heatmap ###
+        sorted_cols = natsort.natsorted(salmon_df.columns.tolist()[2:])
+        salmon_df = salmon_df[['Name', 'Cluster'] + sorted_cols]
+
+        # Clusters and layout
+        clusters = ['H1', 'H2', 'H3', 'H4', 'H5', 'Urease']
+        # fig = plt.figure(figsize=(salmon_df.shape[1] * 0.5, salmon_df.shape[1] * 0.5), dpi=300)
+        fig = plt.figure(figsize=(max(5,salmon_df.shape[1]*0.25),max(8,salmon_df.shape[1]*0.19)), dpi=300)
+
+        # Distribute vertical space
+        cluster_sizes = salmon_df.groupby('Cluster').size()
+        cluster_sizes = cluster_sizes / cluster_sizes.sum()
+        gs = GridSpec(len(clusters), 2, width_ratios=[0.98, 0.02], height_ratios=cluster_sizes)
+
+        # Define colors
+        color_palette = ListedColormap(palettable.cartocolors.qualitative.Antique_6.mpl_colors)
+        cluster_colors = {cluster: color_palette(i) for i, cluster in enumerate(clusters)}
+
+        for i, cluster in enumerate(clusters):
+            # Heatmap
+            ax = fig.add_subplot(gs[i, 0])
+            cluster_df = salmon_df[salmon_df['Cluster'] == cluster].set_index('Name').drop('Cluster', axis=1)
+            cmap = sns.light_palette(cluster_colors[cluster], as_cmap=True)
+            
+            # Compute normalization
+            vmin, vmax = cluster_df.min().min(), cluster_df.max().max()
+            norm = Normalize(vmin=vmin, vmax=vmax)
+            
+            # Draw heatmap
+            sns.heatmap(
+                cluster_df,
+                ax=ax,
+                cmap=cmap,
+                cbar=False,
+                norm=norm,
+                linewidths=0.2,
+                linecolor='white',
+            )
+
+            ax.set_xticklabels(ax.get_xticklabels(), rotation=90, fontsize=6)
+            ax.set_yticklabels(ax.get_yticklabels(), rotation=0, fontsize=6)
+            ax.set_ylabel(cluster, rotation=0, labelpad=20, verticalalignment='center',horizontalalignment='right',color=cluster_colors[cluster],fontsize=10)
+            if i != len(clusters) - 1:
+                ax.set_xticks([])
+
+            # Colorbar
+            cbar_ax = fig.add_subplot(gs[i, 1])
+            sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
+            sm.set_array([])
+            cbar = plt.colorbar(sm, cax=cbar_ax, orientation='vertical', fraction=0.6, pad=0.4)
+            cbar.ax.tick_params(labelsize=6, width=0.5)  # Increase font size and tick width
+            cbar.set_label('RPM', fontsize=6, labelpad=10)  # Adjust label size and spacing
+            cbar.outline.set_linewidth(0.5)  # Set the top border line width
+            cbar.outline.set_edgecolor('black')  # Set the top border line color
+
+        plt.suptitle('Presence of HMO Genes by Cluster (RPM)', y=0.99, fontsize=10)
+        plt.tight_layout(rect=[0, 0, 0.9, 1])  # Adjust layout to account for title and spacing
+        plt.savefig(os.path.join(self.output_dir,'hmo_gene_cluster_RPM_heatmap.pdf'), dpi=300, bbox_inches='tight')
+        plt.savefig(os.path.join(self.output_dir,'hmo_gene_cluster_RPM_heatmap.png'), dpi=300, bbox_inches='tight')
+
+
+        ### Gene Cassette Plots ###
+
+        for sample in salmon_df.columns.tolist()[2:]:
+            fig = self.gene_cassette_plots(salmon_df, rpm_col=sample)
+            fig.savefig(os.path.join(self.output_dir,f'{sample}_hmo_gene_cluster_RPM.pdf'), dpi=300, bbox_inches='tight')
+            fig.savefig(os.path.join(self.output_dir,f'{sample}_hmo_gene_cluster_RPM.png'), dpi=300, bbox_inches='tight')
+
 
     def plot_sylph_query(self):
 
@@ -159,3 +263,77 @@ class PlotUtils:
         sns.despine()
         return fig
 
+    
+    def gene_cassette_plots(self, salmon_df, rpm_col):
+        # Ensure the dataframe is sorted by Cluster and then by Name
+        salmon_df_sorted = salmon_df[['Cluster', 'Name', rpm_col]].sort_values(['Cluster', 'Name'])
+        salmon_df_sorted = salmon_df_sorted.rename(columns={rpm_col:'RPM'})
+
+        # Get unique clusters in order
+        clusters = salmon_df_sorted['Cluster'].unique()
+
+        # Create a color palette with a unique color for each cluster
+        # color_palette = ListedColormap(palettable.colorbrewer.qualitative.Set1_6.mpl_colors)
+        color_palette = ListedColormap(palettable.cartocolors.qualitative.Antique_6.mpl_colors)
+        cluster_colors = {cluster: color_palette(i) for i, cluster in enumerate(clusters)}
+
+        # Get the maximum number of genes per cluster
+        max_genes_per_cluster = salmon_df_sorted.groupby('Cluster').size().max()
+
+        # Create the plot
+        fig, ax = plt.subplots(len(clusters), 1, figsize=(15, len(clusters)*0.7), dpi=300, sharex=True)
+        fig.subplots_adjust(hspace=0.5)
+
+        # Iterate through clusters
+        for i, cluster in enumerate(clusters):
+            # Filter genes for this cluster
+            cluster_genes = salmon_df_sorted[salmon_df_sorted['Cluster'] == cluster]
+
+            # Plot each gene in the cluster
+            for j, (_, gene) in enumerate(cluster_genes.iterrows()):
+                # Determine color based on cluster
+                color = cluster_colors[cluster]
+                # Determine hue based on RPM
+                cluster_max = cluster_genes['RPM'].max()
+                color = sns.light_palette(color, as_cmap=True)(gene['RPM'] / cluster_max)
+                norm = Normalize(vmin=0, vmax=cluster_max)
+
+
+                # Create the pointed rectangle
+                triangle_size = 0.15
+                verts = [(j, 0), (j+(1-triangle_size), 0), (j+1, 0.5), (j+(1-triangle_size), 1), (j,1), (j+triangle_size, 0.5), (j, 0)]
+                codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.CLOSEPOLY]
+                path = Path(verts, codes)
+                patch = PathPatch(path, facecolor=color, edgecolor='black', linewidth=1)
+                ax[i].add_patch(patch)
+
+                # Label gene name
+                ax[i].text(j + 0.5, -0.2, gene['Name'],#.replace('Blon_',''),
+                        horizontalalignment='center',
+                        verticalalignment='center',
+                        fontsize=6)
+                # Label RPM
+                ax[i].text(j + 0.5, 0.5, int(gene['RPM']),
+                        horizontalalignment='center',
+                        verticalalignment='center',
+                        fontsize=8)
+
+            # Set axis limits and labels for each cluster
+            ax[i].set_xlim(0, max_genes_per_cluster * 1.03)
+            ax[i].set_ylim(0, 1)
+            ax[i].set_xticks([])
+            ax[i].set_yticks([])
+            ax[i].set_ylabel(cluster, fontweight='bold', rotation=0, labelpad=10, verticalalignment='center',horizontalalignment='right',color=cluster_colors[cluster],fontsize=12)
+            sns.despine(ax=ax[i], left=True, bottom=True, right=True, top=True)
+
+            # # Add independent colorbar for each cluster
+            # cbar_ax = fig.add_axes([0.90, 0.775 - i * 0.134, 0.02, 0.1])  # Adjust position as needed
+            # cmap = sns.light_palette(cluster_colors[cluster], as_cmap=True)
+            # sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
+            # sm.set_array([])
+            # cbar = fig.colorbar(sm, cax=cbar_ax, orientation='vertical')
+            # cbar.ax.tick_params(labelsize=6)
+            # cbar.set_label('RPM', fontsize=6)
+
+        plt.suptitle('Presence of HMO Gene Clusters (RPM)')
+        return fig
