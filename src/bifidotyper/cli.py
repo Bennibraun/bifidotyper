@@ -28,7 +28,7 @@ def parse_args():
     suffix_group.add_argument('--r1-suffix', help="Suffix for R1 files (only for paired-end mode)")
     suffix_group.add_argument('--r2-suffix', help="Suffix for R2 files (only for paired-end mode)")
 
-    parser.add_argument('-l', '--read-length', type=int, default=None, help="Read length for accurate plotting (only affects some plots).")
+    # parser.add_argument('-l', '--read-length', type=int, default=None, help="Read length for accurate plotting (only affects some plots).")
     
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-g', '--genome-dir', type=str, default=None, help="(Optional) Directory containing genomes to use in place of the provided Bifidobacterial genomes. Please provide genomes as .fna or .fna.gz files.")
@@ -210,7 +210,7 @@ $$$$$$$  |$$$$$$\ $$ |      $$$$$$\ $$$$$$$  | $$$$$$  |  $$ |       $$ |    $$ 
                         sylph_profile='sylph_genome_queries/genome_profile.tsv',
                         sylph_query='sylph_genome_queries/genome_query.tsv',
                         hmo_genes='hmo_quantification/*.salmon_counts_annotated.tsv',
-                        genome_colors_df=refs['genome_colors_df'],
+                        genomes_df=refs['genomes_df'],
                         output_dir='plots')
     
     plot_u.plot_hmo_genes()

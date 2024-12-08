@@ -22,7 +22,7 @@ class ReferenceManager:
             'bl_genome': self.reference_dir / 'CP001095.1_genome.fasta',
             'bl_genes': self.reference_dir / 'CP001095.1_gene_sequences.fasta',
             'bifidobacteria_sketches': self.reference_dir / 'bifidobacteria_sketches.syldb',
-            'genome_colors_df': self.reference_dir / 'genome_colors.csv',
+            'genomes_df': self.reference_dir / 'genomes.csv',
         }
         
         # Validate all reference files exist

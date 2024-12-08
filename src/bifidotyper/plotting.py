@@ -9,12 +9,14 @@ from matplotlib.path import Path
 from matplotlib.patches import PathPatch
 from matplotlib.colors import ListedColormap, Normalize
 from matplotlib.gridspec import GridSpec
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
 import gzip
 import natsort
 import palettable
 
 class PlotUtils:
-    def __init__(self,args,sylph_profile:str,sylph_query:str,hmo_genes:str,genome_colors_df:str,output_dir:str='plots'):
+    def __init__(self,args,sylph_profile:str,sylph_query:str,hmo_genes:str,genomes_df:str,output_dir:str='plots'):
         """
         Initialize Plotting utility with configurable directory paths.
         
@@ -28,7 +30,7 @@ class PlotUtils:
         self.sylph_profile = sylph_profile
         self.sylph_query = sylph_query
         self.hmo_genes = glob.glob(hmo_genes)
-        self.genome_colors_df = pd.read_csv(genome_colors_df)
+        self.genomes_df = pd.read_csv(genomes_df)
         self.output_dir = output_dir
 
 
@@ -48,7 +50,7 @@ class PlotUtils:
         pdf = pd.read_csv(self.sylph_profile,sep='\t')
 
         pdf['Sample'] = pdf['Sample_file'].apply(lambda x: os.path.basename(x).replace('.fastq.gz','').replace(self.args.r1_suffix,'').replace(self.args.r2_suffix,''))
-        pdf = pdf.merge(self.genome_colors_df,how='left',on='Genome_file').drop_duplicates()
+        pdf = pdf.merge(self.genomes_df,how='left',on='Genome_file').drop_duplicates()
         pdf['Strain'] = pdf['Label']
         strains = pdf['Strain'].unique()
 
@@ -183,8 +185,37 @@ class PlotUtils:
             salmon_df = pd.merge(salmon_df, df, on=['Name', 'Cluster'], how='outer')
         
         ### "RPM" Heatmap ###
-        sorted_cols = natsort.natsorted(salmon_df.columns.tolist()[2:])
-        salmon_df = salmon_df[['Name', 'Cluster'] + sorted_cols]
+
+        if salmon_df.shape[1] < 10:
+            # Just sort by name, can't cluster with too few samples
+            sorted_cols = natsort.natsorted(salmon_df.columns.tolist()[2:])
+            salmon_df = salmon_df[['Name', 'Cluster'] + sorted_cols]
+
+        else:
+            # K-means clustering
+            def find_optimal_k(data, max_k=12):
+                silhouette_scores = []
+                k_range = range(2, max_k + 1)
+                
+                for k in k_range:
+                    kmeans = KMeans(n_clusters=k, random_state=42)
+                    kmeans.fit(data)
+                    silhouette_scores.append(silhouette_score(data, kmeans.labels_))
+                
+                optimal_k = k_range[np.argmax(silhouette_scores)]
+                return optimal_k
+
+            transposed = salmon_df.iloc[:,2:].T
+            optimal_k = find_optimal_k(transposed)
+
+            # Perform K-means clustering with the optimal K
+            kmeans = KMeans(n_clusters=optimal_k, random_state=42)
+            transposed['Cluster'] = kmeans.fit_predict(transposed)
+
+            # Reorder the DataFrame based on clusters
+            ordered_samples = transposed.sort_values('Cluster').index
+            salmon_df = salmon_df[['Name','Cluster',*ordered_samples]]
+
 
         # Clusters and layout
         clusters = ['H1', 'H2', 'H3', 'H4', 'H5', 'Urease']
@@ -243,6 +274,52 @@ class PlotUtils:
         plt.savefig(os.path.join(self.output_dir,'hmo_gene_cluster_RPM_heatmap.png'), dpi=300, bbox_inches='tight')
 
 
+        ### HMO Gene Cluster Heatmap (Binary Version) ###
+
+        clusters = ['H1', 'H2', 'H3', 'H4', 'H5', 'Urease']
+        # fig = plt.figure(figsize=(salmon_df.shape[1] * 0.5, salmon_df.shape[1] * 0.5), dpi=300)
+        fig = plt.figure(figsize=(max(5,salmon_df.shape[1]*0.25),max(8,salmon_df.shape[1]*0.19)), dpi=300)
+
+        # Distribute vertical space
+        cluster_sizes = salmon_df.groupby('Cluster').size()
+        cluster_sizes = cluster_sizes / cluster_sizes.sum()
+        gs = GridSpec(len(clusters), 2, width_ratios=[0.98, 0.02], height_ratios=cluster_sizes)
+
+        # Define colors
+        color_palette = ListedColormap(palettable.cartocolors.qualitative.Antique_6.mpl_colors)
+        cluster_colors = {cluster: color_palette(i) for i, cluster in enumerate(clusters)}
+
+        for i, cluster in enumerate(clusters):
+            # Heatmap
+            ax = fig.add_subplot(gs[i, 0])
+            cluster_df = salmon_df[salmon_df['Cluster'] == cluster].set_index('Name').drop('Cluster', axis=1)
+            
+            # Make the matrix binary
+            cluster_df = cluster_df.map(lambda x: 1 if x > 0 else 0)
+            cmap = ListedColormap(['white', cluster_colors[cluster]])
+            
+            # Draw heatmap
+            sns.heatmap(
+                cluster_df,
+                ax=ax,
+                cmap=cmap,
+                cbar=False,
+                linewidths=0.2,
+                linecolor='white',
+            )
+
+            ax.set_xticklabels(ax.get_xticklabels(), rotation=90, fontsize=6)
+            ax.set_yticklabels(ax.get_yticklabels(), rotation=0, fontsize=6)
+            ax.set_ylabel(cluster, rotation=0, labelpad=20, verticalalignment='center',horizontalalignment='right',color=cluster_colors[cluster],fontsize=10)
+            if i != len(clusters) - 1:
+                ax.set_xticks([])
+
+        plt.suptitle('Presence of HMO Genes by Cluster (RPM)', y=0.99, fontsize=10)
+        plt.tight_layout(rect=[0, 0, 0.9, 1])  # Adjust layout to account for title and spacing
+        plt.savefig(os.path.join(self.output_dir,'hmo_gene_cluster_RPM_heatmap_binary.pdf'), dpi=300, bbox_inches='tight')
+        plt.savefig(os.path.join(self.output_dir,'hmo_gene_cluster_RPM_heatmap_binary.png'), dpi=300, bbox_inches='tight')
+
+
         ### Gene Cassette Plots ###
 
         for sample in salmon_df.columns.tolist()[2:]:
@@ -254,10 +331,12 @@ class PlotUtils:
     def plot_sylph_query(self):
 
         qdf = pd.read_csv(self.sylph_query,sep='\t')
-        qdf['Strain'] = qdf['Contig_name'].apply(lambda x: x[:40]+'...' if len(x) > 40 else x)
         qdf['Sample'] = qdf['Sample_file'].apply(lambda x: os.path.basename(x).replace('.fastq.gz','').replace(self.args.r1_suffix,'').replace(self.args.r2_suffix,''))
+        qdf = qdf.merge(self.genomes_df,how='left',on='Genome_file').drop_duplicates()
+        qdf['Strain'] = qdf['Label']
         strains = qdf['Strain'].unique()
-        strain_colors_dict = {strain: color for strain, color in zip(strains, plt.cm.hsv([i / len(strains) for i in range(len(strains))]))}
+        # strain_colors_dict = {strain: color for strain, color in zip(strains, plt.cm.hsv([i / len(strains) for i in range(len(strains))]))}
+
 
         ### Containment Indices ###
         # This makes a separate plot for each sample
@@ -266,10 +345,10 @@ class PlotUtils:
             fig.savefig(os.path.join(self.output_dir,f'{sample}_containment_indices.pdf'), dpi=300, bbox_inches='tight')
             fig.savefig(os.path.join(self.output_dir,f'{sample}_containment_indices.png'), dpi=300, bbox_inches='tight')
 
-        # Also plot tax. abundance?
 
 
-    def containment_indices_barplot_horiz(self,df):
+
+    def containment_indices_barplot_horiz(self,df,max_bars=10):
         n_genomes = df['Strain'].nunique()
         sample = df['Sample'].unique()[0]
         fig,ax = plt.subplots(figsize=(n_genomes/2,4),dpi=300)
@@ -278,8 +357,8 @@ class PlotUtils:
         df['containment_index_float'] = df['numerator']/df['denominator']
         df.sort_values('containment_index_float',ascending=False,inplace=True)
         color = '#000'
-        sns.barplot(data=df,x='Strain',y='denominator',color=color,label='Genome Size (bp)',ax=ax, fill=False)
-        sns.barplot(data=df,x='Strain',y='numerator',color=color,label='Genome Coverage in Sample',ax=ax)
+        sns.barplot(data=df.iloc[:max_bars,:],x='Strain',y='denominator',color=color,label='Genome Size (bp)',ax=ax, fill=False)
+        sns.barplot(data=df.iloc[:max_bars,:],x='Strain',y='numerator',color=color,label='Genome Coverage in Sample',ax=ax)
         ax.set_ylabel('Genome Size (bp)')
         ax.set_xlabel('Genomes')
         ax.set_title(f'{sample}\nContainment Indices')
