@@ -71,7 +71,7 @@ The tool generates several output files and directories:
 
 ---
 
-# Provided Reference Files
+## Provided Reference Files
 - HMO functional annotations were retrieved from [Henrick et al. 2021](https://data.mendeley.com/datasets/gc4d9h4x67/2). The table is provided in [`src/data/reference/humann2_HMO_annotation.csv`](src/data/reference/humann2_HMO_annotation.csv)
 - All *B. longum* annotations are from the NCBI record for [CP001095.1](https://www.ncbi.nlm.nih.gov/nuccore/CP001095.1/)
 - A pre-processed Sylph genome database is provided for ease of use. Any genome matching the family *Bifidobacterium* in NCBI and GTDB was included. The genome database was dereplicated with [dRep](https://github.com/MrOlm/drep) before indexing. All genome accessions are listed in [`src/data/reference/genomes.csv`](src/data/reference/genomes.csv)
