@@ -51,8 +51,17 @@ class PlotUtils:
         pdf = pdf.merge(self.genome_colors_df,how='left',on='Genome_file').drop_duplicates()
         pdf['Strain'] = pdf['Label']
         strains = pdf['Strain'].unique()
-        # 'Color' contains a unique hex code for each strain, grouped by ANI clustering
-        pdf.to_csv('/home/bebr1814/playground/plotting_df.csv')
+
+        # pdf.to_csv('/home/bebr1814/playground/plotting_df.csv')
+
+        if pdf['Strain'].nunique() < 20:
+            # use palettable.tableau.GreenOrange_12.mpl_colormap as the colormap
+            cmap = ListedColormap(palettable.tableau.GreenOrange_12.mpl_colors)
+            strain_colors = {strain: cmap(i) for i, strain in enumerate(pdf['Strain'].unique())}
+        else:
+            # Try using the colors from the pdf
+            # 'Color' contains a unique hex code for each strain, grouped by ANI clustering
+            strain_colors = {strain: pdf[pdf['Strain'] == strain]['Color'].values[0] for strain in pdf['Strain'].unique()}
 
         ### Taxonomic Abundance Heatmap ###
         heatmap_data = pdf.pivot_table(
@@ -114,7 +123,7 @@ class PlotUtils:
         plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_heatmap.png'), dpi=300, bbox_inches='tight')
 
 
-        ### Taxonomic Abundance ###
+        ### Taxonomic Abundance Full ###
 
         fig,ax = plt.subplots(figsize=(8,10+pdf['Sample'].nunique()*0.2),dpi=300)
         # strains = pdf['Strain'].unique()
@@ -127,10 +136,9 @@ class PlotUtils:
             kind='barh',
             stacked=True,
             ax=ax,
-            # color=[pdf[pdf['Strain'] == strain]['Color'].values[0] for strain in strains],
             edgecolor='grey',
             width=0.8,
-            cmap=palettable.tableau.GreenOrange_12.mpl_colormap,
+	        color=[strain_colors[strain] for strain in pivot_pdf.columns],
         )
 
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.9), frameon=False)
@@ -143,6 +151,21 @@ class PlotUtils:
         plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_profile_barplot.pdf'), dpi=300, bbox_inches='tight')
         plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_profile_barplot.png'), dpi=300, bbox_inches='tight')
 
+
+        ### Taxonomic Abundance per Sample ###
+        for sample in pdf['Sample'].unique():
+            sample_df = pdf[pdf['Sample'] == sample]
+            sample_df = sample_df.sort_values('Taxonomic_abundance', ascending=False)
+            plt.figure(figsize=(8, 4), dpi=300)
+            sns.barplot(y='Strain', x='Taxonomic_abundance', hue='Strain', data=sample_df, palette=strain_colors)
+            plt.title(f'Taxonomic Abundance\n{sample}')
+            plt.ylabel('')
+            plt.xlabel('Taxonomic Abundance (%)')
+            sns.despine()
+            plt.tight_layout()
+            plt.savefig(os.path.join(self.output_dir,f'{sample}_taxonomic_abundance.pdf'), dpi=300, bbox_inches='tight')
+            plt.savefig(os.path.join(self.output_dir,f'{sample}_taxonomic_abundance.png'), dpi=300, bbox_inches='tight')
+
     def plot_hmo_genes(self):
         
         dfs = []
@@ -150,8 +173,8 @@ class PlotUtils:
         for file in self.hmo_genes:
             df = pd.read_csv(file, sep='\t')
             label = os.path.basename(file).replace('.salmon_counts_annotated.tsv','')
-            df = df[['Name', 'Cluster', 'RPM']]
-            df = df.rename(columns={'RPM': label})
+            df = df[['Name', 'Cluster', 'TPM']]
+            df = df.rename(columns={'TPM': label})
             dfs.append(df)
 
         # Merge all DataFrames on 'Name' and 'Cluster'
@@ -242,6 +265,8 @@ class PlotUtils:
             fig = self.containment_indices_barplot_horiz(qdf[qdf['Sample'] == sample])
             fig.savefig(os.path.join(self.output_dir,f'{sample}_containment_indices.pdf'), dpi=300, bbox_inches='tight')
             fig.savefig(os.path.join(self.output_dir,f'{sample}_containment_indices.png'), dpi=300, bbox_inches='tight')
+
+        # Also plot tax. abundance?
 
 
     def containment_indices_barplot_horiz(self,df):

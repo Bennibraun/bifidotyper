@@ -67,7 +67,7 @@ A log file `bifidotyper.log` is created in the working directory, capturing deta
 ---
 
 # Files
-- humann2_HMO_annotation.csv was retrieved from [Brodin et al. 2021](https://data.mendeley.com/datasets/gc4d9h4x67/2)
+- humann2_HMO_annotation.csv was retrieved from [Henrick et al. 2021](https://data.mendeley.com/datasets/gc4d9h4x67/2)
 - All B. longum annotations are from the NCBI record for [CP001095.1](https://www.ncbi.nlm.nih.gov/nuccore/CP001095.1/)
 - For simplicity, this release currently includes all required Bifidobacterial genomes. In the future, a module will be included to download an updated set of reference genomes as part of the program's execution.
 
