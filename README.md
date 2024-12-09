@@ -1,6 +1,6 @@
 # Bifidotyper
 
-Bifidotyper is a fast, lightweight bioinformatics tool designed to take you from raw FastQ files to a complete and reproducible analysis of [*Bifidobacterial*](https://en.wikipedia.org/wiki/Bifidobacterium) strains in your samples. It makes extensive use of [Sylph](https://www.nature.com/articles/s41587-024-02412-y) for rapid, k-mer-based read alignments. It also detects the presence of genes necessary for the metabolism of human milk oligosaccharides ([HMOs](https://en.wikipedia.org/wiki/Human_milk_oligosaccharide)) based on alignments to the *Bifidobacterium longum*[^1] genome using gene annotations from Henrick et al.[^2]
+Bifidotyper is a fast, lightweight bioinformatics tool designed to take you from raw FastQ files to a complete and reproducible analysis of [*Bifidobacterial*](https://en.wikipedia.org/wiki/Bifidobacterium) strains in your samples. It makes use of [Sylph](https://doi.org/10.1038/s41587-024-02412-y) for rapid, k-mer-based read alignments. It also uses [Salmon](https://doi.org/10.1038/nmeth.4197) to detect the presence of genes necessary for the metabolism of human milk oligosaccharides ([HMOs](https://en.wikipedia.org/wiki/Human_milk_oligosaccharide)) based on alignments to the *Bifidobacterium longum*[^1] genome using gene annotations from Henrick et al.[^2]
 
 [^1]: [CP001095.1](https://www.ncbi.nlm.nih.gov/nuccore/CP001095.1/)
 
@@ -10,7 +10,7 @@ Bifidotyper was developed as part of a PhD rotation in the [Olm Lab](https://www
 
 ## Installation
 
-Bifidotyper can be installed with `pip` but it depends on Sylph and Salmon, which don't have `pip` distributions. You can install both with Conda (`conda install -c bioconda sylph salmon`), but for ease of use, binaries are included for Sylph and automatically downloaded for Salmon if they aren't found in your `PATH`.
+Bifidotyper can be installed with `pip` but it depends on [Sylph](https://github.com/bluenote-1577/sylph) and [Salmon](https://github.com/COMBINE-lab/salmon), which don't have `pip` distributions. You can install both with Conda (`conda install -c bioconda sylph salmon`), but for ease of use, binaries are included for Sylph and automatically downloaded for Salmon if they aren't found in your `PATH`.
 
 Clone the repository and install the package:
 ```bash
@@ -46,9 +46,12 @@ bifidotyper -pe <paired-end FASTQ files> [--r1-suffix <R1 suffix>] [--r2-suffix 
 - `-s, --genome-sketch`: Path to a pre-sketched Sylph genome database (optional, defaults to provided database). Use `sylph sketch *.fna` to generate your own database.
 
 
-### Example
+### Examples
 ```bash
+# Run bifidotyper in paired-end mode with 4 threads and _R1/_R2 suffixes
 bifidotyper -pe data/*.fastq.gz --r1-suffix _R1 --r2-suffix _R2 -t 4
+# Run bifidotyper in single-end mode with 8 threads and a custom genome directory
+bifidotyper -se data/*.fastq.gz -t 8 -g my_genomes/
 ```
 
 ## Output
@@ -66,7 +69,7 @@ The tool generates several output files and directories:
 ## Provided Reference Files
 - HMO functional annotations were retrieved from [Henrick et al. 2021](https://data.mendeley.com/datasets/gc4d9h4x67/2). The table is provided in [`src/data/reference/humann2_HMO_annotation.csv`](src/data/reference/humann2_HMO_annotation.csv)
 - All *B. longum* annotations are from the NCBI record for [CP001095.1](https://www.ncbi.nlm.nih.gov/nuccore/CP001095.1/)
-- A pre-processed Sylph genome database is provided for ease of use. Any genome matching the family *Bifidobacterium* in NCBI and GTDB was included. The genome database was dereplicated with [dRep](https://github.com/MrOlm/drep) before indexing. All genome accessions are listed in [`src/data/reference/genomes.csv`](src/data/reference/genomes.csv)
+- A pre-processed Sylph genome database is provided for ease of use. Any genome matching the family *Bifidobacterium* in NCBI and GTDB was included. The genome database was dereplicated with [dRep](https://github.com/MrOlm/drep) with `--S_ani 0.95` before indexing. All genome accessions are listed in [`src/data/reference/genomes.csv`](src/data/reference/genomes.csv)
 
 ---
 
