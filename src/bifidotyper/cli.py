@@ -3,6 +3,7 @@ import sys
 from .processor import build_sample_dict
 from .references import ReferenceManager
 import glob
+import platform
 import os
 import subprocess
 from .sylph import SylphUtils, SylphError
@@ -67,6 +68,19 @@ def get_reference_files():
         print(f"Error: {e}")
         sys.exit(1)
 
+def get_bin_files():
+    try:
+        ref_manager = ReferenceManager()
+        bin_files = {bin: ref_manager.get_bin_path(bin) for bin in ref_manager.available_bins}
+        return bin_files
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        print("Please ensure the package is properly installed with reference files.")
+        sys.exit(1)
+    except ValueError as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+
 def main():
 
     print(r'''
@@ -82,18 +96,61 @@ $$$$$$$  |$$$$$$\ $$ |      $$$$$$\ $$$$$$$  | $$$$$$  |  $$ |       $$ |    $$ 
     ''')
 
     print('Loading software and reference data...')
+    bins = get_bin_files()
 
-    # Check for external software
-    software = ['salmon','sylph']
-    for s in software:
+    # Check for Sylph
+    try:
+        subprocess.run(['sylph', '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        sylph = 'sylph'
+    except FileNotFoundError:
+
+        # We need to scan the cpu architecture and use the right binary
+        system = platform.system()
+        arch = platform.machine()
+
+        if system == "Darwin":  # macOS
+            if arch == "x86_64":
+                sylph = bins['sylph_x86_64-any-darwin']
+            elif arch == "arm64":
+                sylph = bins['sylph_arm64-any-darwin']
+        elif system == "Linux":
+            if arch == "x86_64":
+                sylph = bins['sylph_x86_64-any-linux']
+            elif arch == "aarch64":
+                sylph = bins['sylph_aarch64-any-linux']
+        else:
+            logger.error(f"Unfortunately, we do not have a precompiled Sylph binary for your architecture ({arch}). Please install Sylph manually and ensure it is in your PATH, then try again.")
+            raise RuntimeError(f"Unfortunately, we do not have a precompiled Sylph binary for your architecture ({arch}). Please install Sylph manually and ensure it is in your PATH, then try again.")
+        
         try:
-            subprocess.run([s, '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        except FileNotFoundError:
-            print(f"Error: {s} not found in PATH. Please install {s} and ensure it is in your PATH.")
-            sys.exit(1)
+            subprocess.run([sylph, '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        except:
+            logger.error(f"Sylph failed to run. Please install it manually and ensure it si in your PATH, then try again.")
+            raise RuntimeError(f"Sylph failed to run. Please install it manually and ensure it si in your PATH, then try again.")
 
-    logger.info("All required software found in PATH.")
+    # Check for Salmon
+    try:
+        subprocess.run(['salmon', '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    except FileNotFoundError:
+        # Need to download Salmon because it's huge
+        # wget https://github.com/COMBINE-lab/salmon/releases/download/v1.10.0/salmon-1.10.0_linux_x86_64.tar.gz
+        # tar -xvf salmon-1.10.0_linux_x86_64.tar.gz
+        # cp salmon-1.10.0_linux_x86_64/bin/salmon 
+        ref_manager = ReferenceManager()
+        bin_dir = ref_manager.get_bin_dir()
+        subprocess.run(['wget','https://github.com/COMBINE-lab/salmon/releases/download/v1.10.0/salmon-1.10.0_linux_x86_64.tar.gz'], cwd=bin_dir)
+        subprocess.run(['tar','-xvf','salmon-1.10.0_linux_x86_64.tar.gz'], cwd=bin_dir)
+        subprocess.run(['mv', 'salmon-1.10.0_linux_x86_64/bin/salmon', bin_dir], cwd=bin_dir)
+        subprocess.run(['rm','-rf','salmon-1.10.0_linux_x86_64'], cwd=bin_dir)
+        assert os.path.exists(os.path.join(bin_dir,'salmon')), "Salmon binary not found after download."
+        salmon = os.path.join(bin_dir,'salmon')
 
+        try:
+            subprocess.run([salmon, '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        except:
+            logger.error(f"Salmon failed to run. Please install it manually and ensure it is in your PATH, then try again.")
+            raise RuntimeError(f"Salmon failed to run. Please install it manually and ensure it is in your PATH, then try again.")
+    
     args = parse_args()
     
     if args.single_end:
@@ -131,7 +188,7 @@ $$$$$$$  |$$$$$$\ $$ |      $$$$$$\ $$$$$$$  | $$$$$$  |  $$ |       $$ |    $$ 
     
     if run_sylph:
         # Initialize Sylph utility
-        sylph = SylphUtils(args=args)
+        sylph = SylphUtils(args=args,sylph_executable=sylph)
 
         try:
             # Sketch genomes

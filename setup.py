@@ -20,5 +20,8 @@ setup(
         'seaborn',
         'matplotlib',
 		'tqdm',
+		'scikit-learn',
+		'natsort',
+		'palettable',
     ],
 )

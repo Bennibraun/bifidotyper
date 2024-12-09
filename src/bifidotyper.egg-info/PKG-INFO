@@ -6,3 +6,6 @@ Requires-Dist: pandas
 Requires-Dist: seaborn
 Requires-Dist: matplotlib
 Requires-Dist: tqdm
+Requires-Dist: scikit-learn
+Requires-Dist: natsort
+Requires-Dist: palettable

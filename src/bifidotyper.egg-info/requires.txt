@@ -3,3 +3,6 @@ pandas
 seaborn
 matplotlib
 tqdm
+scikit-learn
+natsort
+palettable

@@ -8,26 +8,27 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+import pysylph
 
 class SylphError(Exception):
     """Custom exception for Sylph-related errors."""
     pass
 
 class SylphUtils:
-    def __init__(self,args):
+    def __init__(self,args,sylph_executable):
         """
         Initialize Sylph utility with configurable directory paths.
         
         Args:
-            genome_sketch_dir (str): Directory to store genome sketches
-            fastq_sketch_dir (str): Directory to store fastq sketches
-            genome_query_dir (str): Directory to store genome query results
+            args: Arguments from the command line
+            sylph_executable (str): Path to the Sylph executable
         """
         self.args = args
+        self.sylph_executable = sylph_executable
         self.genome_sketch_dir = 'sylph_genome_sketches'
         self.fastq_sketch_dir = 'sylph_fastq_sketches'
         self.genome_query_dir = 'sylph_genome_queries'
-        
+
         # Ensure directories exist
         for dir_path in [self.genome_sketch_dir, 
                          self.fastq_sketch_dir, 
@@ -62,7 +63,7 @@ class SylphUtils:
         Sketch genome files using Sylph.
         
         Args:
-            genomes_path (str): Path to genome files (e.g., '*.fna')
+            genomes (str): Path to genome files (e.g., '*.fna')
             output_name (str): Base name for output .syldb file
             threads (int): Number of CPU threads to use
         
@@ -71,7 +72,7 @@ class SylphUtils:
         """
                 
         # Construct sylph sketch command
-        command = ['sylph', 'sketch',*genomes,'-t', str(threads), '-o', output_name]
+        command = [self.sylph_executable, 'sketch',*genomes,'-t', str(threads), '-o', output_name]
         self._run_command(command)
 
         # Move all output files into the genome sketch directory
@@ -100,9 +101,9 @@ class SylphUtils:
         
         # Construct sylph sketch command
         if fastq_se:
-            command = ['sylph', 'sketch', *fastq_se, '-t', str(threads)]
+            command = [self.sylph_executable, 'sketch', *fastq_se, '-t', str(threads)]
         elif fastq_r1 and fastq_r2:
-            command = ['sylph','sketch','-1',*fastq_r1,'-2',*fastq_r2,'-t',str(threads)]
+            command = [self.sylph_executable,'sketch','-1',*fastq_r1,'-2',*fastq_r2,'-t',str(threads)]
         else:
             raise SylphError("Either fastq_se or fastq_r1 and fastq_r2 must be provided")
         
@@ -131,7 +132,7 @@ class SylphUtils:
         """
         
         # Construct sylph query command
-        command = ['sylph', 'query'] + sylsp_files + [syldb_file, '-o', output_name]
+        command = [self.sylph_executable, 'query'] + sylsp_files + [syldb_file, '-o', output_name]
         self._run_command(command)
 
         # Move the output file into the genome query directory
@@ -156,7 +157,7 @@ class SylphUtils:
         """
         
         # Construct sylph profile command
-        command = ['sylph', 'profile'] + sylsp_files + [syldb_file, '-o', output_name]
+        command = [self.sylph_executable, 'profile'] + sylsp_files + [syldb_file, '-o', output_name]
         self._run_command(command)
 
         # Move the output file into the genome query directory
