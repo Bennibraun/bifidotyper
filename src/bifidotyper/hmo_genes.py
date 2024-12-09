@@ -16,6 +16,7 @@ class HMOError(Exception):
 class HMOUtils:
     def __init__(self,
                  args,
+                 salmon_executable: str,
                  sample_name: str,
                  genes_fasta: str, 
                  hmo_annotations: str,
@@ -33,6 +34,7 @@ class HMOUtils:
             hmo_annotations (str): Path to HMO annotations file
         """
         self.args = args
+        self.salmon_executable = salmon_executable
         self.sample_name = sample_name
         self.genes_fasta = genes_fasta
         self.hmo_annotations = hmo_annotations
@@ -103,13 +105,13 @@ class HMOUtils:
     def run_salmon(self):
         
         if not os.path.exists(os.path.join(self.output_dir, 'B_longum_salmon_index')):
-            index_cmd = ['salmon', 'index', '-t', self.genes_fasta, '-i', os.path.join(self.output_dir, 'B_longum_salmon_index')]
+            index_cmd = [self.salmon_executable, 'index', '-t', self.genes_fasta, '-i', os.path.join(self.output_dir, 'B_longum_salmon_index')]
             self._run_command(index_cmd, logfile=os.path.join(self.output_dir, 'salmon_index.log'))
 
         if self.fastq_se:
-            quant_cmd = ['salmon', 'quant', '-i', os.path.join(self.output_dir, 'B_longum_salmon_index'), '-l', 'A', '-r', self.fastq_se, '-p', str(self.threads), '--validateMappings', '-o', os.path.join(self.output_dir, self.sample_name+'_salmon')]
+            quant_cmd = [self.salmon_executable, 'quant', '-i', os.path.join(self.output_dir, 'B_longum_salmon_index'), '-l', 'A', '-r', self.fastq_se, '-p', str(self.threads), '--validateMappings', '-o', os.path.join(self.output_dir, self.sample_name+'_salmon')]
         else:
-            quant_cmd = ['salmon', 'quant', '-i', os.path.join(self.output_dir, 'B_longum_salmon_index'), '-l', 'A', '-1', self.fastq_pe1, '-2', self.fastq_pe2, '-p', str(self.threads), '--validateMappings', '-o', os.path.join(self.output_dir, self.sample_name+'_salmon')]
+            quant_cmd = [self.salmon_executable, 'quant', '-i', os.path.join(self.output_dir, 'B_longum_salmon_index'), '-l', 'A', '-1', self.fastq_pe1, '-2', self.fastq_pe2, '-p', str(self.threads), '--validateMappings', '-o', os.path.join(self.output_dir, self.sample_name+'_salmon')]
         self._run_command(quant_cmd, logfile=os.path.join(self.output_dir, self.sample_name+'_salmon.log'))
 
 
