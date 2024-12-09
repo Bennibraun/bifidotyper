@@ -8,7 +8,6 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-import pysylph
 
 class SylphError(Exception):
     """Custom exception for Sylph-related errors."""
