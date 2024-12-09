@@ -10,8 +10,8 @@ class ReferenceManager:
     def __init__(self):
         # Get the package's root directory
         self.package_root = pathlib.Path(__file__).parent.parent.absolute()
-        self.reference_dir = self.package_root / 'data' / 'reference'
-        self.bin_dir = self.package_root / 'data' / 'bin'
+        self.reference_dir = self.package_root / 'bifidotyper' / 'data' / 'reference'
+        self.bin_dir = self.package_root / 'bifidotyper' / 'data' / 'bin'
         
         # Ensure reference directory exists
         if not self.reference_dir.exists():

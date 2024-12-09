@@ -1,3 +1,5 @@
 *__pycache__*
-src/data/bin/salmon
-src/data/lib
+bifidotyper.egg-info
+src/bifidotyper/data/bin/salmon
+src/bifidotyper/data/lib/
+dist/
