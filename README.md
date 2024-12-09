@@ -10,24 +10,16 @@ Bifidotyper was developed as part of a PhD rotation in the [Olm Lab](https://www
 
 ## Installation
 
+Bifidotyper can be installed with `pip` but it depends on Sylph and Salmon, which don't have `pip` distributions. You can install both with Conda (`conda install -c bioconda sylph salmon`), but for ease of use, binaries are included for Sylph and automatically downloaded for Salmon if they aren't found in your `PATH`.
+
 Clone the repository and install the package:
 ```bash
 git clone https://github.com/Bennibraun/bifidotyper.git
 cd bifidotyper
-```
-
-Create a Conda environment for required software:
-```bash
-conda env create --name bifidotyper --file=env.yaml
-```
-
-Then you can simply run:
-```bash
 pip install -e .
 ```
 
-A distribution via Conda is planned.
-
+A proper distribution via PyPI or Anaconda is planned.
 
 ## Usage
 

@@ -140,8 +140,8 @@ $$$$$$$  |$$$$$$\ $$ |      $$$$$$\ $$$$$$$  | $$$$$$  |  $$ |       $$ |    $$ 
         bin_dir = ref_manager.get_bin_dir()
         subprocess.run(['wget','https://github.com/COMBINE-lab/salmon/releases/download/v1.10.0/salmon-1.10.0_linux_x86_64.tar.gz'], cwd=bin_dir)
         subprocess.run(['tar','-xvf','salmon-1.10.0_linux_x86_64.tar.gz'], cwd=bin_dir)
-        subprocess.run(['mv', 'salmon-1.10.0_linux_x86_64/bin/salmon', bin_dir], cwd=bin_dir)
-        subprocess.run(['rm','-rf','salmon-1.10.0_linux_x86_64'], cwd=bin_dir)
+        subprocess.run(['mv', 'salmon-latest_linux_x86_64/bin/salmon', bin_dir], cwd=bin_dir)
+        subprocess.run(['rm','-rf','salmon-latest_linux_x86_64','salmon-1.10.0_linux_x86_64.tar.gz'], cwd=bin_dir)
         assert os.path.exists(os.path.join(bin_dir,'salmon')), "Salmon binary not found after download."
         salmon = os.path.join(bin_dir,'salmon')
 
