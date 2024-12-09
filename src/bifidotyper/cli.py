@@ -84,16 +84,18 @@ def get_bin_files():
 def main():
 
     print(r'''
-$$$$$$$\  $$$$$$\ $$$$$$$$\ $$$$$$\ $$$$$$$\   $$$$$$\ $$$$$$$$\ $$\     $$\ $$$$$$$\  $$$$$$$$\ $$$$$$$\  
-$$  __$$\ \_$$  _|$$  _____|\_$$  _|$$  __$$\ $$  __$$\\__$$  __|\$$\   $$  |$$  __$$\ $$  _____|$$  __$$\ 
-$$ |  $$ |  $$ |  $$ |        $$ |  $$ |  $$ |$$ /  $$ |  $$ |    \$$\ $$  / $$ |  $$ |$$ |      $$ |  $$ |
-$$$$$$$\ |  $$ |  $$$$$\      $$ |  $$ |  $$ |$$ |  $$ |  $$ |     \$$$$  /  $$$$$$$  |$$$$$\    $$$$$$$  |
-$$  __$$\   $$ |  $$  __|     $$ |  $$ |  $$ |$$ |  $$ |  $$ |      \$$  /   $$  ____/ $$  __|   $$  __$$< 
-$$ |  $$ |  $$ |  $$ |        $$ |  $$ |  $$ |$$ |  $$ |  $$ |       $$ |    $$ |      $$ |      $$ |  $$ |
-$$$$$$$  |$$$$$$\ $$ |      $$$$$$\ $$$$$$$  | $$$$$$  |  $$ |       $$ |    $$ |      $$$$$$$$\ $$ |  $$ |
-\_______/ \______|\__|      \______|\_______/  \______/   \__|       \__|    \__|      \________|\__|  \__|
-                                                                                                           
+    ┏━━┓ ━━ ┏━┓ ━  ┏┓ ━━━ ┏┓ ━━━━  ━━━━━  ━━━
+    ┃┏┓┃ ━  ┃┏┛  ━ ┃┃ ━  ┏┛┗┓  ━━━━━━━   ━━━━
+    ┃┗┛┗┓┏┓┏┛┗┓┏┓┏━┛┃┏━━┓┗┓┏┛┏┓ ┏┓┏━━┓┏━━┓┏━┓
+    ┃┏━┓┃┣┫┗┓┏┛┣┫┃┏┓┃┃┏┓┃ ┃┃ ┃┃ ┃┃┃┏┓┃┃┏┓┃┃┏┛
+    ┃┗━┛┃┃┃ ┃┃ ┃┃┃┗┛┃┃┗┛┃ ┃┗┓┃┗━┛┃┃┗┛┃┃┃━┫┃┃
+    ┗━━━┛┗┛ ┗┛ ┗┛┗━━┛┗━━┛ ┗━┛┗━┓┏┛┃┏━┛┗━━┛┗┛
+    ━━  ━━━  ━━━━  ━━━━━  ━━ ┏━┛┃ ┃┃ ━━━━━ ━━
+    ━━━  ━━━━━  ━━━   ━━━━━  ┗━━┛ ┗┛  ━━━━━━━
+                                                                                  
     ''')
+
+    args = parse_args()
 
     print('Loading software and reference data...')
     bins = get_bin_files()
@@ -141,11 +143,11 @@ $$$$$$$  |$$$$$$\ $$ |      $$$$$$\ $$$$$$$  | $$$$$$  |  $$ |       $$ |    $$ 
         bin_dir = ref_manager.get_bin_dir()
         salmon = os.path.join(bin_dir,'salmon')
         if not os.path.exists(salmon):
-            subprocess.run(['wget','https://github.com/COMBINE-lab/salmon/releases/download/v1.10.0/salmon-1.10.0_linux_x86_64.tar.gz'], cwd=bin_dir)
-            subprocess.run(['tar','-xvf','salmon-1.10.0_linux_x86_64.tar.gz'], cwd=bin_dir)
-            subprocess.run(['mv', 'salmon-latest_linux_x86_64/bin/salmon', bin_dir], cwd=bin_dir)
-            subprocess.run(['mv', 'salmon-latest_linux_x86_64/lib', os.path.dirname(bin_dir)], cwd=bin_dir)
-            subprocess.run(['rm','-rf','salmon-latest_linux_x86_64','salmon-1.10.0_linux_x86_64.tar.gz'], cwd=bin_dir)
+            subprocess.run(['wget', 'https://github.com/COMBINE-lab/salmon/releases/download/v1.10.0/salmon-1.10.0_linux_x86_64.tar.gz'], cwd=bin_dir, capture_output=True, text=True)
+            logger.info(subprocess.run(['tar', '-xvf', 'salmon-1.10.0_linux_x86_64.tar.gz'], cwd=bin_dir, capture_output=True, text=True).stdout)
+            logger.info(subprocess.run(['mv', 'salmon-latest_linux_x86_64/bin/salmon', bin_dir], cwd=bin_dir, capture_output=True, text=True).stdout)
+            logger.info(subprocess.run(['mv', 'salmon-latest_linux_x86_64/lib', os.path.dirname(bin_dir)], cwd=bin_dir, capture_output=True, text=True).stdout)
+            logger.info(subprocess.run(['rm', '-rf', 'salmon-latest_linux_x86_64', 'salmon-1.10.0_linux_x86_64.tar.gz'], cwd=bin_dir, capture_output=True, text=True).stdout)
             assert os.path.exists(salmon), "Salmon binary not found after download."
 
         try:
@@ -153,9 +155,7 @@ $$$$$$$  |$$$$$$\ $$ |      $$$$$$\ $$$$$$$  | $$$$$$  |  $$ |       $$ |    $$ 
         except:
             logger.error(f"Salmon failed to run. Please install it manually and ensure it is in your PATH, then try again.")
             raise RuntimeError(f"Salmon failed to run. Please install it manually and ensure it is in your PATH, then try again.")
-    
-    args = parse_args()
-    
+        
     if args.single_end:
         sample_dict = build_sample_dict(single_end=args.single_end, 
                                       r1_suffix=args.r1_suffix, 
