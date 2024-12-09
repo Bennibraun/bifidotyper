@@ -149,7 +149,6 @@ class PlotUtils:
         plt.title('Taxonomic Abundance Per Sample')
         plt.tight_layout()
         sns.despine()
-        plt.show()
         plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_profile_barplot.pdf'), dpi=300, bbox_inches='tight')
         plt.savefig(os.path.join(self.output_dir,f'taxonomic_abundance_profile_barplot.png'), dpi=300, bbox_inches='tight')
 
@@ -175,6 +174,12 @@ class PlotUtils:
         for file in self.hmo_genes:
             df = pd.read_csv(file, sep='\t')
             label = os.path.basename(file).replace('.salmon_counts_annotated.tsv','')
+            
+            ### Cluster Completion Plots ###
+            fig = self.cluster_completion_plot(df, label)
+            fig.savefig(os.path.join(self.output_dir,f'{label}_HMO_cluster_completion.pdf'), dpi=300, bbox_inches='tight')
+            fig.savefig(os.path.join(self.output_dir,f'{label}_HMO_cluster_completion.png'), dpi=300, bbox_inches='tight')
+            
             df = df[['Name', 'Cluster', 'TPM']]
             df = df.rename(columns={'TPM': label})
             dfs.append(df)
@@ -364,6 +369,29 @@ class PlotUtils:
         ax.set_title(f'{sample}\nContainment Indices')
         ax.set_xticklabels(ax.get_xticklabels(),rotation=45,ha='right')
         ax.legend(frameon=False,bbox_to_anchor=(1,1))
+        sns.despine()
+        return fig
+
+
+    def cluster_completion_plot(self, salmon_df, label, read_threshold=0):
+        # Plot "Present" genes per cluster as bar plot
+        salmon_df['Present'] = salmon_df['NumReads'] > read_threshold
+        clust_ct = salmon_df.groupby('Cluster').sum()['Present'].reset_index()
+        # Get total genes in each cluster
+        clust_ct['Total'] = salmon_df.groupby('Cluster').count()['Name'].values
+        clust_ct['Percent'] = clust_ct['Present'] / clust_ct['Total'] * 100
+        # Define colors
+        clusters = salmon_df['Cluster'].unique()
+        color_palette = ListedColormap(palettable.cartocolors.qualitative.Antique_6.mpl_colors)
+        cluster_colors = {cluster: color_palette(i) for i, cluster in enumerate(clusters)}
+        fig,ax = plt.subplots(figsize=(3,2), dpi=300)
+        sns.barplot(x='Cluster', y='Percent', hue='Cluster', data=clust_ct, ax=ax, palette=cluster_colors)
+        plt.xticks(rotation=90)
+        plt.title('Percent of HMO genes detected\nin each cluster')
+        plt.ylabel('Percent')
+        plt.xlabel(label)
+        for i in range(0,101,25):
+            plt.axhline(i, color='black', linestyle='--', alpha=0.5, linewidth=0.5, zorder=0)
         sns.despine()
         return fig
 

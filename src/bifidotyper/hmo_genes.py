@@ -136,26 +136,6 @@ class HMOUtils:
         clusters.to_csv(os.path.join(self.output_dir,self.sample_name+'.cluster_presence.tsv'), index=False, sep='\t')
         logger.info('Saved cluster presence table to {}'.format(os.path.join(self.output_dir,self.sample_name+'.cluster_presence.tsv')))
 
-        # Plot "Present" genes per cluster as bar plot
-        fig,ax = plt.subplots(figsize=(3,2), dpi=300)
-        clust_ct = salmon_counts.groupby('Cluster').sum()['Present'].reset_index()
-        # Get total genes in each cluster
-        clust_ct['Total'] = salmon_counts.groupby('Cluster').count()['Name'].values
-        clust_ct['Percent'] = clust_ct['Present'] / clust_ct['Total'] * 100
-        sns.barplot(x='Cluster', y='Percent', data=clust_ct, ax=ax)
-        plt.xticks(rotation=90)
-        plt.title('Percent of HMO genes detected\nin each cluster')
-        plt.ylabel('Percent')
-        plt.xlabel(self.sample_name)
-        for i in range(0,101,25):
-            plt.axhline(i, color='black', linestyle='--', alpha=0.5, linewidth=0.5, zorder=0)
-        sns.despine()
-        plt.savefig(os.path.join(self.output_dir,self.sample_name+'.HMO_percent_gene_detection.pdf'), dpi=300, bbox_inches='tight')
-        plt.savefig(os.path.join(self.output_dir,self.sample_name+'.HMO_percent_gene_detection.png'), dpi=300, bbox_inches='tight')
-        logger.info('Saved HMO gene detection plot to {}'.format(os.path.join(self.output_dir,self.sample_name+'.HMO_percent_gene_detection.pdf')))
-
-        return
-
 
 # Example usage
 def main():
