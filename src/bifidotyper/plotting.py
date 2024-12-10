@@ -11,9 +11,10 @@ from matplotlib.colors import ListedColormap, Normalize
 from matplotlib.gridspec import GridSpec
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
-import gzip
 import natsort
 import palettable
+import json
+import gzip
 
 class PlotUtils:
     def __init__(self,args,sylph_profile:str,sylph_query:str,hmo_genes:str,genomes_df:str,output_dir:str='plots'):
@@ -30,6 +31,7 @@ class PlotUtils:
         self.sylph_profile = sylph_profile
         self.sylph_query = sylph_query
         self.hmo_genes = glob.glob(hmo_genes)
+        self.hmo_metadata = glob.glob(os.path.join(os.path.dirname(hmo_genes),'*','aux_info','meta_info.json'))
         self.genomes_df = pd.read_csv(genomes_df)
         self.output_dir = output_dir
 
@@ -42,11 +44,11 @@ class PlotUtils:
                 if not os.path.exists(file_path):
                     raise FileNotFoundError(f"File not found: {file_path}") 
 
-    def plot_sylph_profile(self):
-        """
-        Plot Sylph profile results using matplotlib.
-        """
-        
+        self.load_sylph()
+        self.load_salmon_df()
+    
+    def load_sylph(self):
+
         pdf = pd.read_csv(self.sylph_profile,sep='\t')
 
         pdf['Sample'] = pdf['Sample_file'].apply(lambda x: os.path.basename(x).replace('.fastq.gz','').replace(self.args.r1_suffix,'').replace(self.args.r2_suffix,''))
@@ -59,12 +61,23 @@ class PlotUtils:
         if pdf['Strain'].nunique() < 20:
             # use palettable.tableau.GreenOrange_12.mpl_colormap as the colormap
             cmap = ListedColormap(palettable.tableau.GreenOrange_12.mpl_colors)
-            strain_colors = {strain: cmap(i) for i, strain in enumerate(pdf['Strain'].unique())}
+            self.strain_colors = {strain: cmap(i) for i, strain in enumerate(pdf['Strain'].unique())}
         else:
             # Try using the colors from the pdf
             # 'Color' contains a unique hex code for each strain, grouped by ANI clustering
-            strain_colors = {strain: pdf[pdf['Strain'] == strain]['Color'].values[0] for strain in pdf['Strain'].unique()}
+            self.strain_colors = {strain: pdf[pdf['Strain'] == strain]['Color'].values[0] for strain in pdf['Strain'].unique()}
+        
+        self.pdf = pdf
 
+
+    def plot_sylph_profile(self):
+        """
+        Plot Sylph profile results using matplotlib.
+        """
+
+        pdf = self.pdf
+        salmon_df = self.salmon_df
+        
         ### Taxonomic Abundance Heatmap ###
         heatmap_data = pdf.pivot_table(
             index='Sample', 
@@ -140,7 +153,7 @@ class PlotUtils:
             ax=ax,
             edgecolor='grey',
             width=0.8,
-	        color=[strain_colors[strain] for strain in pivot_pdf.columns],
+	        color=[self.strain_colors[strain] for strain in pivot_pdf.columns],
         )
 
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.9), frameon=False)
@@ -158,7 +171,7 @@ class PlotUtils:
             sample_df = pdf[pdf['Sample'] == sample]
             sample_df = sample_df.sort_values('Taxonomic_abundance', ascending=False)
             plt.figure(figsize=(8, 4), dpi=300)
-            sns.barplot(y='Strain', x='Taxonomic_abundance', hue='Strain', data=sample_df, palette=strain_colors)
+            sns.barplot(y='Strain', x='Taxonomic_abundance', hue='Strain', data=sample_df, palette=self.strain_colors)
             plt.title(f'Taxonomic Abundance\n{sample}')
             plt.ylabel('')
             plt.xlabel('Taxonomic Abundance (%)')
@@ -166,8 +179,108 @@ class PlotUtils:
             plt.tight_layout()
             plt.savefig(os.path.join(self.output_dir,f'{sample}_taxonomic_abundance.pdf'), dpi=300, bbox_inches='tight')
             plt.savefig(os.path.join(self.output_dir,f'{sample}_taxonomic_abundance.png'), dpi=300, bbox_inches='tight')
+        
 
-    def plot_hmo_genes(self):
+        ### Absolute Taxonomic Abundance (normalized to sequencing depth) ###
+
+        for sample in pdf['Sample'].unique():
+            # find the corresponding metadata
+            metadata = [x for x in self.hmo_metadata if sample in x][0]
+            with open(metadata,'r') as f:
+                metadata = json.load(f)
+            seq_depth = metadata['num_processed']
+
+            if self.args.single_end:
+                fastq_file = [x for x in self.args.single_end if sample in x][0]
+                avg_length = self.calculate_average_read_length(fastq_file)
+            elif self.args.paired_end:
+                r1_file = [x for x in self.args.paired_end if sample in x and '_R1' in x][0]
+                r2_file = [x for x in self.args.paired_end if sample in x and '_R2' in x][0]
+                avg_length = self.calculate_average_read_length(r1_file,r2_file)
+            
+            sample_df = pdf[pdf['Sample'] == sample]
+            sample_df['Taxonomic_abundance_absolute'] = 100 * ( sample_df['Taxonomic_abundance'] / 100 ) * ( sample_df['Eff_cov'] * sample_df['Genome_size'] / avg_length ) / seq_depth
+            if self.args.paired_end:
+                sample_df['Taxonomic_abundance_absolute'] = sample_df['Taxonomic_abundance_absolute'] / 2
+            
+            plt.figure(figsize=(8, 4), dpi=300)
+            sns.barplot(y='Strain', x='Taxonomic_abundance_absolute', hue='Strain', data=sample_df, palette=self.strain_colors)
+            plt.title(f'Absolute Taxonomic Abundance\n{sample}')
+            plt.ylabel('')
+            plt.xlabel('Absolute Taxonomic Abundance (%)')
+            sns.despine()
+            plt.tight_layout()
+            plt.savefig(os.path.join(self.output_dir,f'{sample}_absolute_taxonomic_abundance.pdf'), dpi=300, bbox_inches='tight')
+            plt.savefig(os.path.join(self.output_dir,f'{sample}_absolute_taxonomic_abundance.png'), dpi=300, bbox_inches='tight')
+
+            pdf.loc[pdf['Sample'] == sample,'Taxonomic_abundance_absolute'] = sample_df['Taxonomic_abundance_absolute']
+    
+    
+        ### Absolute Taxonomic Abundance Full ###
+
+        fig,ax = plt.subplots(figsize=(8,10+pdf['Sample'].nunique()*0.2),dpi=300)
+        # strains = pdf['Strain'].unique()
+
+        pivot_pdf = pdf.pivot(index='Sample', columns='Strain', values='Taxonomic_abundance_absolute')
+        pivot_pdf = pivot_pdf.reindex(natsort.natsorted(pivot_pdf.index.tolist(),reverse=True))
+
+        # add edges
+        pivot_pdf.plot(
+            kind='barh',
+            stacked=True,
+            ax=ax,
+            edgecolor='grey',
+            width=0.8,
+	        color=[self.strain_colors[strain] for strain in pivot_pdf.columns],
+        )
+
+        ax.legend(loc='center left', bbox_to_anchor=(1, 0.9), frameon=False)
+        plt.xlabel('Taxonomic Abundance (%)')
+        plt.xticks(rotation=45, ha='right')
+        plt.title('Taxonomic Abundance Per Sample')
+        plt.tight_layout()
+        sns.despine()
+        plt.savefig(os.path.join(self.output_dir,f'absolute_taxonomic_abundance_profile_barplot.pdf'), dpi=300, bbox_inches='tight')
+        plt.savefig(os.path.join(self.output_dir,f'absolute_taxonomic_abundance_profile_barplot.png'), dpi=300, bbox_inches='tight')
+
+
+
+    def calculate_average_read_length(self,fastq1, fastq2=None, num_reads=150):
+        """
+        Calculate the average read length from the first `num_reads` reads in a FASTQ file or pair of FASTQ files.
+        
+        Parameters:
+            fastq1 (str): Path to the first FASTQ file (single-end or paired-end R1).
+            fastq2 (str, optional): Path to the second FASTQ file (paired-end R2). Default is None.
+            num_reads (int): Number of reads to sample for length calculation. Default is 150.
+        
+        Returns:
+            float: Average read length.
+        """
+        def read_lengths(fastq_path, num_reads):
+            lengths = []
+            opener = gzip.open if fastq_path.endswith(".gz") else open
+            with opener(fastq_path, 'rt') as f:
+                for i, line in enumerate(f):
+                    # Read the sequence line in the 4-line FASTQ format
+                    if i % 4 == 1:  # Sequence line is the second line of each 4-line group
+                        lengths.append(len(line.strip()))
+                    if len(lengths) >= num_reads:
+                        break
+            return lengths
+        
+        # Get read lengths from the first file
+        lengths = read_lengths(fastq1, num_reads)
+        
+        # If paired-end, add read lengths from the second file
+        if fastq2:
+            lengths += read_lengths(fastq2, num_reads)
+        
+        # Calculate and return the average read length
+        return sum(lengths) / len(lengths) if lengths else 0
+
+
+    def load_salmon_df(self):
         
         dfs = []
 
@@ -188,6 +301,12 @@ class PlotUtils:
         salmon_df = dfs[0]
         for df in dfs[1:]:
             salmon_df = pd.merge(salmon_df, df, on=['Name', 'Cluster'], how='outer')
+        
+        self.salmon_df = salmon_df
+
+    def plot_hmo_genes(self):
+
+        salmon_df = self.salmon_df
         
         ### "RPM" Heatmap ###
 

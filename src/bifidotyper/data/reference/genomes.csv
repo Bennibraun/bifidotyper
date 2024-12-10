@@ -1,193 +1,193 @@
-Genome_file,Genome_file_full_path,Label,Cluster,Color
-GCA_900314875.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_900314875.1_genomic.fna,Actinoisolate RUG039,1,#a0876d
-GCF_002259595.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002259595.1_genomic.fna,Aeriscardovia aeriphila,6,#698b93
-GCA_017965665.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_017965665.1_genomic.fna,Aeriscardovia sp. isolate RGIG10005,5,#5f8380
-GCA_017413255.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_017413255.1_genomic.fna,Aeriscardovia sp. isolate RGIG1476,5,#5d8582
-GCA_017405305.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_017405305.1_genomic.fna,Aeriscardovia sp. isolate RGIG2325,0,#c79fa6
-GCA_017386585.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_017386585.1_genomic.fna,Aeriscardovia sp. isolate RGIG6,0,#cd9aa3
-GCA_017538895.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_017538895.1_genomic.fna,Aeriscardovia sp. isolate RGIG7107,1,#a58768
-GCA_017538865.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_017538865.1_genomic.fna,Aeriscardovia sp. isolate RGIG7109,5,#5a8784
-GCA_017537945.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_017537945.1_genomic.fna,Aeriscardovia sp. isolate RGIG7154,5,#588986
-GCA_017632945.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_017632945.1_genomic.fna,Aeriscardovia sp. isolate RGIG9349,5,#568c88
-GCA_017632855.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_017632855.1_genomic.fna,Aeriscardovia sp. isolate RGIG9354,5,#538e8a
-GCA_903789535.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_903789535.1_genomic.fna,Aeriscardovia sp. isolate UMB00005,5,#51908c
-GCA_903789525.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_903789525.1_genomic.fna,Aeriscardovia sp. isolate UMB00048,1,#aa8763
-GCF_000376885.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000376885.1_genomic.fna,Alloscardovia criceti,6,#678c95
-GCF_002259705.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002259705.1_genomic.fna,Alloscardovia macacae,6,#668d96
-GCF_000420505.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000420505.1_genomic.fna,Alloscardovia omnicolens,6,#648e98
-GCF_004332295.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_004332295.1_genomic.fna,Alloscardovia theropitheci,6,#638f9a
-GCA_003585735.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_003585735.1_genomic.fna,Bifidobacteriaceae bacterium NR047,2,#827d5c
-GCA_002353815.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_002353815.1_genomic.fna,Bifidobacteriaceae bacterium UBA2724,0,#d295a0
-GCA_024104275.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_024104275.1_genomic.fna,Bifidobacteriaceae isolate B-bin1,4,#5f8474
-GCF_959020145.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_959020145.1_genomic.fna,Bifidobacteriaceae isolate ERR10149223 bin_5,8,#9ba9c7
-GCF_959020155.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_959020155.1_genomic.fna,Bifidobacteriaceae isolate ERR10149223 bin_28,7,#9ba9c7
-GCF_959028125.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_959028125.1_genomic.fna,Bifidobacteriaceae isolate ERR10149229,8,#bf9ecf
-GCA_031263495.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_031263495.1_genomic.fna,Bifidobacteriaceae isolate Gx485_bin43,1,#af875e
-GCA_022739095.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_022739095.1_genomic.fna,Bifidobacteriaceae isolate Map_4_007,7,#99a9c9
-GCA_031288355.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_031288355.1_genomic.fna,Bifidobacteriaceae isolate Roe453_bin28,1,#b48759
-GCA_031288055.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_031288055.1_genomic.fna,Bifidobacteriaceae isolate Roe453_bin66,1,#b98754
-GCA_030530905.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_030530905.1_genomic.fna,Bifidobacteriaceae isolate S11A_St_1,1,#bd884f
-GCF_949292005.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_949292005.1_genomic.fna,Bifidobacteriaceae isolate SI.O67,5,#4f938e
-GCF_945269915.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_945269915.1_genomic.fna,Bifidobacteriaceae isolate SRR11267074,3,#70805b
-GCA_946891915.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_946891915.1_genomic.fna,Bifidobacteriaceae isolate SRR12830912,2,#847e5a
-GCA_947253155.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_947253155.1_genomic.fna,Bifidobacteriaceae isolate SRR17635716,2,#878057
-GCA_937876495.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_937876495.1_genomic.fna,Bifidobacteriaceae isolate SRR2753156,5,#4c9590
-GCA_937874315.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_937874315.1_genomic.fna,Bifidobacteriaceae isolate SRR2753157,5,#4a9792
-GCA_029227215.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_029227215.1_genomic.fna,Bifidobacteriaceae isolate SUG1663,0,#d78f9c
-GCA_022651005.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_022651005.1_genomic.fna,Bifidobacteriaceae isolate UW_DM_BIF1_1,2,#898255
-GCA_022650895.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_022650895.1_genomic.fna,Bifidobacteriaceae isolate UW_DM_BIF2_1,2,#8c8452
-GCA_022649925.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_022649925.1_genomic.fna,Bifidobacteriaceae isolate UW_DM_BIF4_1,2,#8e8650
-GCF_022640935.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_022640935.1_genomic.fna,Bifidobacteriaceae isolate UW_MP_BIF12_1,1,#c2884a
-GCA_022640915.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_022640915.1_genomic.fna,Bifidobacteriaceae isolate UW_MP_BIF19_1,1,#c78845
-GCF_022647885.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_022647885.1_genomic.fna,Bifidobacteriaceae isolate UW_MP_BIF3_1,5,#489a94
-GCA_022649135.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_022649135.1_genomic.fna,Bifidobacteriaceae isolate UW_MP_BIF8_1,5,#459c96
-GCA_001263395.1_ASM126339v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_001263395.1_ASM126339v1_genomic.fna,Bifidobacterium actinocoloniiforme,3,#718358
-GCA_042855145.1_ASM4285514v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_042855145.1_ASM4285514v1_genomic.fna,Bifidobacterium adolescentis,8,#c09bd1
-GCF_003315635.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_003315635.1_genomic.fna,Bifidobacterium aemilianum,6,#61909b
-GCF_010667685.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_010667685.1_genomic.fna,Bifidobacterium aerophilum,7,#97a8cb
-GCF_001417815.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_001417815.1_genomic.fna,Bifidobacterium aesculapii,9,#c297b6
-GCF_018555435.2_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_018555435.2_genomic.fna,Bifidobacterium amazonense,7,#95a7cd
-GCA_000966445.2_ASM96644v2_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_000966445.2_ASM96644v2_genomic.fna,Bifidobacterium angulatum,8,#c199d4
-GCA_000817045.1_ASM81704v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_000817045.1_ASM81704v1_genomic.fna,Bifidobacterium animalis,6,#5f919d
-GCF_002860345.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002860345.1_genomic.fna,Bifidobacterium anseris,6,#5e919e
-GCF_007559275.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_007559275.1_genomic.fna,Bifidobacterium apousia,3,#718655
-GCF_009299485.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_009299485.1_genomic.fna,Bifidobacterium apri,0,#dc8a99
-GCF_002259795.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002259795.1_genomic.fna,Bifidobacterium aquikefiri,5,#439e98
-GCA_002715865.1_ASM271586v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_002715865.1_ASM271586v1_genomic.fna,Bifidobacterium asteroides DSM 20089,3,#728a51
-GCF_003202755.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_003202755.1_genomic.fna,Bifidobacterium asteroides ESL0199,3,#728d4e
-GCF_003202695.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_003202695.1_genomic.fna,Bifidobacterium asteroides ESL0200,3,#73904b
-GCA_019469425.1_ASM1946942v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_019469425.1_ASM1946942v1_genomic.fna,Bifidobacterium asteroides ESL0447,3,#739348
-GCF_009683175.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_009683175.1_genomic.fna,Bifidobacterium asteroides VRA_9sq_n,3,#749744
-GCF_009299475.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_009299475.1_genomic.fna,Bifidobacterium avesanii,9,#c496b7
-GCF_000741165.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000741165.1_genomic.fna,Bifidobacterium biavatii,7,#93a7cf
-GCA_003390735.1_ASM339073v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_003390735.1_ASM339073v1_genomic.fna,Bifidobacterium bifidum,9,#c694b8
-GCF_000741525.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000741525.1_genomic.fna,Bifidobacterium bohemicum,4,#5b8774
-GCF_000737845.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000737845.1_genomic.fna,Bifidobacterium bombi,6,#5c92a0
-GCF_000741535.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000741535.1_genomic.fna,Bifidobacterium boum,0,#e18596
-GCA_002838485.1_ASM283848v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_002838485.1_ASM283848v1_genomic.fna,Bifidobacterium breve,7,#91a6d1
-GCF_003952005.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_003952005.1_genomic.fna,Bifidobacterium callimiconis,9,#c792b8
-GCF_003129905.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_003129905.1_genomic.fna,Bifidobacterium callitrichidarum,7,#8fa5d3
-GCF_000741175.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000741175.1_genomic.fna,Bifidobacterium callitrichos,9,#c991b9
-GCF_009727065.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_009727065.1_genomic.fna,Bifidobacterium canis,6,#5b93a2
-GCF_003952025.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_003952025.1_genomic.fna,Bifidobacterium castoris,6,#5994a3
-GCA_009684555.1_ASM968455v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_009684555.1_ASM968455v1_genomic.fna,Bifidobacterium catenulatum subsp. kashiwanohense,8,#c296d7
-GCF_003129925.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_003129925.1_genomic.fna,Bifidobacterium catulorum,9,#cb8fba
-GCF_009193305.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_009193305.1_genomic.fna,Bifidobacterium cebidarum,7,#8da5d5
-GCA_002761235.1_ASM276123v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_002761235.1_ASM276123v1_genomic.fna,Bifidobacterium choerinum,6,#5795a5
-GCF_010667615.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_010667615.1_genomic.fna,Bifidobacterium choloepi,6,#5696a6
-GCF_018555455.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_018555455.1_genomic.fna,Bifidobacterium colobi,7,#8ba4d7
-GCF_029433395.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_029433395.1_genomic.fna,Bifidobacterium sp. ESL0763,4,#588a75
-GCF_002286935.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002286935.1_genomic.fna,Bifidobacterium criceti,6,#5497a8
-GCF_000738005.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000738005.1_genomic.fna,Bifidobacterium crudilactis,5,#41a19a
-GCF_000741575.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000741575.1_genomic.fna,Bifidobacterium cuniculi,6,#5398aa
-GCA_001042595.1_ASM104259v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_001042595.1_ASM104259v1_genomic.fna,Bifidobacterium dentium,8,#c393da
-GCF_003951975.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_003951975.1_genomic.fna,Bifidobacterium dolichotidis,6,#5199ab
-GCA_014898155.1_ASM1489815v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_014898155.1_ASM1489815v1_genomic.fna,Bifidobacterium eulemuris,9,#cc8eba
-GCF_002802915.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002802915.1_genomic.fna,Bifidobacterium felsineum,7,#89a3d9
-GCF_000741205.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000741205.1_genomic.fna,Bifidobacterium gallicum,6,#4f9aad
-GCF_003951095.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_003951095.1_genomic.fna,Bifidobacterium goeldii,7,#87a3db
-GCF_002259755.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002259755.1_genomic.fna,Bifidobacterium hapali,7,#85a2dc
-GCF_002860405.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002860405.1_genomic.fna,Bifidobacterium imperatoris,7,#83a1de
-GCA_000706765.1_ASM70676v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_000706765.1_ASM70676v1_genomic.fna,Bifidobacterium indicum,3,#749a41
-GCF_002286915.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002286915.1_genomic.fna,Bifidobacterium italicum,6,#4e9bae
-GCF_009078285.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_009078285.1_genomic.fna,Bifidobacterium jacchi,9,#ce8cbb
-GCA_000800455.1_ASM80045v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_000800455.1_ASM80045v1_genomic.fna,Bifidobacterium kashiwanohense,8,#c490dd
-GCA_014898175.1_ASM1489817v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_014898175.1_ASM1489817v1_genomic.fna,Bifidobacterium lemurum,9,#cf8abc
-GCF_009193355.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_009193355.1_genomic.fna,Bifidobacterium leontopitheci,9,#d189bc
-GCA_902167885.1_B.longum_ssp_infantis_6_mod2_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_902167885.1_B.longum_ssp_infantis_6_mod2_genomic.fna,Bifidobacterium longum subsp. infantis,7,#82a1e0
-GCF_000741255.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000741255.1_genomic.fna,Bifidobacterium magnum,6,#4c9cb0
-GCF_002860355.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002860355.1_genomic.fna,Bifidobacterium margollesii,9,#d387bd
-GCF_000967265.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000967265.1_genomic.fna,Bifidobacterium mellis,3,#759d3e
-GCF_900129045.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_900129045.1_genomic.fna,Bifidobacterium merycicum,8,#c58de0
-GCF_019331735.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_019331735.1_genomic.fna,Bifidobacterium miconis,7,#80a0e2
-GCF_019331675.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_019331675.1_genomic.fna,Bifidobacterium miconisargentati,7,#7e9fe4
-GCF_000741645.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000741645.1_genomic.fna,Bifidobacterium minimum,5,#3ea39c
-GCF_020884755.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_020884755.1_genomic.fna,Bifidobacterium mizhiense,3,#75a13b
-GCF_000741285.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000741285.1_genomic.fna,Bifidobacterium mongoliense,5,#3ca59e
-GCF_000522505.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000522505.1_genomic.fna,Bifidobacterium moukalabense,8,#c68ae3
-GCF_002259745.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002259745.1_genomic.fna,Bifidobacterium myosotis,7,#7c9fe6
-GCF_002860365.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002860365.1_genomic.fna,Bifidobacterium parmae,9,#d485be
-GCF_019331775.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_019331775.1_genomic.fna,Bifidobacterium phasiani,9,#d684be
-GCF_010667645.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_010667645.1_genomic.fna,Bifidobacterium platyrrhinorum,9,#d882bf
-GCF_019331695.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_019331695.1_genomic.fna,Bifidobacterium pluvialisilvae,9,#d981c0
-GCF_016101585.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_016101585.1_genomic.fna,Bifidobacterium polysaccharolyticum,3,#76a437
-GCF_019331805.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_019331805.1_genomic.fna,Bifidobacterium pongonis,8,#c787e5
-GCF_002802875.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002802875.1_genomic.fna,Bifidobacterium primatium,9,#db7fc1
-GCA_042855075.1_ASM4285507v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_042855075.1_ASM4285507v1_genomic.fna,Bifidobacterium pseudocatenulatum,8,#c885e8
-GCA_024138855.1_ASM2413885v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_024138855.1_ASM2413885v1_genomic.fna,Bifidobacterium pseudolongum NjM1,6,#4b9db2
-GCF_000771225.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000771225.1_genomic.fna,Bifidobacterium pseudolongum subsp. pseudolongum,6,#499eb3
-GCF_000741705.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000741705.1_genomic.fna,Bifidobacterium psychraerophilum,5,#3aa8a0
-GCF_000771405.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000771405.1_genomic.fna,Bifidobacterium pullorum,9,#dc7dc1
-GCA_004135085.1_ASM413508v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_004135085.1_ASM413508v1_genomic.fna,Bifidobacterium pullorum subsp. gallinarum,9,#de7cc2
-GCF_016899725.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_016899725.1_genomic.fna,Bifidobacterium pullorum subsp. saeculare,9,#e07ac3
-GCF_009299505.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_009299505.1_genomic.fna,Bifidobacterium ramosum,7,#7a9ee8
-GCF_000741695.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000741695.1_genomic.fna,Bifidobacterium reuteri,7,#789dea
-GCF_008698235.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_008698235.1_genomic.fna,Bifidobacterium rousetti,9,#e178c3
-GCF_000770925.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000770925.1_genomic.fna,Bifidobacterium ruminantium,8,#c982eb
-GCF_000741715.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000741715.1_genomic.fna,Bifidobacterium saguini,7,#769dec
-GCF_019331725.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_019331725.1_genomic.fna,Bifidobacterium saguinibicoloris,9,#e377c4
-GCF_010667655.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_010667655.1_genomic.fna,Bifidobacterium saimiriisciurei,9,#e575c5
-GCF_003952945.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_003952945.1_genomic.fna,Bifidobacterium samirii,9,#e674c5
-GCF_018555385.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_018555385.1_genomic.fna,Bifidobacterium santillanense,9,#e872c6
-GCF_002802865.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002802865.1_genomic.fna,Bifidobacterium scaligerum,7,#749cee
-GCA_001042635.1_ASM104263v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_001042635.1_ASM104263v1_genomic.fna,Bifidobacterium scardovii,9,#ea70c7
-GCF_002802905.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002802905.1_genomic.fna,Bifidobacterium simiarum,9,#eb6fc8
-GCF_019331715.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_019331715.1_genomic.fna,Bifidobacterium simiiventris,7,#729bf0
-GCF_000499285.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000499285.1_genomic.fna,Bifidobacterium sp. 7101,3,#76a734
-GCF_026537325.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_026537325.1_genomic.fna,Bifidobacterium sp. B4142,3,#77aa31
-GCF_012932425.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_012932425.1_genomic.fna,Bifidobacterium sp. DSM 109957,7,#709bf2
-GCF_012932365.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_012932365.1_genomic.fna,Bifidobacterium sp. DSM 109958,9,#ed6dc8
-GCF_012932375.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_012932375.1_genomic.fna,Bifidobacterium sp. DSM 109959,7,#6e9af4
-GCF_012932675.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_012932675.1_genomic.fna,Bifidobacterium sp. DSM 109960,8,#ca7fee
-GCA_029392815.1_ASM2939281v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_029392815.1_ASM2939281v1_genomic.fna,Bifidobacterium sp. ESL0682,4,#558d75
-GCA_029392315.1_ASM2939231v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_029392315.1_ASM2939231v1_genomic.fna,Bifidobacterium sp. ESL0690,4,#529076
-GCA_029392075.1_ASM2939207v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_029392075.1_ASM2939207v1_genomic.fna,Bifidobacterium sp. ESL0704,4,#4f9476
-GCA_029392015.1_ASM2939201v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_029392015.1_ASM2939201v1_genomic.fna,Bifidobacterium sp. ESL0728,4,#4c9776
-GCA_029395535.1_ASM2939553v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_029395535.1_ASM2939553v1_genomic.fna,Bifidobacterium sp. ESL0732,4,#499a77
-GCF_900094885.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_900094885.1_genomic.fna,Bifidobacterium commune,4,#469d77
-GCF_029433335.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_029433335.1_genomic.fna,Bifidobacterium sp. ESL0745,4,#42a078
-GCA_029395495.1_ASM2939549v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_029395495.1_ASM2939549v1_genomic.fna,Bifidobacterium sp. ESL0769,4,#3fa378
-GCA_029395475.1_ASM2939547v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_029395475.1_ASM2939547v1_genomic.fna,Bifidobacterium sp. ESL0775,4,#3ca679
-GCF_029433295.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_029433295.1_genomic.fna,Bifidobacterium sp. ESL0784,4,#39a979
-GCA_029395435.1_ASM2939543v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_029395435.1_ASM2939543v1_genomic.fna,Bifidobacterium sp. ESL0790,4,#36ad79
-GCA_029395355.1_ASM2939535v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_029395355.1_ASM2939535v1_genomic.fna,Bifidobacterium sp. ESL0800,4,#33b07a
-GCF_002742445.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002742445.1_genomic.fna,Bifidobacterium sp. N4G05,8,#cb7cf1
-GCF_002451435.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002451435.1_genomic.fna,Bifidobacterium sp. UBA6881,8,#cc79f4
-GCF_002298605.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002298605.1_genomic.fna,Bifidobacterium sp. UBA744,9,#ee6bc9
-GCA_041080835.1_WK012_4_13_genomic_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_041080835.1_WK012_4_13_genomic_genomic.fna,Bifidobacterium sp. WK012_4_13,5,#37aaa2
-GCA_041080795.1_WK041_4_12_genomic_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_041080795.1_WK041_4_12_genomic_genomic.fna,Bifidobacterium sp. WK041_4_12,5,#35aca4
-GCF_000741785.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000741785.1_genomic.fna,Bifidobacterium stellenboschense,9,#f06aca
-GCA_014898195.1_ASM1489819v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_014898195.1_ASM1489819v1_genomic.fna,Bifidobacterium subtile,1,#cc8840
-GCA_000741495.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_000741495.1_genomic.fna,Bifidobacterium thermophilum JCM 1207,0,#e78092
-GCA_000347695.1_ASM34769v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_000347695.1_ASM34769v1_genomic.fna,Bifidobacterium thermophilum RBL67,0,#ec7a8f
-GCF_022655035.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_022655035.1_genomic.fna,Bifidobacterium tibiigranuli,1,#d1883b
-GCF_002259645.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002259645.1_genomic.fna,Bifidobacterium tissieri,9,#f268ca
-GCF_000741765.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000741765.1_genomic.fna,Bifidobacterium tsurumiense,6,#479fb5
-GCF_002234915.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002234915.1_genomic.fna,Bifidobacterium vansinderenii,9,#f367cb
-GCF_008698145.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_008698145.1_genomic.fna,Bifidobacterium vespertilionis,9,#f565cc
-GCF_003315615.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_003315615.1_genomic.fna,Bifidobacterium xylocopae,6,#46a0b6
-GCA_033095945.1_ASM3309594v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_033095945.1_ASM3309594v1_genomic.fna,Bombiscardovia apis,6,#44a1b8
-GCF_002259585.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002259585.1_genomic.fna,Bombiscardovia coagulans,6,#43a2ba
-GCA_033127725.1_ASM3312772v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_033127725.1_ASM3312772v1_genomic.fna,Bombiscardovia nodaiensis,6,#41a3bb
-GCA_031268675.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_031268675.1_genomic.fna,Candidatus Ancillula isolate Gsp477_bin129,6,#40a4bd
-GCA_031262545.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_031262545.1_genomic.fna,Candidatus Ancillula isolate Hm464_bin179,1,#d68836
-GCA_031273495.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_031273495.1_genomic.fna,Candidatus Ancillula isolate Kf353_bin77,1,#db8831
-GCA_000485475.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_000485475.1_genomic.fna,Candidatus Ancillula trichonymphae,6,#3ea5be
-GCF_014635685.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_014635685.1_genomic.fna,Galliscardovia ingluviei,6,#3ca6c0
-GCF_003293675.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_003293675.1_genomic.fna,Gardnerella leopoldii,2,#91884d
-GCA_947088155.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_947088155.1_genomic.fna,Gardnerella sp. isolate SRR11749285,2,#938a4b
-GCA_042994895.1_ASM4299489v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_042994895.1_ASM4299489v1_genomic.fna,Gardnerella swidsinskii,2,#968c48
-GCF_000263595.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000263595.1_genomic.fna,Gardnerella vaginalis 1500E,2,#998d45
-GCF_001563665.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_001563665.1_genomic.fna,Gardnerella vaginalis CMW7778B,2,#9b8f43
-GCF_001546455.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_001546455.1_genomic.fna,Gardnerella vaginalis GED7760B,2,#9e9140
-GCA_000213955.1_ASM21395v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_000213955.1_ASM21395v1_genomic.fna,Gardnerella vaginalis HMP9231,2,#a0933e
-GCA_946997215.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_946997215.1_genomic.fna,Gardnerella vaginalis isolate SRR16916874,2,#a3953b
-GCA_023277565.1_ASM2327756v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_023277565.1_ASM2327756v1_genomic.fna,Gardnerella vaginalis JNFY17,2,#a59739
-GCF_002896555.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002896555.1_genomic.fna,Gardnerella vaginalis KA00225,2,#a89936
-GCF_003408845.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_003408845.1_genomic.fna,Gardnerella vaginalis NR010,2,#aa9a34
-GCF_001546485.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_001546485.1_genomic.fna,Gardnerella vaginalis PSS_7772B,2,#ad9c31
-GCA_001042675.1_ASM104267v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_001042675.1_ASM104267v1_genomic.fna,Parascardovia denticolens,6,#3ba7c1
-GCF_002259605.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002259605.1_genomic.fna,Pseudoscardovia radai,0,#f1758b
-GCF_002797875.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_002797875.1_genomic.fna,Pseudoscardovia suis DSM 24744,0,#f67088
-GCA_001042695.1_ASM104269v1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCA_001042695.1_ASM104269v1_genomic.fna,Scardovia inopinata,6,#39a7c3
-GCF_000269605.1_genomic.fna,/home/bebr1814/bif_db/bifido_genomes/Database_alpha/fna/GCF_000269605.1_genomic.fna,Scardovia wiggsiae,6,#38a8c5
+Genome_file,Label,Genome_size,Cluster,Color
+GCA_900314875.1_genomic.fna,Actinoisolate RUG039,1471337,1,#a0876d
+GCF_002259595.1_genomic.fna,Aeriscardovia aeriphila,1631097,6,#698b93
+GCA_017965665.1_genomic.fna,Aeriscardovia sp. isolate RGIG10005,784903,5,#5f8380
+GCA_017413255.1_genomic.fna,Aeriscardovia sp. isolate RGIG1476,928029,5,#5d8582
+GCA_017405305.1_genomic.fna,Aeriscardovia sp. isolate RGIG2325,1098513,0,#c79fa6
+GCA_017386585.1_genomic.fna,Aeriscardovia sp. isolate RGIG6,1324696,0,#cd9aa3
+GCA_017538895.1_genomic.fna,Aeriscardovia sp. isolate RGIG7107,1411174,1,#a58768
+GCA_017538865.1_genomic.fna,Aeriscardovia sp. isolate RGIG7109,761691,5,#5a8784
+GCA_017537945.1_genomic.fna,Aeriscardovia sp. isolate RGIG7154,816645,5,#588986
+GCA_017632945.1_genomic.fna,Aeriscardovia sp. isolate RGIG9349,787826,5,#568c88
+GCA_017632855.1_genomic.fna,Aeriscardovia sp. isolate RGIG9354,767139,5,#538e8a
+GCA_903789535.1_genomic.fna,Aeriscardovia sp. isolate UMB00005,1606315,5,#51908c
+GCA_903789525.1_genomic.fna,Aeriscardovia sp. isolate UMB00048,1435208,1,#aa8763
+GCF_000376885.1_genomic.fna,Alloscardovia criceti,1884654,6,#678c95
+GCF_002259705.1_genomic.fna,Alloscardovia macacae,1891581,6,#668d96
+GCF_000420505.1_genomic.fna,Alloscardovia omnicolens,1847146,6,#648e98
+GCF_004332295.1_genomic.fna,Alloscardovia theropitheci,1959824,6,#638f9a
+GCA_003585735.1_genomic.fna,Bifidobacteriaceae bacterium NR047,1656417,2,#827d5c
+GCA_002353815.1_genomic.fna,Bifidobacteriaceae bacterium UBA2724,2068369,0,#d295a0
+GCA_024104275.1_genomic.fna,Bifidobacteriaceae isolate B-bin1,2164548,4,#5f8474
+GCF_959020145.1_genomic.fna,Bifidobacteriaceae isolate ERR10149223 bin_5,1969741,8,#9ba9c7
+GCF_959020155.1_genomic.fna,Bifidobacteriaceae isolate ERR10149223 bin_28,1950483,7,#9ba9c7
+GCF_959028125.1_genomic.fna,Bifidobacteriaceae isolate ERR10149229,1890470,8,#bf9ecf
+GCA_031263495.1_genomic.fna,Bifidobacteriaceae isolate Gx485_bin43,1546520,1,#af875e
+GCA_022739095.1_genomic.fna,Bifidobacteriaceae isolate Map_4_007,2120222,7,#99a9c9
+GCA_031288355.1_genomic.fna,Bifidobacteriaceae isolate Roe453_bin28,983309,1,#b48759
+GCA_031288055.1_genomic.fna,Bifidobacteriaceae isolate Roe453_bin66,1039673,1,#b98754
+GCA_030530905.1_genomic.fna,Bifidobacteriaceae isolate S11A_St_1,1219118,1,#bd884f
+GCF_949292005.1_genomic.fna,Bifidobacteriaceae isolate SI.O67,1693111,5,#4f938e
+GCF_945269915.1_genomic.fna,Bifidobacteriaceae isolate SRR11267074,1969310,3,#70805b
+GCA_946891915.1_genomic.fna,Bifidobacteriaceae isolate SRR12830912,1271097,2,#847e5a
+GCA_947253155.1_genomic.fna,Bifidobacteriaceae isolate SRR17635716,1151721,2,#878057
+GCA_937876495.1_genomic.fna,Bifidobacteriaceae isolate SRR2753156,1752243,5,#4c9590
+GCA_937874315.1_genomic.fna,Bifidobacteriaceae isolate SRR2753157,2389073,5,#4a9792
+GCA_029227215.1_genomic.fna,Bifidobacteriaceae isolate SUG1663,2001209,0,#d78f9c
+GCA_022651005.1_genomic.fna,Bifidobacteriaceae isolate UW_DM_BIF1_1,2162097,2,#898255
+GCA_022650895.1_genomic.fna,Bifidobacteriaceae isolate UW_DM_BIF2_1,2058680,2,#8c8452
+GCA_022649925.1_genomic.fna,Bifidobacteriaceae isolate UW_DM_BIF4_1,1703207,2,#8e8650
+GCF_022640935.1_genomic.fna,Bifidobacteriaceae isolate UW_MP_BIF12_1,2149926,1,#c2884a
+GCA_022640915.1_genomic.fna,Bifidobacteriaceae isolate UW_MP_BIF19_1,1760819,1,#c78845
+GCF_022647885.1_genomic.fna,Bifidobacteriaceae isolate UW_MP_BIF3_1,2342264,5,#489a94
+GCA_022649135.1_genomic.fna,Bifidobacteriaceae isolate UW_MP_BIF8_1,2366627,5,#459c96
+GCA_001263395.1_ASM126339v1_genomic.fna,Bifidobacterium actinocoloniiforme,1830060,3,#718358
+GCA_042855145.1_ASM4285514v1_genomic.fna,Bifidobacterium adolescentis,2291597,8,#c09bd1
+GCF_003315635.1_genomic.fna,Bifidobacterium aemilianum,2017578,6,#61909b
+GCF_010667685.1_genomic.fna,Bifidobacterium aerophilum,2998264,7,#97a8cb
+GCF_001417815.1_genomic.fna,Bifidobacterium aesculapii,2693486,9,#c297b6
+GCF_018555435.2_genomic.fna,Bifidobacterium amazonense,3348570,7,#95a7cd
+GCA_000966445.2_ASM96644v2_genomic.fna,Bifidobacterium angulatum,2064639,8,#c199d4
+GCA_000817045.1_ASM81704v1_genomic.fna,Bifidobacterium animalis,1958651,6,#5f919d
+GCF_002860345.1_genomic.fna,Bifidobacterium anseris,2166761,6,#5e919e
+GCF_007559275.1_genomic.fna,Bifidobacterium apousia,2057523,3,#718655
+GCF_009299485.1_genomic.fna,Bifidobacterium apri,2421262,0,#dc8a99
+GCF_002259795.1_genomic.fna,Bifidobacterium aquikefiri,2408364,5,#439e98
+GCA_002715865.1_ASM271586v1_genomic.fna,Bifidobacterium asteroides DSM 20089,2190368,3,#728a51
+GCF_003202755.1_genomic.fna,Bifidobacterium asteroides ESL0199,2167340,3,#728d4e
+GCF_003202695.1_genomic.fna,Bifidobacterium asteroides ESL0200,1933421,3,#73904b
+GCA_019469425.1_ASM1946942v1_genomic.fna,Bifidobacterium asteroides ESL0447,2233706,3,#739348
+GCF_009683175.1_genomic.fna,Bifidobacterium asteroides VRA_9sq_n,2140182,3,#749744
+GCF_009299475.1_genomic.fna,Bifidobacterium avesanii,2684414,9,#c496b7
+GCF_000741165.1_genomic.fna,Bifidobacterium biavatii,3252147,7,#93a7cf
+GCA_003390735.1_ASM339073v1_genomic.fna,Bifidobacterium bifidum,2311342,9,#c694b8
+GCF_000741525.1_genomic.fna,Bifidobacterium bohemicum,2052470,4,#5b8774
+GCF_000737845.1_genomic.fna,Bifidobacterium bombi,1895239,6,#5c92a0
+GCF_000741535.1_genomic.fna,Bifidobacterium boum,2171356,0,#e18596
+GCA_002838485.1_ASM283848v1_genomic.fna,Bifidobacterium breve,2589602,7,#91a6d1
+GCF_003952005.1_genomic.fna,Bifidobacterium callimiconis,2962404,9,#c792b8
+GCF_003129905.1_genomic.fna,Bifidobacterium callitrichidarum,3121265,7,#8fa5d3
+GCF_000741175.1_genomic.fna,Bifidobacterium callitrichos,2887313,9,#c991b9
+GCF_009727065.1_genomic.fna,Bifidobacterium canis,2270696,6,#5b93a2
+GCF_003952025.1_genomic.fna,Bifidobacterium castoris,2496067,6,#5994a3
+GCA_009684555.1_ASM968455v1_genomic.fna,Bifidobacterium catenulatum subsp. kashiwanohense,2445409,8,#c296d7
+GCF_003129925.1_genomic.fna,Bifidobacterium catulorum,2611484,9,#cb8fba
+GCF_009193305.1_genomic.fna,Bifidobacterium cebidarum,2335510,7,#8da5d5
+GCA_002761235.1_ASM276123v1_genomic.fna,Bifidobacterium choerinum,2257294,6,#5795a5
+GCF_010667615.1_genomic.fna,Bifidobacterium choloepi,2248659,6,#5696a6
+GCF_018555455.1_genomic.fna,Bifidobacterium colobi,2697321,7,#8ba4d7
+GCF_029433395.1_genomic.fna,Bifidobacterium sp. ESL0763,1951451,4,#588a75
+GCF_002286935.1_genomic.fna,Bifidobacterium criceti,2155882,6,#5497a8
+GCF_000738005.1_genomic.fna,Bifidobacterium crudilactis,2362816,5,#41a19a
+GCF_000741575.1_genomic.fna,Bifidobacterium cuniculi,2531592,6,#5398aa
+GCA_001042595.1_ASM104259v1_genomic.fna,Bifidobacterium dentium,2635669,8,#c393da
+GCF_003951975.1_genomic.fna,Bifidobacterium dolichotidis,1921709,6,#5199ab
+GCA_014898155.1_ASM1489815v1_genomic.fna,Bifidobacterium eulemuris,2920839,9,#cc8eba
+GCF_002802915.1_genomic.fna,Bifidobacterium felsineum,2384744,7,#89a3d9
+GCF_000741205.1_genomic.fna,Bifidobacterium gallicum,2004594,6,#4f9aad
+GCF_003951095.1_genomic.fna,Bifidobacterium goeldii,2607372,7,#87a3db
+GCF_002259755.1_genomic.fna,Bifidobacterium hapali,2834308,7,#85a2dc
+GCF_002860405.1_genomic.fna,Bifidobacterium imperatoris,2639899,7,#83a1de
+GCA_000706765.1_ASM70676v1_genomic.fna,Bifidobacterium indicum,1734546,3,#749a41
+GCF_002286915.1_genomic.fna,Bifidobacterium italicum,2276351,6,#4e9bae
+GCF_009078285.1_genomic.fna,Bifidobacterium jacchi,2876974,9,#ce8cbb
+GCA_000800455.1_ASM80045v1_genomic.fna,Bifidobacterium kashiwanohense,2370978,8,#c490dd
+GCA_014898175.1_ASM1489817v1_genomic.fna,Bifidobacterium lemurum,2965103,9,#cf8abc
+GCF_009193355.1_genomic.fna,Bifidobacterium leontopitheci,3030672,9,#d189bc
+GCA_902167885.1_B.longum_ssp_infantis_6_mod2_genomic.fna,Bifidobacterium longum subsp. infantis,2832850,7,#82a1e0
+GCF_000741255.1_genomic.fna,Bifidobacterium magnum,1822476,6,#4c9cb0
+GCF_002860355.1_genomic.fna,Bifidobacterium margollesii,2789387,9,#d387bd
+GCF_000967265.1_genomic.fna,Bifidobacterium mellis,2132390,3,#759d3e
+GCF_900129045.1_genomic.fna,Bifidobacterium merycicum,2274683,8,#c58de0
+GCF_019331735.1_genomic.fna,Bifidobacterium miconis,3176767,7,#80a0e2
+GCF_019331675.1_genomic.fna,Bifidobacterium miconisargentati,2983671,7,#7e9fe4
+GCF_000741645.1_genomic.fna,Bifidobacterium minimum,1892860,5,#3ea39c
+GCF_020884755.1_genomic.fna,Bifidobacterium mizhiense,2089497,3,#75a13b
+GCF_000741285.1_genomic.fna,Bifidobacterium mongoliense,2170490,5,#3ca59e
+GCF_000522505.1_genomic.fna,Bifidobacterium moukalabense,2515335,8,#c68ae3
+GCF_002259745.1_genomic.fna,Bifidobacterium myosotis,2944195,7,#7c9fe6
+GCF_002860365.1_genomic.fna,Bifidobacterium parmae,2820211,9,#d485be
+GCF_019331775.1_genomic.fna,Bifidobacterium phasiani,2712769,9,#d684be
+GCF_010667645.1_genomic.fna,Bifidobacterium platyrrhinorum,2615073,9,#d882bf
+GCF_019331695.1_genomic.fna,Bifidobacterium pluvialisilvae,2655377,9,#d981c0
+GCF_016101585.1_genomic.fna,Bifidobacterium polysaccharolyticum,2234531,3,#76a437
+GCF_019331805.1_genomic.fna,Bifidobacterium pongonis,2476206,8,#c787e5
+GCF_002802875.1_genomic.fna,Bifidobacterium primatium,2696768,9,#db7fc1
+GCA_042855075.1_ASM4285507v1_genomic.fna,Bifidobacterium pseudocatenulatum,2193085,8,#c885e8
+GCA_024138855.1_ASM2413885v1_genomic.fna,Bifidobacterium pseudolongum NjM1,2172569,6,#4b9db2
+GCF_000771225.1_genomic.fna,Bifidobacterium pseudolongum subsp. pseudolongum,1901000,6,#499eb3
+GCF_000741705.1_genomic.fna,Bifidobacterium psychraerophilum,2615078,5,#3aa8a0
+GCF_000771405.1_genomic.fna,Bifidobacterium pullorum,2100948,9,#dc7dc1
+GCA_004135085.1_ASM413508v1_genomic.fna,Bifidobacterium pullorum subsp. gallinarum,2414462,9,#de7cc2
+GCF_016899725.1_genomic.fna,Bifidobacterium pullorum subsp. saeculare,2330831,9,#e07ac3
+GCF_009299505.1_genomic.fna,Bifidobacterium ramosum,3028921,7,#7a9ee8
+GCF_000741695.1_genomic.fna,Bifidobacterium reuteri,2847572,7,#789dea
+GCF_008698235.1_genomic.fna,Bifidobacterium rousetti,3053756,9,#e178c3
+GCF_000770925.1_genomic.fna,Bifidobacterium ruminantium,2230329,8,#c982eb
+GCF_000741715.1_genomic.fna,Bifidobacterium saguini,2787036,7,#769dec
+GCF_019331725.1_genomic.fna,Bifidobacterium saguinibicoloris,2680709,9,#e377c4
+GCF_010667655.1_genomic.fna,Bifidobacterium saimiriisciurei,2762496,9,#e575c5
+GCF_003952945.1_genomic.fna,Bifidobacterium samirii,2574625,9,#e674c5
+GCF_018555385.1_genomic.fna,Bifidobacterium santillanense,2771886,9,#e872c6
+GCF_002802865.1_genomic.fna,Bifidobacterium scaligerum,2652159,7,#749cee
+GCA_001042635.1_ASM104263v1_genomic.fna,Bifidobacterium scardovii,3158347,9,#ea70c7
+GCF_002802905.1_genomic.fna,Bifidobacterium simiarum,2721281,9,#eb6fc8
+GCF_019331715.1_genomic.fna,Bifidobacterium simiiventris,2878004,7,#729bf0
+GCF_000499285.1_genomic.fna,Bifidobacterium sp. 7101,2117084,3,#76a734
+GCF_026537325.1_genomic.fna,Bifidobacterium sp. B4142,2224927,3,#77aa31
+GCF_012932425.1_genomic.fna,Bifidobacterium sp. DSM 109957,2990182,7,#709bf2
+GCF_012932365.1_genomic.fna,Bifidobacterium sp. DSM 109958,2563591,9,#ed6dc8
+GCF_012932375.1_genomic.fna,Bifidobacterium sp. DSM 109959,2977969,7,#6e9af4
+GCF_012932675.1_genomic.fna,Bifidobacterium sp. DSM 109960,2293450,8,#ca7fee
+GCA_029392815.1_ASM2939281v1_genomic.fna,Bifidobacterium sp. ESL0682,2093512,4,#558d75
+GCA_029392315.1_ASM2939231v1_genomic.fna,Bifidobacterium sp. ESL0690,2639791,4,#529076
+GCA_029392075.1_ASM2939207v1_genomic.fna,Bifidobacterium sp. ESL0704,2415815,4,#4f9476
+GCA_029392015.1_ASM2939201v1_genomic.fna,Bifidobacterium sp. ESL0728,2590841,4,#4c9776
+GCA_029395535.1_ASM2939553v1_genomic.fna,Bifidobacterium sp. ESL0732,2387641,4,#499a77
+GCF_900094885.1_genomic.fna,Bifidobacterium commune,1633662,4,#469d77
+GCF_029433335.1_genomic.fna,Bifidobacterium sp. ESL0745,2361877,4,#42a078
+GCA_029395495.1_ASM2939549v1_genomic.fna,Bifidobacterium sp. ESL0769,2495776,4,#3fa378
+GCA_029395475.1_ASM2939547v1_genomic.fna,Bifidobacterium sp. ESL0775,2255024,4,#3ca679
+GCF_029433295.1_genomic.fna,Bifidobacterium sp. ESL0784,2345136,4,#39a979
+GCA_029395435.1_ASM2939543v1_genomic.fna,Bifidobacterium sp. ESL0790,2254804,4,#36ad79
+GCA_029395355.1_ASM2939535v1_genomic.fna,Bifidobacterium sp. ESL0800,2250646,4,#33b07a
+GCF_002742445.1_genomic.fna,Bifidobacterium sp. N4G05,2069141,8,#cb7cf1
+GCF_002451435.1_genomic.fna,Bifidobacterium sp. UBA6881,1944300,8,#cc79f4
+GCF_002298605.1_genomic.fna,Bifidobacterium sp. UBA744,1708185,9,#ee6bc9
+GCA_041080835.1_WK012_4_13_genomic_genomic.fna,Bifidobacterium sp. WK012_4_13,2470594,5,#37aaa2
+GCA_041080795.1_WK041_4_12_genomic_genomic.fna,Bifidobacterium sp. WK041_4_12,2359920,5,#35aca4
+GCF_000741785.1_genomic.fna,Bifidobacterium stellenboschense,2812864,9,#f06aca
+GCA_014898195.1_ASM1489819v1_genomic.fna,Bifidobacterium subtile,2822354,1,#cc8840
+GCA_000741495.1_genomic.fna,Bifidobacterium thermophilum JCM 1207,2099496,0,#e78092
+GCA_000347695.1_ASM34769v1_genomic.fna,Bifidobacterium thermophilum RBL67,2291643,0,#ec7a8f
+GCF_022655035.1_genomic.fna,Bifidobacterium tibiigranuli,2555147,1,#d1883b
+GCF_002259645.1_genomic.fna,Bifidobacterium tissieri,2873483,9,#f268ca
+GCF_000741765.1_genomic.fna,Bifidobacterium tsurumiense,2164426,6,#479fb5
+GCF_002234915.1_genomic.fna,Bifidobacterium vansinderenii,3111005,9,#f367cb
+GCF_008698145.1_genomic.fna,Bifidobacterium vespertilionis,3075992,9,#f565cc
+GCF_003315615.1_genomic.fna,Bifidobacterium xylocopae,1848461,6,#46a0b6
+GCA_033095945.1_ASM3309594v1_genomic.fna,Bombiscardovia apis,1937113,6,#44a1b8
+GCF_002259585.1_genomic.fna,Bombiscardovia coagulans,1741326,6,#43a2ba
+GCA_033127725.1_ASM3312772v1_genomic.fna,Bombiscardovia nodaiensis,2291583,6,#41a3bb
+GCA_031268675.1_genomic.fna,Candidatus Ancillula isolate Gsp477_bin129,1802720,6,#40a4bd
+GCA_031262545.1_genomic.fna,Candidatus Ancillula isolate Hm464_bin179,1518742,1,#d68836
+GCA_031273495.1_genomic.fna,Candidatus Ancillula isolate Kf353_bin77,1070202,1,#db8831
+GCA_000485475.1_genomic.fna,Candidatus Ancillula trichonymphae,1158414,6,#3ea5be
+GCF_014635685.1_genomic.fna,Galliscardovia ingluviei,2090914,6,#3ca6c0
+GCF_003293675.1_genomic.fna,Gardnerella leopoldii,1563545,2,#91884d
+GCA_947088155.1_genomic.fna,Gardnerella sp. isolate SRR11749285,1433753,2,#938a4b
+GCA_042994895.1_ASM4299489v1_genomic.fna,Gardnerella swidsinskii,1478422,2,#968c48
+GCF_000263595.1_genomic.fna,Gardnerella vaginalis 1500E,1548244,2,#998d45
+GCF_001563665.1_genomic.fna,Gardnerella vaginalis CMW7778B,1602630,2,#9b8f43
+GCF_001546455.1_genomic.fna,Gardnerella vaginalis GED7760B,1489151,2,#9e9140
+GCA_000213955.1_ASM21395v1_genomic.fna,Gardnerella vaginalis HMP9231,1726519,2,#a0933e
+GCA_946997215.1_genomic.fna,Gardnerella vaginalis isolate SRR16916874,1322520,2,#a3953b
+GCA_023277565.1_ASM2327756v1_genomic.fna,Gardnerella vaginalis JNFY17,1595814,2,#a59739
+GCF_002896555.1_genomic.fna,Gardnerella vaginalis KA00225,1670019,2,#a89936
+GCF_003408845.1_genomic.fna,Gardnerella vaginalis NR010,1622653,2,#aa9a34
+GCF_001546485.1_genomic.fna,Gardnerella vaginalis PSS_7772B,1596709,2,#ad9c31
+GCA_001042675.1_ASM104267v1_genomic.fna,Parascardovia denticolens,1890857,6,#3ba7c1
+GCF_002259605.1_genomic.fna,Pseudoscardovia radai,2436770,0,#f1758b
+GCF_002797875.1_genomic.fna,Pseudoscardovia suis DSM 24744,2247459,0,#f67088
+GCA_001042695.1_ASM104269v1_genomic.fna,Scardovia inopinata,1797862,6,#39a7c3
+GCF_000269605.1_genomic.fna,Scardovia wiggsiae,1550817,6,#38a8c5
