@@ -51,6 +51,8 @@ bifidotyper -pe data/*.fastq.gz --r1-suffix _R1 --r2-suffix _R2 -t 4
 bifidotyper -se data/*.fastq.gz -t 8 -g my_genomes/
 ```
 
+---
+
 ## Output
 
 The tool generates several output files and directories:
