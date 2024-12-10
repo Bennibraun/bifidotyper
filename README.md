@@ -1,23 +1,18 @@
 # Bifidotyper
 
-Bifidotyper is a fast, lightweight bioinformatics tool designed to take you from raw FastQ files to a complete and reproducible analysis of [*Bifidobacterial*](https://en.wikipedia.org/wiki/Bifidobacterium) strains in your samples. It makes use of [Sylph](https://doi.org/10.1038/s41587-024-02412-y) for rapid, k-mer-based read alignments. It also uses [Salmon](https://doi.org/10.1038/nmeth.4197) to detect the presence of genes necessary for the metabolism of human milk oligosaccharides ([HMOs](https://en.wikipedia.org/wiki/Human_milk_oligosaccharide)) based on alignments to the [*Bifidobacterium longum*](https://www.ncbi.nlm.nih.gov/nuccore/CP001095.1/) genome using gene annotations from [Henrick et al](https://doi.org/10.1016/j.cell.2021.05.030).
+Bifidotyper is a fast, lightweight bioinformatics tool designed to take you from raw FastQ files to a complete and reproducible analysis of [*Bifidobacterial*](https://en.wikipedia.org/wiki/Bifidobacterium) strains in your samples. It makes use of [Sylph](https://doi.org/10.1038/s41587-024-02412-y) for rapid, k-mer-based read alignments. It also uses [Salmon](https://doi.org/10.1038/nmeth.4197) to detect the presence of genes necessary for the metabolism of human milk oligosaccharides ([HMOs](https://en.wikipedia.org/wiki/Human_milk_oligosaccharide)) based on alignments to [*Bifidobacterium longum*](https://www.ncbi.nlm.nih.gov/nuccore/CP001095.1/) genes annotated by [Henrick et al](https://doi.org/10.1016/j.cell.2021.05.030).
 
 Bifidotyper was developed as part of a PhD rotation in the [Olm Lab](https://www.colorado.edu/lab/olm/) and the [IQ Biology](https://www.colorado.edu/certificate/iqbiology/) program.
 
 ![Bifidotyper Graphical Abstract](src/bifidotyper/data/reference/bifidotyper_graphical_abstract.png "Bifidotyper")
 
 ## Installation
-
-Bifidotyper can be installed with `pip` but it depends on [Sylph](https://github.com/bluenote-1577/sylph) and [Salmon](https://github.com/COMBINE-lab/salmon), which don't have `pip` distributions. You can install both with Conda (`conda install -c bioconda sylph salmon`), but for ease of use, binaries are included for Sylph and automatically downloaded for Salmon if they aren't found in your `PATH`.
-
-Clone the repository and install the package:
 ```bash
-git clone https://github.com/Bennibraun/bifidotyper.git
-cd bifidotyper
-pip install -e .
+pip install bifidotyper
 ```
 
-A proper distribution via PyPI or Anaconda is planned.
+> [!NOTE]
+> Bifidotyper can be installed with `pip` but it depends on [Sylph](https://github.com/bluenote-1577/sylph) and [Salmon](https://github.com/COMBINE-lab/salmon), which don't have `pip` distributions. For ease of use, binaries are included for Sylph and automatically downloaded for Salmon if they aren't found in your `PATH`. If you have problems with these, you can install both manually with Conda (`conda install -c bioconda sylph salmon`).
 
 ## Usage
 
