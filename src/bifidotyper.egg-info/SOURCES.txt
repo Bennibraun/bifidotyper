@@ -16,6 +16,7 @@ src/bifidotyper.egg-info/dependency_links.txt
 src/bifidotyper.egg-info/entry_points.txt
 src/bifidotyper.egg-info/requires.txt
 src/bifidotyper.egg-info/top_level.txt
+src/bifidotyper/data/bin/salmon
 src/bifidotyper/data/bin/sylph_aarch64-any-linux
 src/bifidotyper/data/bin/sylph_arm64-any-darwin
 src/bifidotyper/data/bin/sylph_x86_64-any-darwin
@@ -27,6 +28,7 @@ src/bifidotyper/data/reference/CP001095.1_genes.gff3
 src/bifidotyper/data/reference/CP001095.1_genome.fasta
 src/bifidotyper/data/reference/CP001095.1_genome.fasta.fai
 src/bifidotyper/data/reference/bifidobacteria_sketches.syldb
+src/bifidotyper/data/reference/bifidotyper_graphical_abstract.png
 src/bifidotyper/data/reference/genomes.csv
 src/bifidotyper/data/reference/get_gene_sequences.sh
 src/bifidotyper/data/reference/humann2_HMO_annotation.csv
