@@ -1,12 +1,10 @@
 # Bifidotyper
 
-Bifidotyper is a fast, lightweight bioinformatics tool designed to take you from raw FastQ files to a complete and reproducible analysis of [*Bifidobacterial*](https://en.wikipedia.org/wiki/Bifidobacterium) strains in your samples. It makes use of [Sylph](https://doi.org/10.1038/s41587-024-02412-y) for rapid, k-mer-based read alignments. It also uses [Salmon](https://doi.org/10.1038/nmeth.4197) to detect the presence of genes necessary for the metabolism of human milk oligosaccharides ([HMOs](https://en.wikipedia.org/wiki/Human_milk_oligosaccharide)) based on alignments to the *Bifidobacterium longum*[^1] genome using gene annotations from Henrick et al.[^2]
-
-[^1]: [CP001095.1](https://www.ncbi.nlm.nih.gov/nuccore/CP001095.1/)
-
-[^2]: Henrick, B. M. et al. (2021). Bifidobacteria-mediated immune system imprinting early in life. Cell, 184(15). [https://doi.org/10.1016/j.cell.2021.05.030](https://doi.org/10.1016/j.cell.2021.05.030)
+Bifidotyper is a fast, lightweight bioinformatics tool designed to take you from raw FastQ files to a complete and reproducible analysis of [*Bifidobacterial*](https://en.wikipedia.org/wiki/Bifidobacterium) strains in your samples. It makes use of [Sylph](https://doi.org/10.1038/s41587-024-02412-y) for rapid, k-mer-based read alignments. It also uses [Salmon](https://doi.org/10.1038/nmeth.4197) to detect the presence of genes necessary for the metabolism of human milk oligosaccharides ([HMOs](https://en.wikipedia.org/wiki/Human_milk_oligosaccharide)) based on alignments to the [*Bifidobacterium longum*](https://www.ncbi.nlm.nih.gov/nuccore/CP001095.1/) genome using gene annotations from [Henrick et al](https://doi.org/10.1016/j.cell.2021.05.030).
 
 Bifidotyper was developed as part of a PhD rotation in the [Olm Lab](https://www.colorado.edu/lab/olm/) and the [IQ Biology](https://www.colorado.edu/certificate/iqbiology/) program.
+
+![Bifidotyper Graphical Abstract](src/bifidotyper/data/reference/bifidotyper_graphical_abstract.png "Bifidotyper")
 
 ## Installation
 
