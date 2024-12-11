@@ -6,8 +6,8 @@ import glob
 import platform
 import os
 import subprocess
-from .sylph import SylphUtils, SylphError
-from .hmo_genes import HMOUtils, HMOError
+from .sylph import SylphUtils
+from .hmo_genes import HMOUtils
 from .plotting import PlotUtils
 from .logger import logger
 import tqdm
@@ -225,9 +225,9 @@ def main():
             logger.info(f"Query result: {query_result}")
             logger.info(f"Profile result: {profile_result}")
         
-        except SylphError as e:
+        except Exception as e:
             logger.info(f"Sylph processing error: {e}")
-            raise SylphError(f"Sylph processing error: {e}")
+            raise Exception(f"Sylph processing error: {e}")
 
     # Now run HMO quantification
     print('Detecting HMO genes...')
