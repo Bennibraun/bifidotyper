@@ -5,7 +5,6 @@ import pathlib
 from .logger import logger
 
 class ReferenceManager:
-    """Manages access to reference files for the bifidotyper package"""
     
     def __init__(self):
         # Get the package's root directory
@@ -39,45 +38,37 @@ class ReferenceManager:
         logger.info("References validated.")
     
     def _validate_references(self):
-        """Ensure all required reference files are present"""
         for name, path in self._reference_files.items():
             if not path.exists():
                 raise FileNotFoundError(f"Required reference file '{name}' not found at {path}")
     
     def _validate_bins(self):
-        """Ensure all required binary files are present"""
         for name, path in self._bin_files.items():
             if not path.exists():
                 raise FileNotFoundError(f"Required binary file '{name}' not found at {path}")
 
     def get_reference_path(self, reference_name):
-        """Get the path to a specific reference file"""
         if reference_name not in self._reference_files:
             raise ValueError(f"Unknown reference '{reference_name}'. Available references: {list(self._reference_files.keys())}")
         return str(self._reference_files[reference_name])
 
     def get_bin_path(self, bin_name):
-        """Get the path to a specific binary file"""
         if bin_name not in self._bin_files:
             raise ValueError(f"Unknown binary '{bin_name}'. Available binaries: {list(self._bin_files.keys())}")
         return str(self._bin_files[bin_name])
 
     def get_reference_dir(self):
-        """Get the path to the reference directory"""
         return str(self.reference_dir)
 
     def get_bin_dir(self):
-        """Get the path to the binary directory"""
         return str(self.bin_dir)
     
     @property
     def available_references(self):
-        """List all available reference files"""
         return list(self._reference_files.keys())
     
     @property
     def available_bins(self):
-        """List all available binary files"""
         return list(self._bin_files.keys())
 
 # Usage in your main program:

@@ -9,10 +9,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from .logger import logger
 
-class HMOError(Exception):
-    """Custom exception for HMO-related errors."""
-    pass
-
 class HMOUtils:
     def __init__(self,
                  args,
@@ -25,14 +21,7 @@ class HMOUtils:
                  fastq_pe2: str = None,
                  output_dir: str = 'hmo_quantification',
                  threads: int = 1):
-        """
-        Initialize HMO utility with input file paths.
 
-        Args:
-            genome_fasta (str): Path to genome FASTA file
-            gene_annotations_gff3 (str): Path to gene annotations GFF3 file
-            hmo_annotations (str): Path to HMO annotations file
-        """
         self.args = args
         self.salmon_executable = salmon_executable
         self.sample_name = sample_name
@@ -41,6 +30,7 @@ class HMOUtils:
         self.fastq_se = fastq_se
         self.fastq_pe1 = fastq_pe1
         self.fastq_pe2 = fastq_pe2
+        self.rpm_threshold = args.rpm_threshold
         self.output_dir = output_dir
         self.threads = threads
 
@@ -73,18 +63,6 @@ class HMOUtils:
 
     
     def _run_command(self, command: typing.List[str], logfile:str = None, stdout=None) -> subprocess.CompletedProcess:
-        """
-        Execute an HMO command with error handling.
-        
-        Args:
-            command (List[str]): Command to execute
-        
-        Returns:
-            subprocess.CompletedProcess: Completed process object
-        
-        Raises:
-            HMOError: If the command fails
-        """
 
         if logfile:
             logfile = open(logfile, 'w')
@@ -128,7 +106,7 @@ class HMOUtils:
 
         salmon_counts = pd.merge(salmon_counts,hmo,left_on='Name',right_on='Name',how='left')
         salmon_counts.dropna(inplace=True)
-        salmon_counts['Present'] = salmon_counts['NumReads'] > 0
+        salmon_counts['Present'] = salmon_counts['NumReads'] > self.rpm_threshold
         salmon_counts.to_csv(os.path.join(self.output_dir,self.sample_name+'.salmon_counts_annotated.tsv'), index=False, sep='\t')
         logger.info('Saved annotated salmon counts to {}'.format(os.path.join(self.output_dir,self.sample_name+'.salmon_counts_annotated.tsv')))
 

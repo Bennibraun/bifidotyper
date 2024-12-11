@@ -9,19 +9,8 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-class SylphError(Exception):
-    """Custom exception for Sylph-related errors."""
-    pass
-
 class SylphUtils:
     def __init__(self,args,sylph_executable):
-        """
-        Initialize Sylph utility with configurable directory paths.
-        
-        Args:
-            args: Arguments from the command line
-            sylph_executable (str): Path to the Sylph executable
-        """
         self.args = args
         self.sylph_executable = sylph_executable
         self.genome_sketch_dir = 'sylph_genome_sketches'
@@ -35,18 +24,6 @@ class SylphUtils:
             os.makedirs(dir_path, exist_ok=True)
     
     def _run_command(self, command: typing.List[str]) -> subprocess.CompletedProcess:
-        """
-        Execute a Sylph command with error handling.
-        
-        Args:
-            command (List[str]): Command to execute
-        
-        Returns:
-            subprocess.CompletedProcess: Completed process object
-        
-        Raises:
-            SylphError: If the command fails
-        """
         try:
             logger.info(f"Running command: {' '.join(command)}")
             result = subprocess.run(command, check=True, text=True, capture_output=True, shell=False)
@@ -58,17 +35,6 @@ class SylphUtils:
                        genomes: list, 
                        output_name: str = 'my_genomes', 
                        threads: int = 1) -> str:
-        """
-        Sketch genome files using Sylph.
-        
-        Args:
-            genomes (str): Path to genome files (e.g., '*.fna')
-            output_name (str): Base name for output .syldb file
-            threads (int): Number of CPU threads to use
-        
-        Returns:
-            str: Path to the generated .syldb file
-        """
                 
         # Construct sylph sketch command
         command = [self.sylph_executable, 'sketch',*genomes,'-t', str(threads), '-o', output_name]
@@ -85,18 +51,6 @@ class SylphUtils:
                      fastq_r1: list = None,
                      fastq_r2: list = None,
                      threads: int = 1):
-        """
-        Sketch read files using Sylph.
-        
-        Args:
-            fastq_se (List[str]): List of single-end fastq files
-            fastq_r1 (List[str]): List of R1 fastq files
-            fastq_r2 (List[str]): List of R2 fastq files
-            threads (int): Number of CPU threads to use
-        
-        Returns:
-            List[str]: Paths to the generated .sylsp files
-        """
         
         # Construct sylph sketch command
         if fastq_se:
@@ -118,17 +72,6 @@ class SylphUtils:
                       sylsp_files: typing.List[str], 
                       syldb_file: str, 
                       output_name: str = 'genome_query.tsv') -> str:
-        """
-        Query genomes using Sylph.
-        
-        Args:
-            sylsp_files (List[str]): List of .sylsp files to query
-            syldb_file (str): Path to the .syldb file to query against
-            output_name (str): Name of the output TSV file
-        
-        Returns:
-            str: Path to the generated query TSV file
-        """
         
         # Construct sylph query command
         command = [self.sylph_executable, 'query'] + sylsp_files + [syldb_file, '-o', output_name]
@@ -143,17 +86,6 @@ class SylphUtils:
                         sylsp_files: typing.List[str], 
                         syldb_file: str, 
                         output_name: str = 'genome_profile.tsv') -> str:
-        """
-        Profile genomes using Sylph.
-        
-        Args:
-            sylsp_files (List[str]): List of .sylsp files to profile
-            syldb_file (str): Path to the .syldb file to profile against
-            output_name (str): Name of the output TSV file
-        
-        Returns:
-            str: Path to the generated profile TSV file
-        """
         
         # Construct sylph profile command
         command = [self.sylph_executable, 'profile'] + sylsp_files + [syldb_file, '-o', output_name]

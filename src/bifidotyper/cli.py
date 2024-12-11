@@ -35,6 +35,8 @@ def parse_args():
     group.add_argument('-g', '--genome-dir', type=str, default=None, help="(Optional) Directory containing genomes to use in place of the provided Bifidobacterial genomes. Please provide genomes as .fna or .fna.gz files.")
     group.add_argument('-s', '--genome-sketch', type=str, default=None, help="(Optional) Path to a pre-sketched genome database (.syldb) to use in place of the provided Bifidobacterial genomes. You can use `sylph sketch` to generate this.")
 
+    parser.add_argument('-r', '--rpm-threshold', type=float, default=10, help="Minimum RPM threshold for HMO genes to be considered present (default: 10).")
+
     parser.add_argument('-t', '--threads', type=int, default=1, help="Number of threads to use for parallel processing.")
     
     args = parser.parse_args()

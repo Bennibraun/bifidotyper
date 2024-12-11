@@ -18,21 +18,14 @@ import gzip
 
 class PlotUtils:
     def __init__(self,args,sylph_profile:str,sylph_query:str,hmo_genes:str,genomes_df:str,output_dir:str='plots'):
-        """
-        Initialize Plotting utility with configurable directory paths.
         
-        Args:
-            args (argparse.Namespace): Command line arguments
-            sylph_profile (str): Sylph profile result (tsv)
-            sylph_query (str): Sylph query result (tsv)
-            hmo_genes (str): HMO gene quantification table
-        """
         self.args = args
         self.sylph_profile = sylph_profile
         self.sylph_query = sylph_query
         self.hmo_genes = glob.glob(hmo_genes)
         self.hmo_metadata = glob.glob(os.path.join(os.path.dirname(hmo_genes),'*','aux_info','meta_info.json'))
         self.genomes_df = pd.read_csv(genomes_df)
+        self.rpm_threshold = args.rpm_threshold
         self.output_dir = output_dir
 
 
@@ -71,9 +64,6 @@ class PlotUtils:
 
 
     def plot_sylph_profile(self):
-        """
-        Plot Sylph profile results using matplotlib.
-        """
 
         pdf = self.pdf
         salmon_df = self.salmon_df
@@ -244,19 +234,34 @@ class PlotUtils:
         plt.savefig(os.path.join(self.output_dir,f'absolute_taxonomic_abundance_profile_barplot.png'), dpi=300, bbox_inches='tight')
 
 
+        
+        # Save pdf with absolute taxonomic abundance
+        pdf[[
+            'Sample_file',
+            'Sample',
+            'Genome_file',
+            'Contig_name',
+            'Label',
+            'Genome_size',
+            'Taxonomic_abundance',
+            'Taxonomic_abundance_absolute',
+            'Sequence_abundance',
+            'Adjusted_ANI',
+            'Eff_cov',
+            'ANI_5-95_percentile',
+            'Eff_lambda',
+            'Lambda_5-95_percentile',
+            'Median_cov',
+            'Mean_cov_geq1',
+            'Containment_ind',
+            'Naive_ANI',
+            'kmers_reassigned',
+        ]].to_csv(os.path.join(self.output_dir,'sylph_profile_results.csv'),index=False)
+
+
 
     def calculate_average_read_length(self,fastq1, fastq2=None, num_reads=150):
-        """
-        Calculate the average read length from the first `num_reads` reads in a FASTQ file or pair of FASTQ files.
-        
-        Parameters:
-            fastq1 (str): Path to the first FASTQ file (single-end or paired-end R1).
-            fastq2 (str, optional): Path to the second FASTQ file (paired-end R2). Default is None.
-            num_reads (int): Number of reads to sample for length calculation. Default is 150.
-        
-        Returns:
-            float: Average read length.
-        """
+
         def read_lengths(fastq_path, num_reads):
             lengths = []
             opener = gzip.open if fastq_path.endswith(".gz") else open
@@ -419,7 +424,7 @@ class PlotUtils:
             cluster_df = salmon_df[salmon_df['Cluster'] == cluster].set_index('Name').drop('Cluster', axis=1)
             
             # Make the matrix binary
-            cluster_df = cluster_df.map(lambda x: 1 if x > 0 else 0)
+            cluster_df = cluster_df.map(lambda x: 1 if x > self.rpm_threshold else 0)
             cmap = ListedColormap(['white', cluster_colors[cluster]])
             
             # Draw heatmap
@@ -450,6 +455,9 @@ class PlotUtils:
             fig = self.gene_cassette_plots(salmon_df, rpm_col=sample)
             fig.savefig(os.path.join(self.output_dir,f'{sample}_hmo_gene_cluster_RPM.pdf'), dpi=300, bbox_inches='tight')
             fig.savefig(os.path.join(self.output_dir,f'{sample}_hmo_gene_cluster_RPM.png'), dpi=300, bbox_inches='tight')
+        
+
+        salmon_df.to_csv(os.path.join(self.output_dir,'HMO_genes.csv'),index=False)
 
 
     def plot_sylph_query(self):
@@ -492,9 +500,9 @@ class PlotUtils:
         return fig
 
 
-    def cluster_completion_plot(self, salmon_df, label, read_threshold=0):
+    def cluster_completion_plot(self, salmon_df, label):
         # Plot "Present" genes per cluster as bar plot
-        salmon_df['Present'] = salmon_df['NumReads'] > read_threshold
+        salmon_df['Present'] = salmon_df['NumReads'] > self.rpm_threshold
         clust_ct = salmon_df.groupby('Cluster').sum()['Present'].reset_index()
         # Get total genes in each cluster
         clust_ct['Total'] = salmon_df.groupby('Cluster').count()['Name'].values

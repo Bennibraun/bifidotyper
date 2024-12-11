@@ -16,7 +16,6 @@ src/bifidotyper.egg-info/dependency_links.txt
 src/bifidotyper.egg-info/entry_points.txt
 src/bifidotyper.egg-info/requires.txt
 src/bifidotyper.egg-info/top_level.txt
-src/bifidotyper/data/bin/salmon
 src/bifidotyper/data/bin/sylph_aarch64-any-linux
 src/bifidotyper/data/bin/sylph_arm64-any-darwin
 src/bifidotyper/data/bin/sylph_x86_64-any-darwin

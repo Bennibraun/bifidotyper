@@ -6,7 +6,6 @@ def validate_files(files):
         assert os.path.isfile(file), f"File not found: {file}"
 
 def get_base_name(filename, r1_suffix, r2_suffix):
-    """Extract base name from filename, handling various R1/R2 patterns"""
     basename = os.path.basename(filename)
     # Remove common suffixes first
     basename = basename.replace('.fastq.gz', '').replace('.fastq', '').replace('.fq.gz', '').replace('.fq', '')
@@ -15,7 +14,6 @@ def get_base_name(filename, r1_suffix, r2_suffix):
     return basename
 
 def make_absolute_path(file, base_dir):
-    """Convert a file path to an absolute path if it is not already"""
     if not file.startswith(("~", "/")):
         return os.path.join(base_dir, file)
     return file
