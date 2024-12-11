@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: bifidotyper
-Version: 0.1.3
+Version: 0.1.4
 Summary: A bioinformatics tool for analyzing Bifidobacteria in sequencing data.
 Home-page: https://github.com/Bennibraun/bifidotyper
 Author: Ben Braun
