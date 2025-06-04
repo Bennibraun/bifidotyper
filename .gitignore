@@ -3,3 +3,5 @@ bifidotyper.egg-info
 src/bifidotyper/data/bin/salmon
 src/bifidotyper/data/lib/
 dist/
+.venv/
+*.egg-info/

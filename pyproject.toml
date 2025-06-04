@@ -1,0 +1,26 @@
+[project]
+name = "bifidotyper"
+version = "0.1.4"
+description = "A bioinformatics tool for analyzing Bifidobacteria in sequencing data."
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+authors = [
+    {name = "Ben Braun", email = "braun.ben-1@colorado.edu"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+urls = {Homepage = "https://github.com/Bennibraun/bifidotyper"}
+dependencies = [
+    "matplotlib>=3.10.3",
+    "natsort>=8.4.0",
+    "numpy>=2.2.6",
+    "palettable>=3.3.3",
+    "pandas>=2.2.3",
+    "scikit-learn>=1.6.1",
+    "seaborn>=0.13.2",
+    "tqdm>=4.67.1",
+]
