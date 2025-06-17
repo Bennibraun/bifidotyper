@@ -1,3 +1,7 @@
+### 0.2.0
+- Removed custom genome input option
+- Added phylogenetic tree visualization for detected strains
+
 ### 0.1.4
 - Added an RPM threshold to HMO gene detection (default set to 10)
 - Made a few clean output tables to be used in downstream analysis

@@ -62,8 +62,7 @@ class HMOUtils:
         self.process_gene_counts()
 
     
-    def _run_command(self, command: typing.List[str], logfile:str = None, stdout=None) -> subprocess.CompletedProcess:
-
+    def _run_command(self, command: typing.List[str], logfile: str = None, stdout=None) -> subprocess.CompletedProcess:
         if logfile:
             logfile = open(logfile, 'w')
         else:
@@ -75,9 +74,11 @@ class HMOUtils:
             stdout = logfile
         
         try:
-            logger.info(f"Running command: {' '.join(command)}")
+            if self.args.verbose:
+                logger.info(f"Running command: {' '.join(command)}")
             subprocess.run(command, check=True, text=True, capture_output=False, shell=False, stdout=stdout, stderr=logfile)
         except subprocess.CalledProcessError as e:
+            logger.error(f"Command '{' '.join(command)}' failed with error: {e.stderr}")
             raise HMOError(f"Command '{' '.join(command)}' failed with error: {e.stderr}")
     
     def run_salmon(self):

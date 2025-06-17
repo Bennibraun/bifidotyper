@@ -24,12 +24,12 @@ pip install bifidotyper
 
 For single-end reads:
 ```bash
-bifidotyper -se <single-end FASTQ files> [-t <threads>] [-g <genome-dir> | -s <genome-sketch>] [-r <rpm_threshold>]
+bifidotyper -se <single-end FASTQ files> [-t <threads>] [-r <rpm_threshold>]
 ```
 
 Or paired-end reads:
 ```bash
-bifidotyper -pe <paired-end FASTQ files> [--r1-suffix <R1 suffix>] [--r2-suffix <R2 suffix>] [-t <threads>] [-g <genome-dir> | -s <genome-sketch>] [-r <rpm_threshold>]
+bifidotyper -pe <paired-end FASTQ files> [--r1-suffix <R1 suffix>] [--r2-suffix <R2 suffix>] [-t <threads>] [-r <rpm_threshold>]
 ```
 
 ### Options
@@ -39,8 +39,6 @@ bifidotyper -pe <paired-end FASTQ files> [--r1-suffix <R1 suffix>] [--r2-suffix 
 - `-t, --threads`: Number of threads to use for parallel processing (default: 1).
 - `--r1-suffix`: Suffix for R1 files (optional, only for paired-end mode. Default: "_R1").
 - `--r2-suffix`: Suffix for R2 files (optional, only for paired-end mode. Default: "_R2").
-- `-g, --genome-dir`: Directory containing reference genomes (optional, defaults to provided genomes).
-- `-s, --genome-sketch`: Path to a pre-sketched Sylph genome database (optional, defaults to provided database). Use `sylph sketch *.fna` to generate your own database.
 - `-r, --rpm_threshold`: Minimum RPM threshold for HMO genes to be considered present (default: 10).
 
 
@@ -48,8 +46,8 @@ bifidotyper -pe <paired-end FASTQ files> [--r1-suffix <R1 suffix>] [--r2-suffix 
 ```bash
 # Run bifidotyper in paired-end mode with 4 threads and _R1/_R2 suffixes
 bifidotyper -pe data/*.fastq.gz --r1-suffix _R1 --r2-suffix _R2 -t 4
-# Run bifidotyper in single-end mode with 8 threads, a custom genome directory, and a custom RPM threshold
-bifidotyper -se data/*.fastq.gz -t 8 -g my_genomes/ -r 25
+# Run bifidotyper in single-end mode with 8 threads and a custom RPM threshold
+bifidotyper -se data/*.fastq.gz -t 8 -r 25
 ```
 
 ---

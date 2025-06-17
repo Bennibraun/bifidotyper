@@ -25,47 +25,65 @@ class SylphUtils:
     
     def _run_command(self, command: typing.List[str]) -> subprocess.CompletedProcess:
         try:
-            logger.info(f"Running command: {' '.join(command)}")
+            if self.args.verbose:
+                logger.info(f"Running command: {' '.join(command)}")
             result = subprocess.run(command, check=True, text=True, capture_output=True, shell=False)
             return result
         except subprocess.CalledProcessError as e:
-            raise SylphError(f"Command '{' '.join(command)}' failed with error: {e.stderr}")
-    
-    def sketch_genomes(self, 
-                       genomes: list, 
-                       output_name: str = 'my_genomes', 
-                       threads: int = 1) -> str:
-                
-        # Construct sylph sketch command
-        command = [self.sylph_executable, 'sketch',*genomes,'-t', str(threads), '-o', output_name]
-        self._run_command(command)
-
-        # Move all output files into the genome sketch directory
-        syldb = os.path.join(self.genome_sketch_dir, f"{output_name}.syldb")
-        os.rename(f"{output_name}.syldb", syldb)
-
-        return syldb
+            logger.error(f"Command '{' '.join(command)}' failed with error: {e.stderr}")
+            raise Error(f"Command '{' '.join(command)}' failed with error: {e.stderr}")
     
     def sketch_reads(self,
                      fastq_se: list = None,
                      fastq_r1: list = None,
                      fastq_r2: list = None,
                      threads: int = 1):
-        
-        # Construct sylph sketch command
+        missing_files = []
+        command = []
+
+        def find_existing_sylsp(fastq_files):
+            """Find existing .sylsp files for the given FASTQ files."""
+            existing_files = []
+            for fastq in fastq_files:
+                base_name = os.path.basename(fastq).replace('.fastq.gz', '').replace('.fastq', '').replace('.fq.gz', '').replace('.fq', '')
+                sylsp_pattern = f"{base_name}*.sylsp"  # Match any .sylsp file with the base name
+                sylsp_files = glob.glob(os.path.join(self.fastq_sketch_dir, sylsp_pattern)) + glob.glob(sylsp_pattern)
+                existing_files.extend(sylsp_files)
+            return existing_files
+
         if fastq_se:
-            command = [self.sylph_executable, 'sketch', *fastq_se, '-t', str(threads)]
+            existing_files = find_existing_sylsp(fastq_se)
+            missing_files = [f for f in fastq_se if not any(os.path.basename(f).replace('.fastq.gz', '').replace('.fastq', '').replace('.fq.gz', '').replace('.fq', '') in ef for ef in existing_files)]
+            if len(existing_files) > 0:
+                logger.info(f"      Found {len(existing_files)} existing .sylsp files. Sketching the remaining {len(missing_files)} samples.")
+            else:
+                logger.info(f"      No existing .sylsp files found. Sketching all {len(missing_files)} samples.")
+            if missing_files:
+                command = [self.sylph_executable, 'sketch', *missing_files, '-t', str(threads)]
         elif fastq_r1 and fastq_r2:
-            command = [self.sylph_executable,'sketch','-1',*fastq_r1,'-2',*fastq_r2,'-t',str(threads)]
+            existing_files_r1 = find_existing_sylsp(fastq_r1)
+            missing_files_r1 = [f for f in fastq_r1 if not any(os.path.basename(f) in ef for ef in existing_files_r1)]
+            missing_files_r2 = [f.replace(self.args.r1_suffix,self.args.r2_suffix) for f in missing_files_r1]
+            if len(existing_files_r1) > 0:
+                logger.info(f"      Found {len(existing_files_r1)} existing .sylsp files. Sketching the remaining {len(missing_files_r1)} samples.")
+            else:
+                logger.info(f"      No existing .sylsp files found. Sketching all {len(missing_files_r1)} samples.")
+            if missing_files_r1:
+                command = [self.sylph_executable, 'sketch', '-1', *missing_files_r1, '-2', *missing_files_r2, '-t', str(threads)]
         else:
-            raise SylphError("Either fastq_se or fastq_r1 and fastq_r2 must be provided")
-        
-        self._run_command(command)
-        
-        # Move all output files into the fastq sketch directory
+            raise Error("Either fastq_se or fastq_r1 and fastq_r2 must be provided")
+
+        if command:
+            logger.info(f"Missing .sylsp files: {missing_files}. Running Sylph sketch command.")
+            self._run_command(command)
+        else:
+            logger.info("       All .sylsp files are present. Skipping Sylph sketch command.")
+
+        # Move any .sylsp files in the base dir to the fastq_sketch_dir
         for sylsp in glob.glob('*.sylsp'):
             os.rename(sylsp, os.path.join(self.fastq_sketch_dir, sylsp))
-        
+
+        # Return paths to all existing .sylsp files
         return glob.glob(os.path.join(self.fastq_sketch_dir, '*.sylsp'))
     
     def query_genomes(self, 
@@ -121,9 +139,9 @@ def main():
         logger.info(f"Query result: {query_result}")
         logger.info(f"Profile result: {profile_result}")
     
-    except SylphError as e:
+    except Error as e:
         logger.info(f"Sylph processing error: {e}")
-        raise SylphError(f"Sylph processing error: {e}")
+        raise Error(f"Sylph processing error: {e}")
 
 if __name__ == '__main__':
     main()

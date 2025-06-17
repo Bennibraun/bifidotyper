@@ -10,6 +10,7 @@ from .sylph import SylphUtils
 from .hmo_genes import HMOUtils
 from .plotting import PlotUtils
 from .logger import logger
+from .phylogenetic import PhylogeneticUtils
 import tqdm
 
 import warnings
@@ -31,13 +32,11 @@ def parse_args():
 
     # parser.add_argument('-l', '--read-length', type=int, default=None, help="Read length for accurate plotting (only affects some plots).")
     
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('-g', '--genome-dir', type=str, default=None, help="(Optional) Directory containing genomes to use in place of the provided Bifidobacterial genomes. Please provide genomes as .fna or .fna.gz files.")
-    group.add_argument('-s', '--genome-sketch', type=str, default=None, help="(Optional) Path to a pre-sketched genome database (.syldb) to use in place of the provided Bifidobacterial genomes. You can use `sylph sketch` to generate this.")
-
     parser.add_argument('-r', '--rpm-threshold', type=float, default=10, help="Minimum RPM threshold for HMO genes to be considered present (default: 10).")
 
     parser.add_argument('-t', '--threads', type=int, default=1, help="Number of threads to use for parallel processing.")
+
+    parser.add_argument('-v', '--verbose', action='store_true', help="Enable verbose output.", default=False)
     
     args = parser.parse_args()
     
@@ -126,10 +125,12 @@ def main():
             raise RuntimeError(f"Unfortunately, we do not have a precompiled Sylph binary for your architecture ({arch}). Please install Sylph manually and ensure it is in your PATH, then try again.")
         
         try:
+            if args.verbose:
+                logger.info(f"Running command: {' '.join([sylph, '--version'])}")
             subprocess.run([sylph, '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         except:
-            logger.error(f"Sylph failed to run. Please install it manually and ensure it si in your PATH, then try again.")
-            raise RuntimeError(f"Sylph failed to run. Please install it manually and ensure it si in your PATH, then try again.")
+            logger.error(f"Sylph failed to run. Please install it manually and ensure it is in your PATH, then try again.")
+            raise RuntimeError(f"Sylph failed to run. Please install it manually and ensure it is in your PATH, then try again.")
 
     # Check for Salmon
     try:
@@ -167,14 +168,10 @@ def main():
                                       r2_suffix=args.r2_suffix)
     
     if args.single_end:
-        fastq_files = []
-        for sample in tqdm.tqdm(sample_dict.values(), desc="Sketching reads", unit="samples", total=len(sample_dict), disable=disable_tqdm):
-            fastq_files.append(sample['files'].values())
+        fastq_files = [file for sample in sample_dict.values() for file in sample['files'].values()]
     else:
-        fastq_files_r1, fastq_files_r2 = [], []
-        for sample in tqdm.tqdm(sample_dict.values(), desc="Sketching reads", unit="samples", total=len(sample_dict), disable=disable_tqdm):
-            fastq_files_r1.append(sample['files']['R1'])
-            fastq_files_r2.append(sample['files']['R2'])
+        fastq_files_r1 = [sample['files']['R1'] for sample in sample_dict.values()]
+        fastq_files_r2 = [sample['files']['R2'] for sample in sample_dict.values()]
     
     # Get the reference files
     refs = get_reference_files()
@@ -182,52 +179,27 @@ def main():
     logger.info("Processing FASTQ files with Sylph...")
     print('Processing FASTQ files with Sylph...')
 
-    run_sylph = True
-    output_files = ['sylph_genome_queries/genome_profile.tsv', 'sylph_genome_queries/genome_query.tsv']
-    # If all of these files exist, skip Sylph processing
-    if all([os.path.exists(f) for f in output_files]):
-        print("Sylph output files already exist. Skipping Sylph processing.")
-        print("To force re-run, delete the output files and re-run the script.")
-        run_sylph = False
-    
-    if run_sylph:
-        # Initialize Sylph utility
-        sylph = SylphUtils(args=args,sylph_executable=sylph)
+    # Initialize Sylph utility
+    sylph = SylphUtils(args=args, sylph_executable=sylph)
 
-        try:
-            # Sketch genomes
-            if args.genome_dir:
-                print('Sketching genomes...')
-                genomes = glob.glob(os.path.join(args.genome_dir, '*.fna.gz'))
-                if len(genomes) == 0:
-                    genomes = glob.glob(os.path.join(args.genome_dir, '*.fna'))
-                    if len(genomes) == 0:
-                        raise FileNotFoundError(f"No genome files found in {args.genome_dir}")
-                genome_db = sylph.sketch_genomes(genomes=genomes, output_name='genome_sketches', threads=args.threads)
-            elif args.genome_sketch:
-                genome_db = args.genome_sketch
-                assert os.path.exists(genome_db), f"Genome sketch file {genome_db} not found."
-            else:
-                genome_db = refs['bifidobacteria_sketches']
-            
-            if args.single_end:
-                read_sketches = sylph.sketch_reads(fastq_se=fastq_files, threads=args.threads)
-            else:
-                read_sketches = sylph.sketch_reads(fastq_r1=fastq_files_r1, fastq_r2=fastq_files_r2, threads=args.threads)
-            
-            print('Querying the genome database...')
+    try:
+        genome_db = refs['bifidobacteria_sketches']
 
-            # Query genomes
-            query_result = sylph.query_genomes(read_sketches, genome_db)
-            # Profile genomes
-            profile_result = sylph.profile_genomes(read_sketches, genome_db)
-            
-            logger.info(f"Query result: {query_result}")
-            logger.info(f"Profile result: {profile_result}")
-        
-        except Exception as e:
-            logger.info(f"Sylph processing error: {e}")
-            raise Exception(f"Sylph processing error: {e}")
+        if args.single_end:
+            read_sketches = sylph.sketch_reads(fastq_se=fastq_files, threads=args.threads)
+        else:
+            read_sketches = sylph.sketch_reads(fastq_r1=fastq_files_r1, fastq_r2=fastq_files_r2, threads=args.threads)
+
+        print('Querying the genome database...')
+        query_result = sylph.query_genomes(read_sketches, genome_db)
+        profile_result = sylph.profile_genomes(read_sketches, genome_db)
+
+        logger.info(f"Query result: {query_result}")
+        logger.info(f"Profile result: {profile_result}")
+
+    except Exception as e:
+        logger.info(f"Sylph processing error: {e}")
+        raise Exception(f"Sylph processing error: {e}")
 
     # Now run HMO quantification
     print('Detecting HMO genes...')
@@ -239,7 +211,6 @@ def main():
         for fastq_se in tqdm.tqdm(fastq_files, desc="Quantifying HMO genes", unit="samples", total=len(fastq_files), disable=disable_tqdm):
             sample_name = get_sample_name(fastq_se)
             if all(os.path.exists(f) for f in [f'hmo_quantification/{sample_name}.salmon_counts_annotated.tsv',f'hmo_quantification/{sample_name}.cluster_presence.tsv']):
-                print(f"Skipping {sample_name} as output files already exist.")
                 continue
             HMOUtils(args=args,
                         salmon_executable=salmon,
@@ -282,7 +253,16 @@ def main():
 
     plot_u.plot_sylph_query()
 
-
+    # Generate and plot phylogenetic tree
+    print('Generating phylogenetic tree...')
+    logger.info("Generating phylogenetic tree...")
+    phylo_utils = PhylogeneticUtils(
+        genomes_df=refs['genomes_df'],
+        sylph_profile='sylph_genome_queries/genome_profile.tsv',
+        output_dir='plots'
+    )
+    tree = phylo_utils.generate_phylogenetic_tree()
+    phylo_utils.plot_cladogram(tree)
 
     print('Done!')
 

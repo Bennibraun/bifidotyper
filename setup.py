@@ -30,6 +30,7 @@ setup(
 		'scikit-learn',
 		'natsort',
 		'palettable',
+        'biopython'
     ],
 	url='https://github.com/Bennibraun/bifidotyper',
 	description='A bioinformatics tool for analyzing Bifidobacteria in sequencing data.',

@@ -184,8 +184,8 @@ class PlotUtils:
                 fastq_file = [x for x in self.args.single_end if sample in x][0]
                 avg_length = self.calculate_average_read_length(fastq_file)
             elif self.args.paired_end:
-                r1_file = [x for x in self.args.paired_end if sample in x and '_R1' in x][0]
-                r2_file = [x for x in self.args.paired_end if sample in x and '_R2' in x][0]
+                r1_file = [x for x in self.args.paired_end if sample in x and self.args.r1_suffix in x][0]
+                r2_file = [x for x in self.args.paired_end if sample in x and self.args.r2_suffix in x][0]
                 avg_length = self.calculate_average_read_length(r1_file,r2_file)
             
             sample_df = pdf[pdf['Sample'] == sample]

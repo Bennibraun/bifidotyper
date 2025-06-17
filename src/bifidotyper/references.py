@@ -21,8 +21,8 @@ class ReferenceManager:
             'humann2_hmo': self.reference_dir / 'humann2_HMO_annotation.csv',
             'bl_genome': self.reference_dir / 'CP001095.1_genome.fasta',
             'bl_genes': self.reference_dir / 'CP001095.1_gene_sequences.fasta',
-            'bifidobacteria_sketches': self.reference_dir / 'bifidobacteria_sketches.syldb',
             'genomes_df': self.reference_dir / 'genomes.csv',
+            'bifidobacteria_sketches': self.reference_dir / 'bifidobacteria_sketches.syldb',
         }
 
         self._bin_files = {
@@ -32,15 +32,20 @@ class ReferenceManager:
             'sylph_x86_64-any-darwin': self.bin_dir / 'sylph_x86_64-any-darwin',
         }
         
+        # Flag to track validation status
+        self._references_validated = False
+
         # Validate all reference files exist
         self._validate_references()
+        logger.info("References validated.")  # Log only once after validation
 
-        logger.info("References validated.")
-    
     def _validate_references(self):
+        if self._references_validated:  # Skip validation if already done
+            return
         for name, path in self._reference_files.items():
             if not path.exists():
                 raise FileNotFoundError(f"Required reference file '{name}' not found at {path}")
+        self._references_validated = True  # Mark as validated
     
     def _validate_bins(self):
         for name, path in self._bin_files.items():

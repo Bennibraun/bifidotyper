@@ -1,0 +1,30 @@
+package:
+  name: bifidotyper
+  version: 0.2.0
+
+source:
+  path: .
+
+requirements:
+  build:
+    - python >=3.7
+    - setuptools
+  run:
+    - python >=3.7
+    - numpy
+    - pandas
+    - seaborn
+    - matplotlib
+    - tqdm
+    - scikit-learn
+    - natsort
+    - palettable
+    - biopython
+    - sylph
+    - salmon
+
+
+about:
+  home: https://github.com/Bennibraun/bifidotyper
+  license: MIT
+  summary: A bioinformatics tool for analyzing Bifidobacteria in sequencing data.
