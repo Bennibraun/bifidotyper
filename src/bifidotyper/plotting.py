@@ -44,7 +44,7 @@ class PlotUtils:
 
         pdf = pd.read_csv(self.sylph_profile,sep='\t')
 
-        pdf['Sample'] = pdf['Sample_file'].apply(lambda x: os.path.basename(x).replace('.fastq.gz','').replace(self.args.r1_suffix,'').replace(self.args.r2_suffix,''))
+        pdf['Sample'] = pdf['Sample_file'].apply(lambda x: os.path.basename(x).replace('.gz','').replace('.fastq','').replace(self.args.r1_suffix,'').replace(self.args.r2_suffix,''))
         pdf = pdf.merge(self.genomes_df,how='left',on='Genome_file').drop_duplicates()
         pdf['Strain'] = pdf['Label']
         strains = pdf['Strain'].unique()
@@ -553,7 +553,7 @@ class PlotUtils:
                 # Determine color based on cluster
                 color = cluster_colors[cluster]
                 # Determine hue based on RPM
-                cluster_max = cluster_genes['RPM'].max()
+                cluster_max = max(cluster_genes['RPM'].max(),1)
                 color = sns.light_palette(color, as_cmap=True)(gene['RPM'] / cluster_max)
                 norm = Normalize(vmin=0, vmax=cluster_max)
 

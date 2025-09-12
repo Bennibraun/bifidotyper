@@ -14,8 +14,9 @@
 # 	conda install -c bioconda gtdbtk ncbi-datasets-cli drep sylph
 
 # If running as sbatch, update the name of your conda env below
-eval "$(conda shell.bash hook)"
-conda activate bif_test\
+# eval "$(conda shell.bash hook)"
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate bif_test
 
 # Usage example:
 # sbatch -N 1 -c 1 -p short -t 0-11:00 --mem=10G src/util/recreate_sylph_genome_db.sh /Users/bebr1814/scratch/bifidotyper/testing/genome_db /Users/bebr1814/scratch/bifidotyper/testing/genome_db/genomes.csv
@@ -52,32 +53,35 @@ datasets rehydrate --directory "$ncbi_path"
 
 # Download GTDB with https://github.com/Ecogenomics/GTDBTk
 export GTDBTK_DATA_PATH="$gtdb_path/data"
-echo "Downloading GTDB data..."
-wget https://data.ace.uq.edu.au/public/gtdb/data/releases/latest/auxillary_files/gtdbtk_package/full_package/gtdbtk_data.tar.gz -O "$gtdb_path/gtdbtk_data.tar.gz" -q
-tar xvzf "$gtdb_path/gtdbtk_data.tar.gz" -C "$gtdb_path/data" --strip 1
-# Remove the tar file after extraction
-rm "$gtdb_path/gtdbtk_data.tar.gz"
+# echo "Downloading GTDB data..."
+# wget https://data.ace.uq.edu.au/public/gtdb/data/releases/latest/auxillary_files/gtdbtk_package/full_package/gtdbtk_data.tar.gz -O "$gtdb_path/gtdbtk_data.tar.gz" -q
+# mkdir -p "$gtdb_path/data"
+# tar xvzf "$gtdb_path/gtdbtk_data.tar.gz" -C "$gtdb_path/data" --strip 1
+# # Remove the tar file after extraction
+# rm "$gtdb_path/gtdbtk_data.tar.gz"
 
 # Grab Bifidobacteriaceae genus from GTDB
-grep "Bifido" "$gtdb_path/data/release*/taxonomy/gtdb_taxonomy.tsv" > "$gtdb_path/Bifidobacteriaceae_taxonomy.tsv"
+grep "Bifido" "$gtdb_path/data/taxonomy/gtdb_taxonomy.tsv" > "$gtdb_path/Bifidobacteriaceae_taxonomy.tsv"
 # Grab the FNA files that match each row in the taxonomy file
 # file looks like GCA_000008085.1_genomic.fna.gz
 # item looks like GB_GCA_000008085.1
+mkdir -p "$gtdb_path/genomes"
 for i in $(cat $gtdb_path/Bifidobacteriaceae_taxonomy.tsv | cut -f1); do
 	match_i=$(echo $i | cut -d'_' -f2-)
 	# echo $match_i
-	find $gtdb_path/data/release*/skani/database/ -name "*$match_i*" -exec cp {} genomes/ \;
+	find $gtdb_path/data/skani/database/ -name "*$match_i*" -exec cp {} $gtdb_path/genomes/ \;
 	# find $gtdb_path/data/release*/skani/database/ -name "*$match_i*" -exec echo {} \;
 done
 gunzip $gtdb_path/genomes/*.gz
 
 
 # Copy all genomes to a shared directory
+mkdir -p $genomes_path/fna
 cp $ncbi_path/ncbi_dataset/data/*/*.fna $genomes_path/fna/
 cp $gtdb_path/genomes/*.fna $genomes_path/fna/
 
 # Run dRep on all of these genomes to establish a consensus set
-dRep dereplicate drep_genomes -g $genomes_path/fna/*.fna --S_ani 0.95
+dRep dereplicate $genomes_path/drep_genomes -g $genomes_path/fna/*.fna --S_ani 0.95
 
 # Finally, run Sylph Sketch on the dereplicated genome set
 sylph sketch $genomes_path/drep_genomes/dereplicated_genomes/*.fna -t 5 -o bifidobacteria_sketches

@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from Bio import Phylo
 from Bio.Phylo.TreeConstruction import DistanceTreeConstructor, DistanceMatrix
 from Bio.Phylo.BaseTree import Clade
+from Bio.SeqIO import parse
+from Bio.SeqUtils import seq_similarity
 from .logger import logger
 
 class PhylogeneticUtils:
@@ -14,9 +16,10 @@ class PhylogeneticUtils:
         os.makedirs(self.output_dir, exist_ok=True)
 
     def generate_phylogenetic_tree(self):
-        # Extract strains and ANI distances
+        # Extract strains and genome file paths
         strains = self.genomes_df['Label'].unique()
-        ani_matrix = self._build_ani_matrix(strains)
+        genome_files = dict(zip(self.genomes_df['Label'], self.genomes_df['Genome_file']))
+        ani_matrix = self._build_ani_matrix(strains, genome_files)
 
         # Construct the phylogenetic tree using UPGMA
         constructor = DistanceTreeConstructor()
@@ -30,7 +33,7 @@ class PhylogeneticUtils:
 
         return tree
 
-    def _build_ani_matrix(self, strains):
+    def _build_ani_matrix(self, strains, genome_files):
         # Create a distance matrix based on ANI values
         matrix = []
         labels = []
@@ -41,14 +44,24 @@ class PhylogeneticUtils:
                 if strain == other_strain:
                     distances.append(0)
                 else:
-                    ani = self.genomes_df.loc[
-                        (self.genomes_df['Label'] == strain) & 
-                        (self.genomes_df['Label'] == other_strain), 
-                        'Adjusted_ANI'
-                    ]
-                    distances.append(1 - ani.values[0] if not ani.empty else 1)
+                    ani = self._calculate_ani(genome_files[strain], genome_files[other_strain])
+                    distances.append(1 - ani)
             matrix.append(distances)
         return DistanceMatrix(labels, matrix)
+
+    def _calculate_ani(self, genome_file_1, genome_file_2):
+        # Calculate ANI between two genome files
+        try:
+            seqs1 = list(parse(genome_file_1, "fasta"))
+            seqs2 = list(parse(genome_file_2, "fasta"))
+            similarities = [
+                seq_similarity(str(seq1.seq), str(seq2.seq))
+                for seq1 in seqs1 for seq2 in seqs2
+            ]
+            return sum(similarities) / len(similarities) if similarities else 0
+        except Exception as e:
+            logger.error(f"Error calculating ANI between {genome_file_1} and {genome_file_2}: {e}")
+            return 0
 
     def plot_cladogram(self, tree):
         # Plot the phylogenetic tree as a cladogram

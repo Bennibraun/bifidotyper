@@ -190,7 +190,7 @@ def main():
         else:
             read_sketches = sylph.sketch_reads(fastq_r1=fastq_files_r1, fastq_r2=fastq_files_r2, threads=args.threads)
 
-        print('Querying the genome database...')
+        print('Querying samples against genomes...')
         query_result = sylph.query_genomes(read_sketches, genome_db)
         profile_result = sylph.profile_genomes(read_sketches, genome_db)
 
@@ -208,33 +208,40 @@ def main():
         return os.path.basename(fastq).replace('.fastq.gz','').replace(args.r1_suffix,'').replace(args.r2_suffix,'')
 
     if args.single_end:
-        for fastq_se in tqdm.tqdm(fastq_files, desc="Quantifying HMO genes", unit="samples", total=len(fastq_files), disable=disable_tqdm):
+        missing_samples = []
+        for fastq_se in fastq_files:
             sample_name = get_sample_name(fastq_se)
-            if all(os.path.exists(f) for f in [f'hmo_quantification/{sample_name}.salmon_counts_annotated.tsv',f'hmo_quantification/{sample_name}.cluster_presence.tsv']):
-                continue
-            HMOUtils(args=args,
-                        salmon_executable=salmon,
-                        sample_name=sample_name,
-                        genes_fasta=refs['bl_genes'],
-                        hmo_annotations=refs['humann2_hmo'],
-                        fastq_se=fastq_se,
-                        output_dir='hmo_quantification',
-                        threads=args.threads)
+            if not os.path.exists(f'hmo_quantification/{sample_name}.salmon_counts_annotated.tsv') or not os.path.exists(f'hmo_quantification/{sample_name}.cluster_presence.tsv'):
+                missing_samples.append(fastq_se)
+    
+        if len(missing_samples) > 0:
+            for fastq_se in tqdm.tqdm(missing_samples, desc="Quantifying HMO genes", unit="samples", total=len(missing_samples), disable=disable_tqdm):
+                HMOUtils(args=args,
+                            salmon_executable=salmon,
+                            sample_name=sample_name,
+                            genes_fasta=refs['bl_genes'],
+                            hmo_annotations=refs['humann2_hmo'],
+                            fastq_se=fastq_se,
+                            output_dir='hmo_quantification',
+                            threads=args.threads)
     else:
-        for fastq_r1, fastq_r2 in tqdm.tqdm(zip(fastq_files_r1, fastq_files_r2), desc="Quantifying HMO genes", unit="samples", total=len(fastq_files_r1), disable=disable_tqdm):
+        missing_samples = []
+        for fastq_r1, fastq_r2 in zip(fastq_files_r1, fastq_files_r2):
             sample_name = get_sample_name(fastq_r1)
-            if all(os.path.exists(f) for f in [f'hmo_quantification/{sample_name}.salmon_counts_annotated.tsv',f'hmo_quantification/{sample_name}.cluster_presence.tsv']):
-                print(f"Skipping {sample_name} as output files already exist.")
-                continue
-            HMOUtils(args=args,
-                        salmon_executable=salmon,
-                        sample_name=sample_name,
-                        genes_fasta=refs['bl_genes'],
-                        hmo_annotations=refs['humann2_hmo'],
-                        fastq_pe1=fastq_r1,
-                        fastq_pe2=fastq_r2,
-                        output_dir='hmo_quantification',
-                        threads=args.threads)
+            if not os.path.exists(f'hmo_quantification/{sample_name}.salmon_counts_annotated.tsv') or not os.path.exists(f'hmo_quantification/{sample_name}.cluster_presence.tsv'):
+                missing_samples.append((fastq_r1, fastq_r2))
+        
+        if len(missing_samples) > 0:
+            for fastq_r1, fastq_r2 in tqdm.tqdm(missing_samples, desc="Quantifying HMO genes", unit="samples", total=len(missing_samples), disable=disable_tqdm):
+                HMOUtils(args=args,
+                            salmon_executable=salmon,
+                            sample_name=sample_name,
+                            genes_fasta=refs['bl_genes'],
+                            hmo_annotations=refs['humann2_hmo'],
+                            fastq_pe1=fastq_r1,
+                            fastq_pe2=fastq_r2,
+                            output_dir='hmo_quantification',
+                            threads=args.threads)
     
     # Run plotting
     print('Plotting results...')
@@ -254,8 +261,8 @@ def main():
     plot_u.plot_sylph_query()
 
     # Generate and plot phylogenetic tree
-    print('Generating phylogenetic tree...')
-    logger.info("Generating phylogenetic tree...")
+    # print('Generating phylogenetic tree...')
+    # logger.info("Generating phylogenetic tree...")
     phylo_utils = PhylogeneticUtils(
         genomes_df=refs['genomes_df'],
         sylph_profile='sylph_genome_queries/genome_profile.tsv',

@@ -54,20 +54,24 @@ class SylphUtils:
         if fastq_se:
             existing_files = find_existing_sylsp(fastq_se)
             missing_files = [f for f in fastq_se if not any(os.path.basename(f).replace('.fastq.gz', '').replace('.fastq', '').replace('.fq.gz', '').replace('.fq', '') in ef for ef in existing_files)]
-            if len(existing_files) > 0:
-                logger.info(f"      Found {len(existing_files)} existing .sylsp files. Sketching the remaining {len(missing_files)} samples.")
+            if len(existing_files) > 0 and len(missing_files) == 0:
+                pass
+            elif len(existing_files) > 0:
+                logger.info(f"Found {len(existing_files)} existing .sylsp files. Sketching the remaining {len(missing_files)} samples.")
             else:
-                logger.info(f"      No existing .sylsp files found. Sketching all {len(missing_files)} samples.")
+                logger.info(f"No existing .sylsp files found. Sketching all {len(missing_files)} samples.")
             if missing_files:
                 command = [self.sylph_executable, 'sketch', *missing_files, '-t', str(threads)]
         elif fastq_r1 and fastq_r2:
             existing_files_r1 = find_existing_sylsp(fastq_r1)
             missing_files_r1 = [f for f in fastq_r1 if not any(os.path.basename(f) in ef for ef in existing_files_r1)]
             missing_files_r2 = [f.replace(self.args.r1_suffix,self.args.r2_suffix) for f in missing_files_r1]
-            if len(existing_files_r1) > 0:
-                logger.info(f"      Found {len(existing_files_r1)} existing .sylsp files. Sketching the remaining {len(missing_files_r1)} samples.")
+            if len(existing_files_r1) > 0 and len(missing_files_r1) == 0:
+                pass
+            elif len(existing_files_r1) > 0:
+                logger.info(f"Found {len(existing_files_r1)} existing .sylsp files. Sketching the remaining {len(missing_files_r1)} samples.")
             else:
-                logger.info(f"      No existing .sylsp files found. Sketching all {len(missing_files_r1)} samples.")
+                logger.info(f"No existing .sylsp files found. Sketching all {len(missing_files_r1)} samples.")
             if missing_files_r1:
                 command = [self.sylph_executable, 'sketch', '-1', *missing_files_r1, '-2', *missing_files_r2, '-t', str(threads)]
         else:
@@ -77,7 +81,7 @@ class SylphUtils:
             logger.info(f"Missing .sylsp files: {missing_files}. Running Sylph sketch command.")
             self._run_command(command)
         else:
-            logger.info("       All .sylsp files are present. Skipping Sylph sketch command.")
+            logger.info("All .sylsp files are present. Skipping Sylph sketch command.")
 
         # Move any .sylsp files in the base dir to the fastq_sketch_dir
         for sylsp in glob.glob('*.sylsp'):
