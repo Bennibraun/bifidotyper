@@ -36,9 +36,9 @@ class HMOUtils:
 
         # ensure that either se or pe1/2 are provided, but not both
         if self.fastq_se and (self.fastq_pe1 or self.fastq_pe2):
-            raise HMOError("Please provide either single-end or paired-end fastq files, not both")
+            raise ValueError("Please provide either single-end or paired-end fastq files, not both")
         elif not self.fastq_se and not (self.fastq_pe1 and self.fastq_pe2):
-            raise HMOError("Please provide either single-end or paired-end fastq files")
+            raise ValueError("Please provide either single-end or paired-end fastq files")
 
         
         # Ensure all the files exist
@@ -50,7 +50,7 @@ class HMOUtils:
 
         for file_path in valid_files:
             if not os.path.exists(file_path):
-                raise HMOError(f"File '{file_path}' does not exist")
+                raise FileNotFoundError(f"File '{file_path}' does not exist")
         
         # Ensure output directory exists
         os.makedirs(self.output_dir, exist_ok=True)
@@ -77,9 +77,9 @@ class HMOUtils:
             if self.args.verbose:
                 logger.info(f"Running command: {' '.join(command)}")
             subprocess.run(command, check=True, text=True, capture_output=False, shell=False, stdout=stdout, stderr=logfile)
-        except subprocess.CalledProcessError as e:
-            logger.error(f"Command '{' '.join(command)}' failed with error: {e.stderr}")
-            raise HMOError(f"Command '{' '.join(command)}' failed with error: {e.stderr}")
+        except subprocess.CalledProcessError:
+            logger.exception(f"Command failed: {' '.join(command)}")
+            raise
     
     def run_salmon(self):
         
@@ -95,7 +95,6 @@ class HMOUtils:
 
 
     def process_gene_counts(self):
-        
         salmon_counts = pd.read_csv(os.path.join(self.output_dir, self.sample_name+'_salmon','quant.sf'), sep='\t')
 
         hmo = pd.read_csv(self.hmo_annotations,sep=';')[['Blon','Cluster']]

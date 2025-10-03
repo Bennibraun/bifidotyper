@@ -29,9 +29,9 @@ class SylphUtils:
                 logger.info(f"Running command: {' '.join(command)}")
             result = subprocess.run(command, check=True, text=True, capture_output=True, shell=False)
             return result
-        except subprocess.CalledProcessError as e:
-            logger.error(f"Command '{' '.join(command)}' failed with error: {e.stderr}")
-            raise Error(f"Command '{' '.join(command)}' failed with error: {e.stderr}")
+        except subprocess.CalledProcessError:
+            logger.exception(f"Command failed: {' '.join(command)}")
+            raise
     
     def sketch_reads(self,
                      fastq_se: list = None,
@@ -75,7 +75,7 @@ class SylphUtils:
             if missing_files_r1:
                 command = [self.sylph_executable, 'sketch', '-1', *missing_files_r1, '-2', *missing_files_r2, '-t', str(threads)]
         else:
-            raise Error("Either fastq_se or fastq_r1 and fastq_r2 must be provided")
+            raise ValueError("Either fastq_se or fastq_r1 and fastq_r2 must be provided")
 
         if command:
             logger.info(f"Missing .sylsp files: {missing_files}. Running Sylph sketch command.")
@@ -143,9 +143,9 @@ def main():
         logger.info(f"Query result: {query_result}")
         logger.info(f"Profile result: {profile_result}")
     
-    except Error as e:
-        logger.info(f"Sylph processing error: {e}")
-        raise Error(f"Sylph processing error: {e}")
+    except Exception:
+        logger.exception("Sylph processing error")
+        raise
 
 if __name__ == '__main__':
     main()

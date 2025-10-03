@@ -10,11 +10,8 @@ Bifidotyper was developed as part of a PhD rotation in the [Olm Lab](https://www
 
 ## Installation
 ```bash
-pip install bifidotyper
+conda install -c bioconda bifidotyper
 ```
-
-> [!NOTE]
-> Bifidotyper can be installed with `pip` but it depends on [Sylph](https://github.com/bluenote-1577/sylph) and [Salmon](https://github.com/COMBINE-lab/salmon), which don't have `pip` distributions. For ease of use, binaries are included for Sylph and automatically downloaded for Salmon if they aren't found in your `PATH`. If you have problems with these, you can install both manually with Conda (`conda install -c bioconda sylph salmon`).
 
 ---
 
@@ -61,6 +58,7 @@ The tool generates several output files and directories:
 - `sylph_fastq_sketches/`: K-mer indices of input samples processed with Sylph.
 - `sylph_genome_queries/`: Results of running Sylph queries against the genomes.
 - `hmo_quantification/`: HMO gene alignments with Salmon.
+- `bifidotyper.log`: A record of the program's execution, including any errors.
 
 ---
 
@@ -78,3 +76,5 @@ This project is licensed under the MIT License.
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request on GitHub.
+
+---

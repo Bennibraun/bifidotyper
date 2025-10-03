@@ -1,3 +1,9 @@
+### 0.2.1
+- Refactored logging and dependencies
+- Cleaned up code
+- Removed manual installation option for Sylph and Salmon (moving to conda)
+- Configured conda package
+
 ### 0.2.0
 - Removed custom genome input option
 - Added phylogenetic tree visualization for detected strains

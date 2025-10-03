@@ -5,7 +5,6 @@ from Bio import Phylo
 from Bio.Phylo.TreeConstruction import DistanceTreeConstructor, DistanceMatrix
 from Bio.Phylo.BaseTree import Clade
 from Bio.SeqIO import parse
-from Bio.SeqUtils import seq_similarity
 from .logger import logger
 
 class PhylogeneticUtils:
@@ -34,34 +33,51 @@ class PhylogeneticUtils:
         return tree
 
     def _build_ani_matrix(self, strains, genome_files):
-        # Create a distance matrix based on ANI values
+        # Create a lower-triangular distance matrix based on an ANI-like score
+        labels = list(strains)
+        n = len(labels)
+        if n < 2:
+            # DistanceMatrix requires at least 2 taxa; duplicate one with zero distance
+            labels = labels + [labels[0]]
+            matrix = [[0.0], [0.0, 0.0]]
+            return DistanceMatrix(labels, matrix)
+
         matrix = []
-        labels = []
-        for strain in strains:
-            labels.append(strain)
-            distances = []
-            for other_strain in strains:
-                if strain == other_strain:
-                    distances.append(0)
+        for i in range(n):
+            row = []
+            for j in range(i + 1):
+                if i == j:
+                    row.append(0.0)
                 else:
-                    ani = self._calculate_ani(genome_files[strain], genome_files[other_strain])
-                    distances.append(1 - ani)
-            matrix.append(distances)
+                    ani = self._calculate_ani(genome_files[labels[i]], genome_files[labels[j]])
+                    # Convert similarity to distance
+                    row.append(max(0.0, 1.0 - ani))
+            matrix.append(row)
         return DistanceMatrix(labels, matrix)
 
-    def _calculate_ani(self, genome_file_1, genome_file_2):
-        # Calculate ANI between two genome files
+    def _calculate_ani(self, genome_file_1, genome_file_2, k: int = 8):
+        """Approximate ANI using Jaccard index of k-mer sets.
+
+        This avoids heavy alignments and external tools, providing a stable
+        fallback that produces values in [0,1].
+        """
         try:
-            seqs1 = list(parse(genome_file_1, "fasta"))
-            seqs2 = list(parse(genome_file_2, "fasta"))
-            similarities = [
-                seq_similarity(str(seq1.seq), str(seq2.seq))
-                for seq1 in seqs1 for seq2 in seqs2
-            ]
-            return sum(similarities) / len(similarities) if similarities else 0
+            kmers1 = set()
+            for rec in parse(genome_file_1, "fasta"):
+                s = str(rec.seq).upper()
+                kmers1.update(s[i:i+k] for i in range(0, max(0, len(s) - k + 1)))
+            kmers2 = set()
+            for rec in parse(genome_file_2, "fasta"):
+                s = str(rec.seq).upper()
+                kmers2.update(s[i:i+k] for i in range(0, max(0, len(s) - k + 1)))
+            if not kmers1 or not kmers2:
+                return 0.0
+            inter = len(kmers1 & kmers2)
+            union = len(kmers1 | kmers2)
+            return inter / union if union else 0.0
         except Exception as e:
             logger.error(f"Error calculating ANI between {genome_file_1} and {genome_file_2}: {e}")
-            return 0
+            return 0.0
 
     def plot_cladogram(self, tree):
         # Plot the phylogenetic tree as a cladogram

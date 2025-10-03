@@ -13,7 +13,7 @@ setup(
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     package_data={
-        "bifidotyper": ["data/reference/*", "data/bin/*"],
+        "bifidotyper": ["data/reference/*"],
     },
     include_package_data=True,
     entry_points={
@@ -21,16 +21,18 @@ setup(
             'bifidotyper=bifidotyper.cli:main',
         ],
     },
-	install_requires=[
+    install_requires=[
         'numpy',
         'pandas',
         'seaborn',
         'matplotlib',
-		'tqdm',
-		'scikit-learn',
-		'natsort',
-		'palettable',
-        'biopython'
+        'tqdm',
+        'scikit-learn',
+        'natsort',
+        'palettable',
+        'biopython',
+        'packaging',
+        'requests'
     ],
 	url='https://github.com/Bennibraun/bifidotyper',
 	description='A bioinformatics tool for analyzing Bifidobacteria in sequencing data.',

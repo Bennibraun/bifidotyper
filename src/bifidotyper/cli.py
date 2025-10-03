@@ -6,6 +6,7 @@ import glob
 import platform
 import os
 import subprocess
+import shutil
 from .sylph import SylphUtils
 from .hmo_genes import HMOUtils
 from .plotting import PlotUtils
@@ -18,6 +19,18 @@ warnings.filterwarnings("ignore")
 
 
 disable_tqdm = not sys.stdout.isatty()  # Disable if output is redirected
+
+# Ensure uncaught exceptions are logged with full tracebacks
+def _log_uncaught_exceptions(exctype, value, tb):
+    try:
+        # Log full traceback
+        logger.exception("Uncaught exception", exc_info=(exctype, value, tb))
+    finally:
+        # Also print the traceback to stderr so batch systems like SLURM capture it
+        import traceback
+        traceback.print_exception(exctype, value, tb, file=sys.stderr)
+
+sys.excepthook = _log_uncaught_exceptions
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Process FASTQ files for bifidotyper.")
@@ -40,17 +53,14 @@ def parse_args():
     
     args = parser.parse_args()
     
-    # Validate suffix arguments are only used with paired-end mode
-    if (args.r1_suffix or args.r2_suffix) and not args.paired_end:
-        parser.error("--r1-suffix and --r2-suffix can only be used with paired-end mode (-pe)")
-    
-    # Validate suffix arguments are used together
-    if bool(args.r1_suffix) != bool(args.r2_suffix):
+    # Validate suffix arguments are used together if provided
+    if (args.r1_suffix and not args.r2_suffix) or (args.r2_suffix and not args.r1_suffix):
         parser.error("--r1-suffix and --r2-suffix must be used together")
-    
-    # Set default suffixes if none provided in paired-end mode
-    if args.paired_end and not args.r1_suffix:
+
+    # Always have a concrete suffix value to pass into processors
+    if not args.r1_suffix:
         args.r1_suffix = "_R1"
+    if not args.r2_suffix:
         args.r2_suffix = "_R2"
     
     return args
@@ -69,18 +79,6 @@ def get_reference_files():
         print(f"Error: {e}")
         sys.exit(1)
 
-def get_bin_files():
-    try:
-        ref_manager = ReferenceManager()
-        bin_files = {bin: ref_manager.get_bin_path(bin) for bin in ref_manager.available_bins}
-        return bin_files
-    except FileNotFoundError as e:
-        print(f"Error: {e}")
-        print("Please ensure the package is properly installed with reference files.")
-        sys.exit(1)
-    except ValueError as e:
-        print(f"Error: {e}")
-        sys.exit(1)
 
 def main():
 
@@ -98,74 +96,26 @@ def main():
     args = parse_args()
 
     print('Loading software and reference data...')
-    bins = get_bin_files()
 
-    # Check for Sylph
-    try:
-        subprocess.run(['sylph', '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        sylph = 'sylph'
-    except FileNotFoundError:
-
-        # We need to scan the cpu architecture and use the right binary
-        system = platform.system()
-        arch = platform.machine()
-
-        if system == "Darwin":  # macOS
-            if arch == "x86_64":
-                sylph = bins['sylph_x86_64-any-darwin']
-            elif arch == "arm64":
-                sylph = bins['sylph_arm64-any-darwin']
-        elif system == "Linux":
-            if arch == "x86_64":
-                sylph = bins['sylph_x86_64-any-linux']
-            elif arch == "aarch64":
-                sylph = bins['sylph_aarch64-any-linux']
-        else:
-            logger.error(f"Unfortunately, we do not have a precompiled Sylph binary for your architecture ({arch}). Please install Sylph manually and ensure it is in your PATH, then try again.")
-            raise RuntimeError(f"Unfortunately, we do not have a precompiled Sylph binary for your architecture ({arch}). Please install Sylph manually and ensure it is in your PATH, then try again.")
-        
-        try:
-            if args.verbose:
-                logger.info(f"Running command: {' '.join([sylph, '--version'])}")
-            subprocess.run([sylph, '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        except:
-            logger.error(f"Sylph failed to run. Please install it manually and ensure it is in your PATH, then try again.")
-            raise RuntimeError(f"Sylph failed to run. Please install it manually and ensure it is in your PATH, then try again.")
-
-    # Check for Salmon
-    try:
-        subprocess.run(['salmon', '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        salmon = 'salmon'
-    except:
-        # Need to download Salmon because it's huge
-        # wget https://github.com/COMBINE-lab/salmon/releases/download/v1.10.0/salmon-1.10.0_linux_x86_64.tar.gz
-        # tar -xvf salmon-1.10.0_linux_x86_64.tar.gz
-        # cp salmon-1.10.0_linux_x86_64/bin/salmon 
-        ref_manager = ReferenceManager()
-        bin_dir = ref_manager.get_bin_dir()
-        salmon = os.path.join(bin_dir,'salmon')
-        if not os.path.exists(salmon):
-            subprocess.run(['wget', 'https://github.com/COMBINE-lab/salmon/releases/download/v1.10.0/salmon-1.10.0_linux_x86_64.tar.gz'], cwd=bin_dir, capture_output=True, text=True)
-            logger.info(subprocess.run(['tar', '-xvf', 'salmon-1.10.0_linux_x86_64.tar.gz'], cwd=bin_dir, capture_output=True, text=True).stdout)
-            logger.info(subprocess.run(['mv', 'salmon-latest_linux_x86_64/bin/salmon', bin_dir], cwd=bin_dir, capture_output=True, text=True).stdout)
-            logger.info(subprocess.run(['mv', 'salmon-latest_linux_x86_64/lib', os.path.dirname(bin_dir)], cwd=bin_dir, capture_output=True, text=True).stdout)
-            logger.info(subprocess.run(['rm', '-rf', 'salmon-latest_linux_x86_64', 'salmon-1.10.0_linux_x86_64.tar.gz'], cwd=bin_dir, capture_output=True, text=True).stdout)
-            assert os.path.exists(salmon), "Salmon binary not found after download."
-
-        try:
-            subprocess.run([salmon, '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        except:
-            logger.error(f"Salmon failed to run. Please install it manually and ensure it is in your PATH, then try again.")
-            raise RuntimeError(f"Salmon failed to run. Please install it manually and ensure it is in your PATH, then try again.")
-        
+    # Expand any wildcards manually (Windows shells won't expand globs)
+    se_files = None
+    pe_files = None
     if args.single_end:
-        sample_dict = build_sample_dict(single_end=args.single_end, 
-                                      r1_suffix=args.r1_suffix, 
-                                      r2_suffix=args.r2_suffix)
+        se_files = []
+        for pattern in args.single_end:
+            expanded = glob.glob(pattern)
+            se_files.extend(expanded if expanded else [pattern])
+        sample_dict = build_sample_dict(single_end=se_files,
+                                        r1_suffix=args.r1_suffix,
+                                        r2_suffix=args.r2_suffix)
     elif args.paired_end:
-        sample_dict = build_sample_dict(paired_end=args.paired_end,
-                                      r1_suffix=args.r1_suffix,
-                                      r2_suffix=args.r2_suffix)
+        pe_files = []
+        for pattern in args.paired_end:
+            expanded = glob.glob(pattern)
+            pe_files.extend(expanded if expanded else [pattern])
+        sample_dict = build_sample_dict(paired_end=pe_files,
+                                        r1_suffix=args.r1_suffix,
+                                        r2_suffix=args.r2_suffix)
     
     if args.single_end:
         fastq_files = [file for sample in sample_dict.values() for file in sample['files'].values()]
@@ -179,20 +129,32 @@ def main():
     logger.info("Processing FASTQ files with Sylph...")
     print('Processing FASTQ files with Sylph...')
 
+    # Resolve external executables
+    sylph_exec = shutil.which('sylph')
+    salmon_exec = shutil.which('salmon')
+    if not sylph_exec:
+        logger.error("Could not find 'sylph' in PATH. Please install Sylph and ensure it is available.")
+        print("Error: 'sylph' not found in PATH. Install via conda: conda install -c bioconda sylph")
+        sys.exit(1)
+    if not salmon_exec:
+        logger.error("Could not find 'salmon' in PATH. Please install Salmon and ensure it is available.")
+        print("Error: 'salmon' not found in PATH. Install via conda: conda install -c bioconda salmon")
+        sys.exit(1)
+
     # Initialize Sylph utility
-    sylph = SylphUtils(args=args, sylph_executable=sylph)
+    sylph_u = SylphUtils(args=args, sylph_executable=sylph_exec)
 
     try:
         genome_db = refs['bifidobacteria_sketches']
 
         if args.single_end:
-            read_sketches = sylph.sketch_reads(fastq_se=fastq_files, threads=args.threads)
+            read_sketches = sylph_u.sketch_reads(fastq_se=fastq_files, threads=args.threads)
         else:
-            read_sketches = sylph.sketch_reads(fastq_r1=fastq_files_r1, fastq_r2=fastq_files_r2, threads=args.threads)
+            read_sketches = sylph_u.sketch_reads(fastq_r1=fastq_files_r1, fastq_r2=fastq_files_r2, threads=args.threads)
 
         print('Querying samples against genomes...')
-        query_result = sylph.query_genomes(read_sketches, genome_db)
-        profile_result = sylph.profile_genomes(read_sketches, genome_db)
+        query_result = sylph_u.query_genomes(read_sketches, genome_db)
+        profile_result = sylph_u.profile_genomes(read_sketches, genome_db)
 
         logger.info(f"Query result: {query_result}")
         logger.info(f"Profile result: {profile_result}")
@@ -205,7 +167,14 @@ def main():
     print('Detecting HMO genes...')
 
     def get_sample_name(fastq):
-        return os.path.basename(fastq).replace('.fastq.gz','').replace(args.r1_suffix,'').replace(args.r2_suffix,'')
+        name = os.path.basename(fastq)
+        for ext in ('.fastq.gz', '.fq.gz', '.fastq', '.fq'):
+            if name.endswith(ext):
+                name = name[: -len(ext)]
+                break
+        # Remove suffixes if present
+        name = name.replace(args.r1_suffix, '').replace(args.r2_suffix, '')
+        return name
 
     if args.single_end:
         missing_samples = []
@@ -216,14 +185,15 @@ def main():
     
         if len(missing_samples) > 0:
             for fastq_se in tqdm.tqdm(missing_samples, desc="Quantifying HMO genes", unit="samples", total=len(missing_samples), disable=disable_tqdm):
+                sample_name = get_sample_name(fastq_se)
                 HMOUtils(args=args,
-                            salmon_executable=salmon,
-                            sample_name=sample_name,
-                            genes_fasta=refs['bl_genes'],
-                            hmo_annotations=refs['humann2_hmo'],
-                            fastq_se=fastq_se,
-                            output_dir='hmo_quantification',
-                            threads=args.threads)
+                         salmon_executable=salmon_exec,
+                         sample_name=sample_name,
+                         genes_fasta=refs['bl_genes'],
+                         hmo_annotations=refs['humann2_hmo'],
+                         fastq_se=fastq_se,
+                         output_dir='hmo_quantification',
+                         threads=args.threads)
     else:
         missing_samples = []
         for fastq_r1, fastq_r2 in zip(fastq_files_r1, fastq_files_r2):
@@ -233,15 +203,16 @@ def main():
         
         if len(missing_samples) > 0:
             for fastq_r1, fastq_r2 in tqdm.tqdm(missing_samples, desc="Quantifying HMO genes", unit="samples", total=len(missing_samples), disable=disable_tqdm):
+                sample_name = get_sample_name(fastq_r1)
                 HMOUtils(args=args,
-                            salmon_executable=salmon,
-                            sample_name=sample_name,
-                            genes_fasta=refs['bl_genes'],
-                            hmo_annotations=refs['humann2_hmo'],
-                            fastq_pe1=fastq_r1,
-                            fastq_pe2=fastq_r2,
-                            output_dir='hmo_quantification',
-                            threads=args.threads)
+                         salmon_executable=salmon_exec,
+                         sample_name=sample_name,
+                         genes_fasta=refs['bl_genes'],
+                         hmo_annotations=refs['humann2_hmo'],
+                         fastq_pe1=fastq_r1,
+                         fastq_pe2=fastq_r2,
+                         output_dir='hmo_quantification',
+                         threads=args.threads)
     
     # Run plotting
     print('Plotting results...')
@@ -263,13 +234,16 @@ def main():
     # Generate and plot phylogenetic tree
     # print('Generating phylogenetic tree...')
     # logger.info("Generating phylogenetic tree...")
-    phylo_utils = PhylogeneticUtils(
-        genomes_df=refs['genomes_df'],
-        sylph_profile='sylph_genome_queries/genome_profile.tsv',
-        output_dir='plots'
-    )
-    tree = phylo_utils.generate_phylogenetic_tree()
-    phylo_utils.plot_cladogram(tree)
+    try:
+        phylo_utils = PhylogeneticUtils(
+            genomes_df=refs['genomes_df'],
+            sylph_profile='sylph_genome_queries/genome_profile.tsv',
+            output_dir='plots'
+        )
+        tree = phylo_utils.generate_phylogenetic_tree()
+        phylo_utils.plot_cladogram(tree)
+    except Exception as e:
+        logger.warning(f"Skipping phylogenetic tree due to error: {e}")
 
     print('Done!')
 
